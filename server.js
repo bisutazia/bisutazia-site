@@ -55,6 +55,9 @@ app.post('/vote/:id', (req, res) => {
 
   fs.writeFileSync(filePath, JSON.stringify(votes, null, 2));
 
+  if (!req.session.history) req.session.history = [];
+  req.session.history.push({ player });
+
   res.redirect(`/result/${id}?voted=${team}`);
 });
 
@@ -75,6 +78,11 @@ app.get('/result/:id', (req, res) => {
   const topAway = getTopPlayer(awayVotes);
 
   res.render('results', { homeVotes, awayVotes, match, topHome, topAway });
+});
+
+app.get('/history', (req, res) => {
+  const history = req.session.history || [];
+  res.render('history', { history });
 });
 
 const port = process.env.PORT || 3000;
