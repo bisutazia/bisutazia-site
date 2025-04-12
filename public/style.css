@@ -1,22 +1,48 @@
+/* スマホ最適化CSS */
+html {
+  font-size: 16px; /* スマホ向け基本フォントサイズ */
+}
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 1rem; /* 基本を16pxに設定 */
+  line-height: 1.6;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  background: #f7f9fc;
+}
+
+/* すべてのテキストをスマホで読みやすく調整 */
+h1, h2, h3, p, label, select, button {
+  font-size: 1rem; /* 16px */
+}
+
+/* 見出しはやや大きめに */
+h1 {
+  font-size: 1.5rem; /* 24px */
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* ボタンをタップしやすくする */
 button {
-  padding: 12px 20px;
-  font-size: 16px;
-  border: none;
+  font-size: 1.2rem; /* 19px */
+  padding: 0.8rem;
   border-radius: 8px;
-  background-color: #1e90ff;
-  color: white;
-  margin: 10px 5px;
-  width: 100%;
-  max-width: 300px;
 }
 
-button:hover {
-  background-color: #006fd6;
+/* セレクトボックスの調整 */
+select {
+  font-size: 1rem; /* 16px */
+  padding: 0.7rem;
+  border-radius: 8px;
 }
 
+/* レスポンシブ調整 */
 @media (max-width: 600px) {
-  button {
-    font-size: 18px;
-    width: 100%;
+  html {
+    font-size: 18px; /* スマホ画面では基本18pxに拡大 */
   }
 }
