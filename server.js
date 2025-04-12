@@ -65,25 +65,17 @@ app.get('/result/:id', (req, res) => {
   const homeFile = `./data/votes/${matchId}-home.json`;
   const awayFile = `./data/votes/${matchId}-away.json`;
 
-  // ファイルがない時もエラーにならない安全版
   const homeVotes = fs.existsSync(homeFile) ? JSON.parse(fs.readFileSync(homeFile)) : {};
   const awayVotes = fs.existsSync(awayFile) ? JSON.parse(fs.readFileSync(awayFile)) : {};
 
   const match = matches.find(m => m.id === matchId);
-  
-  // SNS共有に必要なラベルを設定
   match.vote_label = "ピカイチ";
 
-  // 各チームの最多得票選手
-  const getTop = votes => Object.entries(votes).sort((a, b) => b[1] - a[1])[0]?.[0] || '';
+  const topPlayer = votes => Object.entries(votes).sort((a, b) => b[1] - a[1])[0]?.[0] || '';
+  const topHome = topPlayer(homeVotes);
+  const topAway = topPlayer(awayVotes);
 
-  const topHome = getTop(homeVotes);
-  const topAway = getTop(awayVotes);
-
-  const justVoted = req.query.voted || null;
-
-  // テンプレートに渡す
-  res.render('results', { homeVotes, awayVotes, match, justVoted, topHome, topAway });
+  res.render('results', { homeVotes, awayVotes, match, topHome, topAway });
 });
 
 
