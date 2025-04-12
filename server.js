@@ -14,7 +14,8 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-const matches = JSON.parse(fs.readFileSync('./data/matches.json'));
+const matches = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'matches.json')));
+
 
 app.get('/', (req, res) => {
   res.render('index', { matches });
