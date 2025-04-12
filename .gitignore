@@ -1,0 +1,34 @@
+# -----------------------------
+# 🌐 Node.js / Express 専用
+# -----------------------------
+
+# ライブラリ関係（絶対に除外すべき）
+node_modules/
+package-lock.json
+
+# 環境変数・秘密情報
+.env
+
+# ログファイル
+*.log
+
+# OSごとのゴミファイル
+.DS_Store
+Thumbs.db
+
+# エディターの設定ファイル（共有不要）
+.vscode/
+.idea/
+
+# デプロイ/ビルドファイル（将来使う場合）
+dist/
+build/
+coverage/
+
+# macOS固有ファイル
+.AppleDouble
+.LSOverride
+
+# 画像生成アプリなどのキャッシュ
+__pycache__/
+.cache/
