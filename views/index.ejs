@@ -3,26 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>⚽ ビスタジア | サポーターが選ぶピカイチ投票！</title>
+  <title>⚽ ビスタジア | サポーターのピカイチ投票サイト</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+JP">
-  <meta name="description" content="ビスタジアはサッカーサポーターが選ぶピカイチ投票サイト。あなたの投票が選手を輝かせる！Jリーグ・WEリーグの全試合対象。">
-  <meta name="keywords" content="ビスタジア,ピカイチ投票,Jリーグ,WEリーグ,サッカー投票サイト">
+  <meta name="description" content="ビスタジアはサッカーサポーターによるピカイチ投票サイト。あなたの一票で選手を応援し、盛り上げよう！J1、J2、J3、WEリーグ全試合対象。">
+  <meta name="keywords" content="ビスタジア,ピカイチ投票,Jリーグ,WEリーグ,サッカー,投票,サポーター,人気投票">
   <style>
     body {
       font-family: 'Noto Sans JP', sans-serif;
-      background: linear-gradient(135deg, #cce4ff, #ffffff);
+      background: linear-gradient(135deg, #a0d8ff, #ffffff);
       margin: 0;
       padding: 0;
       color: #333;
       text-align: center;
     }
     .header {
-      background-color: #007aff;
+      background-color: #004c99;
       color: #fff;
       padding: 1.5rem;
       font-size: 2rem;
       font-weight: bold;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
     }
     .container {
       max-width: 700px;
@@ -30,47 +30,57 @@
       padding: 1rem;
     }
     .league-select button {
-      padding: 0.8rem 1.5rem;
+      padding: 0.8rem 1.4rem;
       margin: 0.5rem;
       font-size: 1rem;
-      border-radius: 10px;
+      border-radius: 8px;
       border: none;
       color: #fff;
-      background-color: #ff5050;
+      background-color: #ff5722;
       box-shadow: 0 3px 8px rgba(0,0,0,0.2);
       cursor: pointer;
-      transition: transform 0.2s;
+      transition: transform 0.3s, box-shadow 0.3s;
     }
     .league-select button:hover {
-      transform: scale(1.1);
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
     }
     .match-card {
-      background-color: #ffffff;
+      background-color: #fff;
       border-radius: 15px;
       padding: 1rem;
       margin-top: 1rem;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: transform 0.3s;
     }
     .match-card:hover {
-      transform: translateY(-6px);
+      transform: translateY(-5px);
       box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     }
-    .match-card a {
+    .vote-button {
+      display: inline-block;
+      margin-top: 0.8rem;
+      padding: 0.6rem 1.2rem;
+      color: #fff;
+      background-color: #e91e63;
+      border-radius: 10px;
       text-decoration: none;
-      color: #ff5050;
       font-weight: bold;
-      font-size: 1.1rem;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+    .vote-button:hover {
+      background-color: #c2185b;
+      transform: translateY(-3px);
     }
     .footer {
       margin-top: 2rem;
       font-size: 0.9rem;
-      color: #666;
+      color: #555;
     }
   </style>
 </head>
 <body>
-  <div class="header">⚽ ビスタジア ⚽<br><small style="font-size:1.1rem;">あなたの投票でピカイチを決めよう！</small></div>
+  <div class="header">⚽ ビスタジア ⚽<br><small style="font-size:1rem;">あなたの一票でサッカーがもっと楽しくなる！</small></div>
 
   <div class="container">
     <div class="league-select">
@@ -84,7 +94,7 @@
   </div>
 
   <div class="footer">
-    📢 投票後は結果をSNSでシェア！あなたがサッカーを盛り上げる！
+    📢 投票結果をSNSでシェア！あなたがサッカーの話題をつくろう！
   </div>
 
   <script>
@@ -96,12 +106,12 @@
 
       if(matchesData[league]) {
         for(const [section, games] of Object.entries(matchesData[league])) {
-          container.innerHTML += `<h3 style="color:#007aff;">${section}</h3>`;
+          container.innerHTML += `<h3 style="color:#004c99; margin-top:1.5rem;">${section}</h3>`;
           games.forEach(game => {
             container.innerHTML += `
               <div class="match-card">
                 <div>🔥 ${game.home} vs ${game.away} 🔥</div>
-                <a href="/match/${game.id}">✨ 本日限定！ピカイチに投票する！✨</a>
+                <a href="/match/${game.id}" class="vote-button">✨ 今すぐ投票する！ ✨</a>
               </div>
             `;
           });
