@@ -22,12 +22,13 @@ app.get('/', (req, res) => {
 });
 
 app.get('/match/:id', (req, res) => {
-  const match = matches.find(m => m.id === req.params.id);
+  const match = Object.values(matches).flatMap(season => Object.values(season).flat())
+                    .find(m => m.id === req.params.id);
   const voted = req.session.voted?.[match.id] || {};
-  const now = Date.now();
-  const expired = match.deadline && now > new Date(match.deadline).getTime();
+  const expired = match.deadline && (Date.now() > new Date(match.deadline).getTime());
   res.render('vote_match', { match, voted, expired });
 });
+
 
 app.post('/vote/:id', (req, res) => {
   const matchId = req.params.id;
