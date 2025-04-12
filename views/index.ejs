@@ -3,104 +3,115 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ビスタジア｜ピカイチ投票でサッカーをもっと熱く！</title>
+  <title>ビスタジア | サッカーサポーターが選ぶピカイチ投票</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+JP">
   <style>
     body {
       font-family: 'Noto Sans JP', sans-serif;
-      background-color: #f0f6fc;
-      color: #333;
+      background-color: #f7fbff;
       margin: 0;
       padding: 0;
+      color: #333;
+      text-align: center;
     }
     .header {
-      background-color: #114488;
-      color: #ffffff;
-      padding: 1rem;
-      text-align: center;
-      font-size: 1.6rem;
+      background-color: #003f87;
+      color: #fff;
+      padding: 1.2rem;
+      font-size: 2rem;
       font-weight: bold;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
     .container {
-      max-width: 600px;
-      margin: 1rem auto;
+      max-width: 650px;
+      margin: auto;
       padding: 1rem;
+    }
+    .league-select button {
+      padding: 0.8rem 1.2rem;
+      margin: 0.4rem;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 12px;
+      border: none;
+      color: #fff;
+      background-color: #0078d4;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .league-select button:hover {
+      background-color: #005fa3;
+      transform: translateY(-2px);
     }
     .match-card {
-      background: #ffffff;
-      margin-bottom: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      background-color: #fff;
+      border-radius: 14px;
       padding: 1rem;
-      transition: 0.3s;
+      margin-top: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
     }
     .match-card:hover {
-      transform: scale(1.02);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.12);
     }
-    .teams {
-      font-size: 1.2rem;
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-    }
-    .vote-button {
-      display: inline-block;
-      background-color: #28a745;
-      color: #ffffff;
-      padding: 0.6rem 1rem;
-      border-radius: 8px;
+    .match-card a {
       text-decoration: none;
+      color: #005bac;
       font-weight: bold;
-      margin-top: 0.5rem;
-      transition: background-color 0.3s;
-    }
-    .vote-button:hover {
-      background-color: #218838;
+      font-size: 1.05rem;
     }
     .footer {
-      text-align: center;
       margin-top: 2rem;
-      color: #555;
+      font-size: 0.9rem;
+      color: #888;
     }
   </style>
 </head>
 <body>
-
-  <div class="header">
-    ⚽ ビスタジア ⚽<br>
-    <span style="font-size:1rem; font-weight:normal;">サポーターの投票で選手を輝かせよう！</span>
-  </div>
+  <div class="header">⚽ ビスタジア ⚽<br><small style="font-size:1rem;">サポーターが選ぶピカイチ投票！</small></div>
 
   <div class="container">
-    <% matches.forEach(match => { %>
-      <div class="match-card">
-        <div class="teams">🔥 <%= match.home %> vs <%= match.away %> 🔥</div>
-        <div><strong>ピカイチ選手を決めるのはあなた！</strong></div>
-        <a href="/match/<%= match.id %>" class="vote-button">📣 投票する！</a>
-      </div>
-    <% }); %>
-  </div>
+    <div class="league-select">
+      <button onclick="showLeague('J1')">J1リーグ</button>
+      <button onclick="showLeague('J2')">J2リーグ</button>
+      <button onclick="showLeague('J3')">J3リーグ</button>
+      <button onclick="showLeague('WE')">WEリーグ</button>
+    </div>
 
-<ul>
-  <li><a href="/match/j1-2025-04-11">J1リーグ　第10節： FC東京vs 柏レイソル</a></li>
-  <li><a href="/match/j1-2025-04-12.1">J1リーグ　第10節： 清水エスパルスvs 川崎フロンターレ</a></li>
-  <li><a href="/match/j1-2025-04-12.2">J1リーグ　第10節： ガンバ大阪vs 名古屋グランパス</a></li>
-  <li><a href="/match/j1-2025-04-12.3">J1リーグ　第10節： サンフレッチェ広島vs ファジアーノ岡山</a></li>
-  <li><a href="/match/j1-2025-04-12.4">J1リーグ　第10節： アビスパ福岡vs 横浜F・マリノス</a></li>
-  <li><a href="/match/j1-2025-04-12.5">J1リーグ　第10節： 東京ヴェルディvs ヴィッセル神戸</a></li>
-  <li><a href="/match/j1-2025-04-12.6">J1リーグ　第10節： セレッソ大阪vs 鹿島アントラーズ</a></li>
-  <li><a href="/match/j1-2025-04-12.7">J1リーグ　第10節： 京都サンガF.C.vs 湘南ベルマーレ</a></li>
-  <li><a href="/match/j2-2025-04-12.1">J2リーグ　第9節： ベガルタ仙台vs FC今治</a></li>
-  <li><a href="/match/j2-2025-04-12.2">J2リーグ　第9節： いわきFCvs モンテディオ山形</a></li>
-  <li><a href="/match/j2-2025-04-12.3">J2リーグ　第9節： 水戸ホーリーホックvs 北海道コンサドーレ札幌</a></li>
-  <li><a href="/match/j3-2025-04-12.1">J3リーグ　第9節： 福島ユナイテッドFCvs ギラヴァンツ北九州</a></li>
-  <li><a href="/match/j3-2025-04-12.2">J3リーグ　第9節： FC大阪vs ヴァンラーレ八戸</a></li>
-  <li><a href="/match/j3-2025-04-12.3">J3リーグ　第9節： テゲバジャーロ宮崎vs ガイナーレ鳥取</a></li>
-</ul>
+    <div id="matches"></div>
+  </div>
 
   <div class="footer">
-    ビスタジアで、試合の感動をもっと深く。
+    📢 ビスタジアで選手を輝かせよう！
   </div>
+
+  <script>
+    const matchesData = <%- JSON.stringify(matches) %>;
+
+    function showLeague(league) {
+      const container = document.getElementById('matches');
+      container.innerHTML = '';
+      if(matchesData[league]) {
+        for(const [section, games] of Object.entries(matchesData[league])) {
+          games.forEach(game => {
+            container.innerHTML += `
+              <div class="match-card">
+                <div><strong>🏟️ ${section}</strong></div>
+                <div>🔥 ${game.home} vs ${game.away} 🔥</div>
+                <a href="/match/${game.id}">👉 ピカイチを投票する</a>
+              </div>
+            `;
+          });
+        }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      showLeague('J1');
+    });
+  </script>
 
 </body>
 </html>
