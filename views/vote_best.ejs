@@ -1,0 +1,10 @@
+<h1><%= league %> 第<%= section %>節 ベストゴール＆アシスト投票</h1>
+<form action="/vote-best/<%= league %>/<%= section %>" method="post">
+  <label>ベストゴール</label>
+  <input name="best_goal" placeholder="選手名または試合名" required>
+
+  <label>ベストアシスト</label>
+  <input name="best_assist" placeholder="選手名または試合名" required>
+
+  <button type="submit">投票する</button>
+</form>
