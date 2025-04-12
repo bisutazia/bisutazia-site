@@ -1,0 +1,38 @@
+<h1><%= match.vote_label %> 投票</h1>
+<p>応援したい選手に1票！あなたの“ピカイチ”を選んでください。</p>
+<% if (expired) { %>
+  <p style="color:red">投票は終了しました。</p>
+<% } else { %>
+  <% if (!voted.home) { %>
+    <form action="/vote/<%= match.id %>" method="post">
+      <input type="hidden" name="team" value="home">
+      <select name="player">
+        <% match.home_players.forEach(p => { %>
+          <option value="<%= p %>"><%= p %></option>
+        <% }) %>
+      </select>
+      <button type="submit">🏠 ホームに投票</button>
+    </form>
+  <% } else { %>
+    <p>🏠 ホーム投票 済み ✅</p>
+  <% } %>
+
+  <% if (!voted.away) { %>
+    <form action="/vote/<%= match.id %>" method="post">
+      <input type="hidden" name="team" value="away">
+      <select name="player">
+        <% match.away_players.forEach(p => { %>
+          <option value="<%= p %>"><%= p %></option>
+        <% }) %>
+      </select>
+      <button type="submit">🚩 アウェイに投票</button>
+    </form>
+  <% } else { %>
+    <p>🚩 アウェイ投票 済み ✅</p>
+  <% } %>
+<% } %>
+
+<% if (match.deadline) { %>
+  <p><strong>投票締切:</strong> <%= new Date(match.deadline).toLocaleString() %></p>
+<% } %>
+<a href="/">🏠 ホームへ戻る</a> | <a href="/history">📝 投票履歴を見る</a>
