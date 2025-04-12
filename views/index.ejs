@@ -3,64 +3,63 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ビスタジア | サッカーサポーターが選ぶピカイチ投票</title>
+  <title>⚽ ビスタジア | ピカイチ投票でサッカーをもっと熱く！</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+JP">
   <style>
     body {
       font-family: 'Noto Sans JP', sans-serif;
-      background-color: #f7fbff;
+      background: linear-gradient(135deg, #e1f1ff, #f9fcff);
       margin: 0;
       padding: 0;
       color: #333;
       text-align: center;
     }
     .header {
-      background-color: #003f87;
-      color: #fff;
-      padding: 1.2rem;
-      font-size: 2rem;
+      background-color: #0055a5;
+      color: #ffffff;
+      padding: 1.5rem;
+      font-size: 2.2rem;
       font-weight: bold;
       box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
     .container {
-      max-width: 650px;
+      max-width: 700px;
       margin: auto;
       padding: 1rem;
     }
     .league-select button {
-      padding: 0.8rem 1.2rem;
+      padding: 0.9rem 1.5rem;
       margin: 0.4rem;
-      font-size: 1rem;
-      font-weight: bold;
+      font-size: 1.05rem;
       border-radius: 12px;
       border: none;
-      color: #fff;
-      background-color: #0078d4;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+      color: #ffffff;
+      background-color: #007aff;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: transform 0.3s, background-color 0.3s;
     }
     .league-select button:hover {
-      background-color: #005fa3;
-      transform: translateY(-2px);
+      background-color: #0064d6;
+      transform: translateY(-3px);
     }
     .match-card {
-      background-color: #fff;
-      border-radius: 14px;
-      padding: 1rem;
+      background-color: #ffffff;
+      border-radius: 16px;
+      padding: 1.2rem;
       margin-top: 1rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-      transition: all 0.3s ease;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
     }
     .match-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
     }
     .match-card a {
       text-decoration: none;
-      color: #005bac;
+      color: #007aff;
       font-weight: bold;
-      font-size: 1.05rem;
+      font-size: 1.1rem;
     }
     .footer {
       margin-top: 2rem;
@@ -70,7 +69,7 @@
   </style>
 </head>
 <body>
-  <div class="header">⚽ ビスタジア ⚽<br><small style="font-size:1rem;">サポーターが選ぶピカイチ投票！</small></div>
+  <div class="header">⚽ ビスタジア ⚽<br><small style="font-size:1.2rem;">ピカイチ投票でサッカーを熱く盛り上げよう！</small></div>
 
   <div class="container">
     <div class="league-select">
@@ -84,11 +83,11 @@
   </div>
 
   <div class="footer">
-    📢 ビスタジアで選手を輝かせよう！
+    🌟 ビスタジアで投票して推し選手を盛り上げよう！
   </div>
 
   <script>
-    const matchesData = <%- JSON.stringify(matches) %>;
+    const matchesData = JSON.parse('<%- JSON.stringify(matches) %>');
 
     function showLeague(league) {
       const container = document.getElementById('matches');
@@ -98,9 +97,9 @@
           games.forEach(game => {
             container.innerHTML += `
               <div class="match-card">
-                <div><strong>🏟️ ${section}</strong></div>
-                <div>🔥 ${game.home} vs ${game.away} 🔥</div>
-                <a href="/match/${game.id}">👉 ピカイチを投票する</a>
+                <div style="font-weight:bold; font-size:1.1rem;">🏟️ ${section}</div>
+                <div style="margin:0.5rem 0;">🔥 ${game.home} vs ${game.away} 🔥</div>
+                <a href="/match/${game.id}">👉 今すぐ投票する！</a>
               </div>
             `;
           });
