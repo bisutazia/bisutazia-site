@@ -1,0 +1,22 @@
+button {
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #1e90ff;
+  color: white;
+  margin: 10px 5px;
+  width: 100%;
+  max-width: 300px;
+}
+
+button:hover {
+  background-color: #006fd6;
+}
+
+@media (max-width: 600px) {
+  button {
+    font-size: 18px;
+    width: 100%;
+  }
+}
