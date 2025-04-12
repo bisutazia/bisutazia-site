@@ -1,0 +1,145 @@
+<h1 class="headline">今節の <%= match.vote_label %></h1>
+<p class="thankyou">あなたの投票ありがとうございました！</p>
+<a href="/" class="home-link">🏠 ホームに戻る</a>
+
+<script id="chartData" type="application/json">
+  {
+    "home": <%- JSON.stringify(homeVotes) %>,
+    "away": <%- JSON.stringify(awayVotes) %>
+  }
+</script>
+<script id="chartMeta" type="application/json">
+  {
+    "homeTeam": "<%= match.home %>",
+    "awayTeam": "<%= match.away %>"
+  }
+</script>
+<canvas id="voteChart"></canvas>
+<script src="/chart.js"></script>
+
+<div class="social-share">
+  <h2 class="share-title">📣 ピカイチを広めよう！</h2>
+
+  <% if (topHome) { %>
+    <div class="share-block">
+      <h4>🏠 <%= match.home %> サポーター向け</h4>
+      <textarea readonly>#<%= match.vote_label %> 投票！<%= match.home %>からは「<%= topHome %>」がピカイチ！⚽ 推し選手に拍手！👇
+https://your-site.com/match/<%= match.id %></textarea>
+    </div>
+  <% } %>
+
+  <% if (topAway) { %>
+    <div class="share-block">
+      <h4>🚩 <%= match.away %> サポーター向け</h4>
+      <textarea readonly>#<%= match.vote_label %> 投票！<%= match.away %>からは「<%= topAway %>」がピカイチ！🔥 あなたの推しは？👇
+https://your-site.com/match/<%= match.id %></textarea>
+    </div>
+  <% } %>
+
+  <a href="https://twitter.com/intent/tweet?text=%23<%= match.vote_label %>%20投票結果👇%20https://your-site.com/match/<%= match.id %>" target="_blank" class="share-button">
+    🐦 Xで投稿する
+  </a>
+
+  <p class="insta-guide">📲 ストーリーにスクショ投稿で #ピカイチ を広めよう！</p>
+</div>
+
+<style>
+body {
+  font-family: 'Helvetica Neue', sans-serif;
+  background-color: #f2f7fa;
+  margin: 0;
+  padding: 0 1em;
+  color: #1a1a1a;
+}
+
+.headline {
+  font-size: 1.8em;
+  text-align: center;
+  margin: 1em 0 0.5em;
+  color: #114488;
+  font-weight: bold;
+}
+
+.thankyou {
+  text-align: center;
+  margin-bottom: 1.2em;
+  font-size: 1em;
+  color: #333;
+}
+
+.home-link {
+  display: block;
+  text-align: center;
+  margin-bottom: 1.5em;
+  text-decoration: none;
+  font-weight: bold;
+  color: #0077cc;
+}
+
+.social-share {
+  background: white;
+  padding: 1.2em;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  margin-top: 2em;
+}
+
+.share-title {
+  font-size: 1.3em;
+  color: #114488;
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.share-block {
+  margin-bottom: 1.5em;
+}
+
+.share-block textarea {
+  width: 100%;
+  background: #eef3f8;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0.8em;
+  font-size: 0.95em;
+  color: #333;
+  line-height: 1.4em;
+}
+
+.share-button {
+  display: block;
+  width: 100%;
+  background-color: #1da1f2;
+  color: white;
+  padding: 12px;
+  font-size: 1em;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+  text-decoration: none;
+  margin-top: 1em;
+}
+
+.insta-guide {
+  font-size: 0.9em;
+  margin-top: 1em;
+  text-align: center;
+  color: #666;
+}
+
+@media (max-width: 600px) {
+  .headline {
+    font-size: 1.4em;
+  }
+  .share-title {
+    font-size: 1.1em;
+  }
+  .share-button {
+    font-size: 0.95em;
+    padding: 10px;
+  }
+  .share-block textarea {
+    font-size: 0.9em;
+  }
+}
+</style>
