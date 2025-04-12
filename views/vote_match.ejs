@@ -1,38 +1,118 @@
-<h1><%= match.vote_label %> 投票</h1>
-<p>応援したい選手に1票！あなたの“ピカイチ”を選んでください。</p>
-<% if (expired) { %>
-  <p style="color:red">投票は終了しました。</p>
-<% } else { %>
-  <% if (!voted.home) { %>
-    <form action="/vote/<%= match.id %>" method="post">
-      <input type="hidden" name="team" value="home">
-      <select name="player">
-        <% match.home_players.forEach(p => { %>
-          <option value="<%= p %>"><%= p %></option>
-        <% }) %>
-      </select>
-      <button type="submit">🏠 ホームに投票</button>
-    </form>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= match.home %> vs <%= match.away %> - ピカイチ投票</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+JP">
+  <style>
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background-color: #f7f9fc;
+      padding: 0;
+      margin: 0;
+      font-size: 16px;
+      color: #333;
+    }
+    .container {
+      padding: 15px;
+      max-width: 500px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 20px;
+      text-align: center;
+      color: #222;
+    }
+    .team-section {
+      background: #fff;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    select {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+    }
+    button {
+      width: 100%;
+      padding: 15px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #fff;
+      background-color: #28a745;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    button:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .footer a {
+      color: #007bff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>🔥 ピカイチ投票 🔥<br><%= match.home %> vs <%= match.away %></h1>
+
+  <% if (!expired) { %>
+
+    <div class="team-section">
+      <form action="/vote/<%= match.id %>" method="post">
+        <input type="hidden" name="team" value="home">
+        <label>⚽️ <strong><%= match.home %></strong>のピカイチは？</label>
+        <select name="player" required>
+          <% match.homePlayers.forEach(player => { %>
+            <option value="<%= player %>"><%= player %></option>
+          <% }); %>
+        </select>
+        <% if (!voted.home) { %>
+          <button type="submit">投票する</button>
+        <% } else { %>
+          <button disabled>✅ 投票済み</button>
+        <% } %>
+      </form>
+    </div>
+
+    <div class="team-section">
+      <form action="/vote/<%= match.id %>" method="post">
+        <input type="hidden" name="team" value="away">
+        <label>⚽️ <strong><%= match.away %></strong>のピカイチは？</label>
+        <select name="player" required>
+          <% match.awayPlayers.forEach(player => { %>
+            <option value="<%= player %>"><%= player %></option>
+          <% }); %>
+        </select>
+        <% if (!voted.away) { %>
+          <button type="submit">投票する</button>
+        <% } else { %>
+          <button disabled>✅ 投票済み</button>
+        <% } %>
+      </form>
+    </div>
+
   <% } else { %>
-    <p>🏠 ホーム投票 済み ✅</p>
+    <p style="text-align:center;color:red;font-weight:bold;">投票受付は終了しました。</p>
   <% } %>
 
-  <% if (!voted.away) { %>
-    <form action="/vote/<%= match.id %>" method="post">
-      <input type="hidden" name="team" value="away">
-      <select name="player">
-        <% match.away_players.forEach(p => { %>
-          <option value="<%= p %>"><%= p %></option>
-        <% }) %>
-      </select>
-      <button type="submit">🚩 アウェイに投票</button>
-    </form>
-  <% } else { %>
-    <p>🚩 アウェイ投票 済み ✅</p>
-  <% } %>
-<% } %>
+  <div class="footer">
+    <a href="/">🏠 トップページに戻る</a>
+  </div>
+</div>
 
-<% if (match.deadline) { %>
-  <p><strong>投票締切:</strong> <%= new Date(match.deadline).toLocaleString() %></p>
-<% } %>
-<a href="/">🏠 ホームへ戻る</a> | <a href="/history">📝 投票履歴を見る</a>
+</body>
+</html>
