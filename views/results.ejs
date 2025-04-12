@@ -1,145 +1,124 @@
-<h1 class="headline">今節の <%= match.vote_label %></h1>
-<p class="thankyou">あなたの投票ありがとうございました！</p>
-<a href="/" class="home-link">🏠 ホームに戻る</a>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ピカイチ投票結果｜<%= match.home %> vs <%= match.away %></title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+JP">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background-color: #f5faff;
+      color: #333;
+      margin: 0;
+      padding: 1rem;
+      text-align: center;
+    }
+    .container {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      padding: 1rem;
+      margin: 1rem auto;
+      max-width: 500px;
+    }
+    h1 {
+      font-size: 1.6rem;
+      color: #222;
+    }
+    .thankyou {
+      color: #4CAF50;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    .social-share textarea {
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 8px;
+      background-color: #eef6ff;
+      border: 1px solid #ccc;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+    .share-button {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.8rem;
+      background-color: #1DA1F2;
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      width: 100%;
+    }
+    .home-link {
+      margin-top: 1rem;
+      display: block;
+      text-decoration: none;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>🏆 今節のピカイチ投票結果 🏆</h1>
+  <p class="thankyou">✨ あなたの投票ありがとうございました！✨</p>
 
-<script id="chartData" type="application/json">
-  {
-    "home": <%- JSON.stringify(homeVotes) %>,
-    "away": <%- JSON.stringify(awayVotes) %>
-  }
-</script>
-<script id="chartMeta" type="application/json">
-  {
-    "homeTeam": "<%= match.home %>",
-    "awayTeam": "<%= match.away %>"
-  }
-</script>
-<canvas id="voteChart"></canvas>
-<script src="/chart.js"></script>
+  <canvas id="voteChart"></canvas>
 
-<div class="social-share">
-  <h2 class="share-title">📣 ピカイチを広めよう！</h2>
+  <div class="social-share">
+    <h2>📣 結果をシェアして仲間と盛り上がろう！</h2>
 
-  <% if (topHome) { %>
-    <div class="share-block">
-      <h4>🏠 <%= match.home %> サポーター向け</h4>
-      <textarea readonly>#<%= match.vote_label %> 投票！<%= match.home %>からは「<%= topHome %>」がピカイチ！⚽ 推し選手に拍手！👇
+    <% if (topHome) { %>
+    <div>
+      <h3>🏠 <%= match.home %>のピカイチ：<%= topHome %></h3>
+      <textarea readonly>#ピカイチ投票 で<%= match.home %>の「<%= topHome %>」を応援！⚽🔥
 https://your-site.com/match/<%= match.id %></textarea>
     </div>
-  <% } %>
+    <% } %>
 
-  <% if (topAway) { %>
-    <div class="share-block">
-      <h4>🚩 <%= match.away %> サポーター向け</h4>
-      <textarea readonly>#<%= match.vote_label %> 投票！<%= match.away %>からは「<%= topAway %>」がピカイチ！🔥 あなたの推しは？👇
+    <% if (topAway) { %>
+    <div>
+      <h3>🚩 <%= match.away %>のピカイチ：<%= topAway %></h3>
+      <textarea readonly>#ピカイチ投票 で<%= match.away %>の「<%= topAway %>」を応援！⚽🔥
 https://your-site.com/match/<%= match.id %></textarea>
     </div>
-  <% } %>
+    <% } %>
 
-  <a href="https://twitter.com/intent/tweet?text=%23<%= match.vote_label %>%20投票結果👇%20https://your-site.com/match/<%= match.id %>" target="_blank" class="share-button">
-    🐦 Xで投稿する
-  </a>
+    <a class="share-button" href="https://twitter.com/intent/tweet?text=%23ピカイチ投票%20<%= match.home %>vs<%= match.away %>%20結果はこちら👇%0Ahttps://your-site.com/match/<%= match.id %>" target="_blank">🐦 Xでシェアする</a>
 
-  <p class="insta-guide">📲 ストーリーにスクショ投稿で #ピカイチ を広めよう！</p>
+    <p style="margin-top: 1rem;">📲 Instagramストーリーでスクショを共有しよう！ #ピカイチ</p>
+  </div>
+
+  <a href="/" class="home-link">🏠 ホームに戻る</a>
 </div>
 
-<style>
-body {
-  font-family: 'Helvetica Neue', sans-serif;
-  background-color: #f2f7fa;
-  margin: 0;
-  padding: 0 1em;
-  color: #1a1a1a;
-}
+<script>
+  const ctx = document.getElementById('voteChart').getContext('2d');
+  const raw = JSON.parse(document.getElementById('chartData').textContent);
 
-.headline {
-  font-size: 1.8em;
-  text-align: center;
-  margin: 1em 0 0.5em;
-  color: #114488;
-  font-weight: bold;
-}
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: Object.keys(raw.home),
+      datasets: [{
+        label: '<%= match.home %>',
+        data: Object.values(raw.home),
+        backgroundColor: '#1E90FF'
+      }, {
+        label: '<%= match.away %>',
+        data: Object.values(raw.away),
+        backgroundColor: '#FF6384'
+      }]
+    },
+    options: { responsive: true }
+  });
+</script>
 
-.thankyou {
-  text-align: center;
-  margin-bottom: 1.2em;
-  font-size: 1em;
-  color: #333;
-}
+<script id="chartData" type="application/json">
+  {"home":<%-JSON.stringify(homeVotes)%>,"away":<%-JSON.stringify(awayVotes)%>}
+</script>
 
-.home-link {
-  display: block;
-  text-align: center;
-  margin-bottom: 1.5em;
-  text-decoration: none;
-  font-weight: bold;
-  color: #0077cc;
-}
-
-.social-share {
-  background: white;
-  padding: 1.2em;
-  border-radius: 16px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-  margin-top: 2em;
-}
-
-.share-title {
-  font-size: 1.3em;
-  color: #114488;
-  text-align: center;
-  margin-bottom: 1em;
-}
-
-.share-block {
-  margin-bottom: 1.5em;
-}
-
-.share-block textarea {
-  width: 100%;
-  background: #eef3f8;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 0.8em;
-  font-size: 0.95em;
-  color: #333;
-  line-height: 1.4em;
-}
-
-.share-button {
-  display: block;
-  width: 100%;
-  background-color: #1da1f2;
-  color: white;
-  padding: 12px;
-  font-size: 1em;
-  border-radius: 10px;
-  text-align: center;
-  font-weight: bold;
-  text-decoration: none;
-  margin-top: 1em;
-}
-
-.insta-guide {
-  font-size: 0.9em;
-  margin-top: 1em;
-  text-align: center;
-  color: #666;
-}
-
-@media (max-width: 600px) {
-  .headline {
-    font-size: 1.4em;
-  }
-  .share-title {
-    font-size: 1.1em;
-  }
-  .share-button {
-    font-size: 0.95em;
-    padding: 10px;
-  }
-  .share-block textarea {
-    font-size: 0.9em;
-  }
-}
-</style>
+</body>
+</html>
