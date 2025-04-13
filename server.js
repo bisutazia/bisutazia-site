@@ -56,7 +56,7 @@ app.post('/vote/:id', (req, res) => {
   fs.writeFileSync(filePath, JSON.stringify(votes, null, 2));
 
   if (!req.session.history) req.session.history = [];
-  req.session.history.push({ player });
+  req.session.history.push({ match: `${match.home} vs ${match.away}`, player });
 
   res.redirect(`/result/${id}?voted=${team}`);
 });
