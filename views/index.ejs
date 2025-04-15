@@ -98,31 +98,26 @@
   </div>
 
   <script>
-    const matchesData = <%- JSON.stringify(matches) %>;
-
-    function showLeague(league) {
-      const container = document.getElementById('matches');
-      container.innerHTML = '';
-
-      if(matchesData[league]) {
-        for(const [section, games] of Object.entries(matchesData[league])) {
-          container.innerHTML += `<h3 style="color:#004c99; margin-top:1.5rem;">${section}</h3>`;
-          games.forEach(game => {
-            container.innerHTML += `
-              <div class="match-card">
-                <div>🔥 ${game.home} vs ${game.away} 🔥</div>
-                <a href="/match/${game.id}" class="vote-button">✨ 今すぐ投票する！ ✨</a>
-              </div>
-            `;
-          });
-        }
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      showLeague('J1');
+    const matchesData = <%- matches %>;
+  
+    const container = document.getElementById("matchList");
+  
+    Object.entries(matchesData).forEach(([league, sections]) => {
+      Object.entries(sections).forEach(([section, data]) => {
+        const sectionTitle = document.createElement("h2");
+        sectionTitle.textContent = `${league} ${section}`;
+        container.appendChild(sectionTitle);
+  
+        (data.matches || []).forEach(match => {
+          const link = document.createElement("a");
+          link.href = `/match/${match.id}`;
+          link.textContent = `${match.home} vs ${match.away}`;
+          container.appendChild(link);
+        });
+      });
     });
   </script>
+  
 
 </body>
 </html>
