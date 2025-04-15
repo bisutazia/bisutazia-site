@@ -91,6 +91,8 @@
     </div>
 
     <div id="matches"></div>
+    <div id="matchList"></div>
+
   </div>
 
   <div class="footer">
@@ -98,25 +100,42 @@
   </div>
 
   <script>
+    // JSONを安全に渡す
     const matchesData = <%- matches %>;
   
     const container = document.getElementById("matchList");
   
-    Object.entries(matchesData).forEach(([league, sections]) => {
+    function showLeague(leagueName) {
+      container.innerHTML = ''; // 初期化
+  
+      const sections = matchesData[leagueName];
+      if (!sections) return;
+  
       Object.entries(sections).forEach(([section, data]) => {
         const sectionTitle = document.createElement("h2");
-        sectionTitle.textContent = `${league} ${section}`;
+        sectionTitle.textContent = `${leagueName} ${section}`;
         container.appendChild(sectionTitle);
   
         (data.matches || []).forEach(match => {
-          const link = document.createElement("a");
-          link.href = `/match/${match.id}`;
-          link.textContent = `${match.home} vs ${match.away}`;
-          container.appendChild(link);
+          const card = document.createElement("div");
+          card.className = "match-card";
+  
+          const title = document.createElement("h3");
+          title.textContent = `${match.home} vs ${match.away}`;
+          card.appendChild(title);
+  
+          const button = document.createElement("a");
+          button.href = `/match/${match.id}`;
+          button.textContent = "本日限定！ピカイチに投票する";
+          button.className = "vote-button";
+          card.appendChild(button);
+  
+          container.appendChild(card);
         });
       });
-    });
+    }
   </script>
+  
   
 
 </body>
