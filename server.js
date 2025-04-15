@@ -46,17 +46,20 @@ app.post('/vote/:id', (req, res) => {
   const { id } = req.params;
   const { team, player } = req.body;
 
-  const match = Object.entries(JSON.parse(matches)).flatMap(([league, sections]) =>
+  const match = Object.entries(matches).flatMap(([league, sections]) =>
     Object.entries(sections).flatMap(([section, data]) =>
       data.matches.map(m => ({ ...m, league, section }))
     )
   ).find(m => m.id === id);
+
+  if (!match) return res.status(404).send("試合が見つかりません");
 
   if (!req.session.voted) req.session.voted = {};
   if (!req.session.voted[id]) req.session.voted[id] = {};
   if (req.session.voted[id][team]) {
     return res.send('すでに投票済みです。');
   }
+
   req.session.voted[id][team] = true;
 
   const filePath = path.join(__dirname, 'data', 'votes', `${id}-${team}.json`);
@@ -69,26 +72,41 @@ app.post('/vote/:id', (req, res) => {
 
   if (!req.session.history) req.session.history = [];
   req.session.history.push({ match: `${match.section} ${match.home} vs ${match.away}`, player });
-  res.redirect(`/result/${id}?voted=${team}`);
+
+  // ✅ 結果ページに遷移
+  res.redirect(`/result/${id}`);
 });
+
 
 app.get('/result/:id', (req, res) => {
   const { id } = req.params;
-  const match = Object.entries(JSON.parse(matches)).flatMap(([league, sections]) =>
+
+  const match = Object.entries(matches).flatMap(([league, sections]) =>
     Object.entries(sections).flatMap(([section, data]) =>
       data.matches.map(m => ({ ...m, league, section }))
     )
   ).find(m => m.id === id);
 
-  const homeVotesPath = path.join(__dirname, 'data', 'votes', `${id}-home.json`);
-  const awayVotesPath = path.join(__dirname, 'data', 'votes', `${id}-away.json`);
-  const homeVotes = fs.existsSync(homeVotesPath) ? JSON.parse(fs.readFileSync(homeVotesPath)) : {};
-  const awayVotes = fs.existsSync(awayVotesPath) ? JSON.parse(fs.readFileSync(awayVotesPath)) : {};
-  const getTopPlayer = votes => Object.entries(votes).sort(([, a], [, b]) => b - a)[0]?.[0] || 'なし';
+  if (!match) return res.status(404).send("試合が見つかりません");
+
+  const homePath = path.join(__dirname, 'data', 'votes', `${id}-home.json`);
+  const awayPath = path.join(__dirname, 'data', 'votes', `${id}-away.json`);
+  const homeVotes = fs.existsSync(homePath) ? JSON.parse(fs.readFileSync(homePath)) : {};
+  const awayVotes = fs.existsSync(awayPath) ? JSON.parse(fs.readFileSync(awayPath)) : {};
+
+  const getTopPlayer = votes => Object.entries(votes).sort((a, b) => b[1] - a[1])[0]?.[0] || null;
   const topHome = getTopPlayer(homeVotes);
   const topAway = getTopPlayer(awayVotes);
-  res.render('results', { homeVotes, awayVotes, match, topHome, topAway });
+
+  res.render('results', {
+    homeVotes,
+    awayVotes,
+    match,
+    topHome,
+    topAway
+  });
 });
+
 
 app.get('/history', (req, res) => {
   const history = req.session.history || [];
