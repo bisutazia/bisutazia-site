@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/match/:id', (req, res) => {
-  const match = Object.values(matches).flatMap(season => Object.values(season).flat())
+  const match = Object.values(matches).flatMap(season => Object.values(season).flatMap(section => section.matches))
     .find(m => m.id === req.params.id);
   const voted = req.session.voted?.[match.id] || {};
   const expired = match.deadline && (Date.now() > new Date(match.deadline).getTime());
@@ -32,7 +32,7 @@ app.post('/vote/:id', (req, res) => {
   const { id } = req.params;
   const { team, player } = req.body;
 
-  const match = Object.values(matches).flatMap(season => Object.values(season).flat())
+  const match = Object.values(matches).flatMap(season => Object.values(season).flatMap(section => section.matches))
     .find(m => m.id === id);
 
   if (!req.session.voted) req.session.voted = {};
@@ -56,14 +56,14 @@ app.post('/vote/:id', (req, res) => {
   fs.writeFileSync(filePath, JSON.stringify(votes, null, 2));
 
   if (!req.session.history) req.session.history = [];
-  req.session.history.push({ match: `${match.home} vs ${match.away}`, player });
+  req.session.history.push({ match: `${match.section}節 ${match.home} vs ${match.away}`, player });
 
   res.redirect(`/result/${id}?voted=${team}`);
 });
 
 app.get('/result/:id', (req, res) => {
   const { id } = req.params;
-  const match = Object.values(matches).flatMap(season => Object.values(season).flat())
+  const match = Object.values(matches).flatMap(season => Object.values(season).flatMap(section => section.matches))
     .find(m => m.id === id);
 
   const homeVotesPath = path.join(__dirname, 'data', 'votes', `${id}-home.json`);
