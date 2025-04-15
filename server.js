@@ -17,11 +17,11 @@ app.set('view engine', 'ejs');
 const matches = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'matches.json')));
 
 app.get('/', (req, res) => {
-  res.render('index', { matches });
+  res.render('index', { matches: JSON.stringify(matches) });
 });
 
 app.get('/match/:id', (req, res) => {
-  const match = Object.entries(matches).flatMap(([league, sections]) =>
+  const match = Object.entries(JSON.parse(matches)).flatMap(([league, sections]) =>
     Object.entries(sections).flatMap(([section, data]) =>
       data.matches.map(m => ({ ...m, league, section }))
     )
@@ -36,7 +36,7 @@ app.post('/vote/:id', (req, res) => {
   const { id } = req.params;
   const { team, player } = req.body;
 
-  const match = Object.entries(matches).flatMap(([league, sections]) =>
+  const match = Object.entries(JSON.parse(matches)).flatMap(([league, sections]) =>
     Object.entries(sections).flatMap(([section, data]) =>
       data.matches.map(m => ({ ...m, league, section }))
     )
@@ -64,7 +64,7 @@ app.post('/vote/:id', (req, res) => {
 
 app.get('/result/:id', (req, res) => {
   const { id } = req.params;
-  const match = Object.entries(matches).flatMap(([league, sections]) =>
+  const match = Object.entries(JSON.parse(matches)).flatMap(([league, sections]) =>
     Object.entries(sections).flatMap(([section, data]) =>
       data.matches.map(m => ({ ...m, league, section }))
     )
