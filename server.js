@@ -21,16 +21,26 @@ app.get('/', (req, res) => {
 });
 
 app.get('/match/:id', (req, res) => {
-  const match = Object.entries(JSON.parse(matches)).flatMap(([league, sections]) =>
+  const matchId = req.params.id;
+
+  // matches はすでにオブジェクトである前提
+  const match = Object.entries(matches).flatMap(([league, sections]) =>
     Object.entries(sections).flatMap(([section, data]) =>
       data.matches.map(m => ({ ...m, league, section }))
     )
-  ).find(m => m.id === req.params.id);
+  ).find(m => m.id === matchId);
+
+  if (!match) {
+    return res.status(404).send("試合が見つかりませんでした");
+  }
 
   const voted = req.session.voted?.[match.id] || {};
-  const expired = match.deadline && (Date.now() > new Date(match.deadline).getTime());
+  const now = Date.now();
+  const expired = match.deadline && now > new Date(match.deadline).getTime();
+
   res.render('vote_match', { match, voted, expired });
 });
+
 
 app.post('/vote/:id', (req, res) => {
   const { id } = req.params;
