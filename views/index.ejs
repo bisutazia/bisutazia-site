@@ -100,9 +100,7 @@
   </div>
 
   <script>
-    // JSONを安全に渡す
     const matchesData = <%- matches %>;
-  
     const container = document.getElementById("matchList");
   
     function showLeague(leagueName) {
@@ -128,13 +126,14 @@
           button.href = `/match/${match.id}`;
           button.textContent = "本日限定！ピカイチに投票する";
           button.className = "vote-button";
-
   
+          card.appendChild(button); // ✅←ここ重要！
           container.appendChild(card);
         });
       });
     }
   </script>
+  
   
   
 
