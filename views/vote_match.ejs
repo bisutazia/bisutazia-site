@@ -73,19 +73,15 @@
 
     <div class="team-section">
       <form action="/vote/<%= match.id %>" method="post">
-        <input type="hidden" name="team" value="home">
-        <label>⚽️ <strong><%= match.home %></strong>のピカイチは？</label>
-        <select name="player" required>
-          <% match.homePlayers.forEach(player => { %>
+        <select name="player">
+          <% (match.homePlayers || []).forEach(player => { %>
             <option value="<%= player %>"><%= player %></option>
-          <% }); %>
+          <% }) %>
         </select>
-        <% if (!voted.home) { %>
-          <button type="submit">投票する</button>
-        <% } else { %>
-          <button disabled>✅ 投票済み</button>
-        <% } %>
+        <input type="hidden" name="team" value="home"> <!-- または away -->
+        <button type="submit">投票する</button>
       </form>
+      
     </div>
 
     <div class="team-section">
