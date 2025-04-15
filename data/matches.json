@@ -1,42 +1,31 @@
 {
   "J1": {
-    "第12節": {
+    "第10節": {
       "matches": [
         {
-          "id": "j1-2025-04-16",
-          "section": "第12節",
+          "id": "j1-2025-04-11",
           "home": "FC東京",
           "away": "柏レイソル",
           "homePlayers": ["選手A", "選手B"],
-          "awayPlayers": ["選手X", "選手Y"],
-          "deadline": "2025-04-15T12:00:00+09:00"
+          "awayPlayers": ["選手C", "選手D"],
+          "deadline": "2025-04-13T12:00:00Z"
         },
         {
-          "id": "j1-2025-04-16-b",
-          "section": "第12節",
+          "id": "j1-2025-04-12",
           "home": "浦和レッズ",
-          "away": "川崎フロンターレ",
-          "homePlayers": ["選手C", "選手D"],
-          "awayPlayers": ["選手Z", "選手Y"],
-          "deadline": "2025-04-16T12:00:00+09:00"
-        }
-      ]
-    },
-    "第20節": {
-      "matches": [
-        {
-          "id": "j1-2025-04-16-c",
-          "section": "第20節",
-          "home": "横浜FM",
-          "away": "川崎F",
-          "homePlayers": [],
-          "awayPlayers": [],
-          "deadline": "2025-04-16T12:00:00+09:00"
+          "away": "鹿島アントラーズ",
+          "homePlayers": ["選手E", "選手F"],
+          "awayPlayers": ["選手G", "選手H"],
+          "deadline": "2025-04-13T12:00:00Z"
         }
       ]
     }
   },
-  "J2": {},
+  "J2": {
+    "第10節": {
+      "matches": []
+    }
+  },
   "J3": {},
   "WE": {}
 }
