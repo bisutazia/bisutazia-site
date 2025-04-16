@@ -17,8 +17,9 @@ app.set('view engine', 'ejs');
 const matches = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'matches.json')));
 
 app.get('/', (req, res) => {
-  res.render('index', { matches: JSON.stringify(matches) });
+  res.render('index', { matches: JSON.stringify(matches) }); // ✅これが必要！
 });
+
 
 app.get('/match/:id', (req, res) => {
   const matchId = req.params.id;
