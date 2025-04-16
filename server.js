@@ -23,42 +23,67 @@ app.get('/', (req, res) => {
 
 app.get('/match/:id', (req, res) => {
   const matchId = req.params.id;
+  const matchesData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'matches.json')));
 
-  // matches はすでにオブジェクトである前提
-  const match = Object.entries(matches).flatMap(([league, sections]) =>
-    Object.entries(sections).flatMap(([section, data]) =>
-      data.matches.map(m => ({ ...m, league, section }))
-    )
-  ).find(m => m.id === matchId);
+  let targetMatch = null;
+  for (const league of Object.values(matchesData)) {
+    for (const section of Object.values(league)) {
+      if (Array.isArray(section.matches)) {
+        const found = section.matches.find(m => m.id === matchId);
+        if (found) {
+          targetMatch = found;
+          break;
+        }
+      }
+    }
+    if (targetMatch) break;
+  }
 
-  if (!match) {
+  if (!targetMatch) {
     return res.status(404).send("試合が見つかりませんでした");
   }
 
-  const voted = req.session.voted?.[match.id] || {};
+  const voted = req.session.voted?.[targetMatch.id] || {};
   const now = Date.now();
-  const expired = match.deadline && now > new Date(match.deadline).getTime();
+  const expired = targetMatch.deadline && now > new Date(targetMatch.deadline).getTime();
 
-  res.render('vote_match', { match, voted, expired });
+  res.render('vote_match', { match: targetMatch, voted, expired });
 });
+
 
 
 app.post('/vote/:id', (req, res) => {
   const { id } = req.params;
   const { team, player } = req.body;
 
-  const match = Object.entries(matches).flatMap(([league, sections]) =>
-    Object.entries(sections).flatMap(([section, data]) =>
-      data.matches.map(m => ({ ...m, league, section }))
-    )
-  ).find(m => m.id === id);
+  const matchesData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'matches.json')));
+  let match = null;
 
-  if (!match) return res.status(404).send("試合が見つかりません");
+  for (const league of Object.values(matchesData)) {
+    for (const section of Object.values(league)) {
+      if (Array.isArray(section.matches)) {
+        const found = section.matches.find(m => m.id === id);
+        if (found) {
+          match = found;
+          break;
+        }
+      }
+    }
+    if (match) break;
+  }
+
+  if (!match) {
+    return res.status(404).send("試合が見つかりません");
+  }
+
+  if (match.deadline && Date.now() > new Date(match.deadline).getTime()) {
+    return res.send("この試合の投票は締め切られました。");
+  }
 
   if (!req.session.voted) req.session.voted = {};
   if (!req.session.voted[id]) req.session.voted[id] = {};
   if (req.session.voted[id][team]) {
-    return res.send('すでに投票済みです。');
+    return res.send(`すでに${team === 'home' ? 'ホーム' : 'アウェイ'}に投票済みです`);
   }
 
   req.session.voted[id][team] = true;
@@ -72,41 +97,50 @@ app.post('/vote/:id', (req, res) => {
   fs.writeFileSync(filePath, JSON.stringify(votes, null, 2));
 
   if (!req.session.history) req.session.history = [];
-  req.session.history.push({ match: `${match.section} ${match.home} vs ${match.away}`, player });
+  req.session.history.push({ match: `${match.home} vs ${match.away}`, player });
 
-  // ✅ 結果ページに遷移
-  res.redirect(`/result/${id}`);
+  res.redirect(`/result/${id}?voted=${team}`);
 });
+
 
 
 app.get('/result/:id', (req, res) => {
   const { id } = req.params;
 
-  const match = Object.entries(matches).flatMap(([league, sections]) =>
-    Object.entries(sections).flatMap(([section, data]) =>
-      data.matches.map(m => ({ ...m, league, section }))
-    )
-  ).find(m => m.id === id);
+  const matchesData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'matches.json')));
+  let match = null;
 
-  if (!match) return res.status(404).send("試合が見つかりません");
+  for (const league of Object.values(matchesData)) {
+    for (const section of Object.values(league)) {
+      if (Array.isArray(section.matches)) {
+        const found = section.matches.find(m => m.id === id);
+        if (found) {
+          match = found;
+          break;
+        }
+      }
+    }
+    if (match) break;
+  }
+
+  if (!match) {
+    return res.status(404).send("試合が見つかりませんでした");
+  }
 
   const homePath = path.join(__dirname, 'data', 'votes', `${id}-home.json`);
   const awayPath = path.join(__dirname, 'data', 'votes', `${id}-away.json`);
+
   const homeVotes = fs.existsSync(homePath) ? JSON.parse(fs.readFileSync(homePath)) : {};
   const awayVotes = fs.existsSync(awayPath) ? JSON.parse(fs.readFileSync(awayPath)) : {};
 
-  const getTopPlayer = votes => Object.entries(votes).sort((a, b) => b[1] - a[1])[0]?.[0] || null;
+  const getTopPlayer = votes => Object.entries(votes).sort(([, a], [, b]) => b - a)[0]?.[0] || '';
+
   const topHome = getTopPlayer(homeVotes);
   const topAway = getTopPlayer(awayVotes);
 
-  res.render('results', {
-    homeVotes,
-    awayVotes,
-    match,
-    topHome,
-    topAway
-  });
+  res.render('results', { homeVotes, awayVotes, match, topHome, topAway });
 });
+
 
 
 app.get('/history', (req, res) => {
