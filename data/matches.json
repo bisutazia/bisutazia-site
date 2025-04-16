@@ -54,6 +54,62 @@
           "homePlayers": ["選手A", "選手B"],
           "awayPlayers": ["選手C", "選手D"],
           "deadline": "2025-04-18T12:00:00+09:00"
+        },
+        {
+          "id": "cup-2025-04-20-b",
+          "home": "水戸ホーリーホック",
+          "away": "ガンバ大阪",
+          "homePlayers": ["選手A", "選手B"],
+          "awayPlayers": ["選手C", "選手D"],
+          "deadline": "2025-04-18T12:00:00+09:00"
+        },
+        {
+          "id": "cup-2025-04-20-c",
+          "home": "福島ユナイテッドFC",
+          "away": "柏レイソル",
+          "homePlayers": ["選手A", "選手B"],
+          "awayPlayers": ["選手C", "選手D"],
+          "deadline": "2025-04-18T12:00:00+09:00"
+        },
+        {
+          "id": "cup-2025-04-20-d",
+          "home": "ブラウブリッツ秋田",
+          "away": "東京ヴェルディ",
+          "homePlayers": ["選手A", "選手B"],
+          "awayPlayers": ["選手C", "選手D"],
+          "deadline": "2025-04-18T12:00:00+09:00"
+        },
+        {
+          "id": "cup-2025-04-20-e",
+          "home": "RB大宮アルディージャ",
+          "away": "FC東京",
+          "homePlayers": ["選手A", "選手B"],
+          "awayPlayers": ["選手C", "選手D"],
+          "deadline": "2025-04-18T12:00:00+09:00"
+        },
+        {
+          "id": "cup-2025-04-20-f",
+          "home": "FC今治",
+          "away": "セレッソ大阪",
+          "homePlayers": ["選手A", "選手B"],
+          "awayPlayers": ["選手C", "選手D"],
+          "deadline": "2025-04-18T12:00:00+09:00"
+        },
+        {
+          "id": "cup-2025-04-20-g",
+          "home": "カターレ富山",
+          "away": "名古屋グランパス",
+          "homePlayers": ["選手A", "選手B"],
+          "awayPlayers": ["選手C", "選手D"],
+          "deadline": "2025-04-18T12:00:00+09:00"
+        },
+        {
+          "id": "cup-2025-04-20-h",
+          "home": "栃木SC",
+          "away": "アビスパ福岡",
+          "homePlayers": ["選手A", "選手B"],
+          "awayPlayers": ["選手C", "選手D"],
+          "deadline": "2025-04-18T12:00:00+09:00"
         }
       ]
     }
