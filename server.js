@@ -14,11 +14,11 @@ app.use(session({
 
 app.set('view engine', 'ejs');
 
-const matches = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'matches.json')));
-
 app.get('/', (req, res) => {
-  res.render('index', { matches: JSON.stringify(matches) }); // ✅これが必要！
+  const matches = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'matches.json')));
+  res.render('index', { matches }); // ←これ重要
 });
+
 
 
 app.get('/match/:id', (req, res) => {
