@@ -110,51 +110,48 @@
 
   <script>
     const matchesData = <%- JSON.stringify(matches) %>;
-
+  
     function showLeague(leagueName) {
       const container = document.getElementById("matchList");
       container.innerHTML = "";
-
+  
       const league = matchesData[leagueName];
-      if (!league || Object.keys(league).length === 0) {
-        container.innerHTML = "<p style='text-align:center;'>現在このリーグの試合情報はありません。</p>";
+      if (!league) {
+        container.innerHTML = "<p>現在このリーグの試合情報はありません。</p>";
         return;
       }
-
+  
       Object.entries(league).forEach(([sectionName, sectionData]) => {
-        const sectionDiv = document.createElement("div");
-        sectionDiv.className = "match-section";
-
         const sectionTitle = document.createElement("h2");
         sectionTitle.textContent = `${leagueName} ${sectionName}`;
-        sectionDiv.appendChild(sectionTitle);
-
-        if (sectionData.matches && sectionData.matches.length > 0) {
-          sectionData.matches.forEach(match => {
+        container.appendChild(sectionTitle);
+  
+        const matches = sectionData.matches;
+        if (matches && matches.length > 0) {
+          matches.forEach(match => {
             const card = document.createElement("div");
             card.className = "match-card";
-
+  
             const title = document.createElement("h3");
             title.textContent = `${match.home} vs ${match.away}`;
             card.appendChild(title);
-
+  
             const button = document.createElement("a");
             button.href = `/match/${match.id}`;
             button.className = "vote-button";
             button.textContent = "ピカイチに投票する";
             card.appendChild(button);
-
-            sectionDiv.appendChild(card);
+  
+            container.appendChild(card);
           });
         } else {
           const noMatch = document.createElement("p");
           noMatch.textContent = "現在この節の試合は登録されていません。";
-          sectionDiv.appendChild(noMatch);
+          container.appendChild(noMatch);
         }
-
-        container.appendChild(sectionDiv);
       });
     }
   </script>
+  
 </body>
 </html>
