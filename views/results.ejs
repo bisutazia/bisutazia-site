@@ -4,174 +4,180 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ピカイチ投票結果｜<%= match.home %> vs <%= match.away %></title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+JP">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
       font-family: 'Noto Sans JP', sans-serif;
-      background: linear-gradient(135deg, #e3f2fd, #ffffff);
-      color: #333;
+      background: linear-gradient(135deg, #f2f7fb, #ffffff);
       margin: 0;
-      padding: 0;
+      padding: 1rem;
+      color: #333;
       text-align: center;
     }
     .container {
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      padding: 2rem 1rem;
-      margin: 2rem auto;
+      background-color: #fff;
       max-width: 600px;
+      margin: auto;
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
     h1 {
-      font-size: 1.8rem;
-      color: #1a237e;
-      margin-bottom: 0.5em;
+      font-size: 1.6rem;
+      color: #0d47a1;
+      margin-bottom: 0.5rem;
     }
     .thankyou {
-      color: #388e3c;
+      color: #4CAF50;
       font-weight: bold;
-      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
     }
     canvas {
-      margin: 2rem auto;
-      max-width: 100%;
+      margin-top: 1rem;
     }
+
     .social-share {
       margin-top: 2rem;
-      background: linear-gradient(135deg, #e3f2fd, #fce4ec);
       padding: 1.5rem;
+      background: #e3f2fd;
       border-radius: 16px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-      animation: fadeIn 0.8s ease;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+      animation: fadeIn 0.6s ease;
     }
     .social-share h2 {
-      font-size: 1.4rem;
-      color: #004d40;
+      font-size: 1.3rem;
+      color: #0d47a1;
+      margin-bottom: 1rem;
     }
     .share-block {
-      margin-top: 1rem;
+      margin-bottom: 1.2rem;
       text-align: left;
+    }
+    .share-block h3 {
+      margin: 0.2rem 0 0.5rem;
     }
     .share-block textarea {
       width: 100%;
-      background: #fafafa;
+      background: #f1f8ff;
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 10px;
       padding: 0.8rem;
       font-size: 0.9rem;
       line-height: 1.5;
       resize: none;
-      margin-top: 0.5rem;
     }
+
     .share-button {
       display: block;
+      width: 100%;
       background-color: #1da1f2;
       color: #fff;
       padding: 1rem;
-      border-radius: 10px;
+      border-radius: 12px;
       font-weight: bold;
-      font-size: 1rem;
       text-decoration: none;
-      margin-top: 1.5rem;
-      transition: background-color 0.3s, transform 0.3s;
+      margin-top: 1rem;
+      transition: background-color 0.3s, transform 0.2s;
     }
     .share-button:hover {
       background-color: #0d8ddb;
       transform: scale(1.03);
     }
-    .insta-note {
-      margin-top: 1rem;
-      font-size: 0.85rem;
-      color: #555;
-    }
+
     .home-link {
       display: block;
       margin-top: 2rem;
-      color: #1976d2;
+      color: #0d47a1;
       text-decoration: none;
       font-weight: bold;
     }
+
+    .insta-note {
+      font-size: 0.85rem;
+      color: #555;
+      margin-top: 0.8rem;
+    }
+
     .highlight {
       color: #d32f2f;
       font-weight: bold;
     }
+
     @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(20px);}
-      to {opacity: 1; transform: translateY(0);}
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-<div class="container">
-  <h1>🏆 今節のピカイチ投票結果 🏆</h1>
-  <p class="thankyou">✨ あなたの投票ありがとうございました！✨</p>
+  <div class="container">
+    <h1>🏆 ピカイチ投票結果</h1>
+    <p class="thankyou">🎉 <%= match.home %> vs <%= match.away %> の結果です！</p>
 
-  <canvas id="voteChart"></canvas>
+    <canvas id="voteChart" height="280"></canvas>
 
-  <div class="social-share">
-    <h2>📣 ピカイチ投票の結果をみんなにシェアしよう！</h2>
+    <div class="social-share">
+      <h2>📣 結果をシェアして仲間と盛り上がろう！</h2>
 
-    <% if (topHome) { %>
-    <div class="share-block">
-      <h3>🏠 <%= match.home %> のピカイチは <span class="highlight"><%= topHome %></span>！</h3>
-      <textarea readonly>#ピカイチ投票 <%= match.home %>のピカイチは「<%= topHome %>」！⚽👏 応援しよう👇
+      <% if (topHome) { %>
+        <div class="share-block">
+          <h3>🏠 <%= match.home %> のピカイチ：<span class="highlight"><%= topHome %></span></h3>
+          <textarea readonly>#ピカイチ投票 <%= match.home %>のヒーローは「<%= topHome %>」！⚽🔥  
 https://bisutazia-site.onrender.com/match/<%= match.id %></textarea>
-    </div>
-    <% } %>
+        </div>
+      <% } %>
 
-    <% if (topAway) { %>
-    <div class="share-block">
-      <h3>🚩 <%= match.away %> のピカイチは <span class="highlight"><%= topAway %></span>！</h3>
-      <textarea readonly>#ピカイチ投票 <%= match.away %>のピカイチは「<%= topAway %>」！🔥 サポーター必見👇
+      <% if (topAway) { %>
+        <div class="share-block">
+          <h3>🚩 <%= match.away %> のピカイチ：<span class="highlight"><%= topAway %></span></h3>
+          <textarea readonly>#ピカイチ投票 <%= match.away %>のヒーローは「<%= topAway %>」！💥💪  
 https://bisutazia-site.onrender.com/match/<%= match.id %></textarea>
+        </div>
+      <% } %>
+
+      <a class="share-button" href="https://twitter.com/intent/tweet?text=%23ピカイチ投票%20<%= match.home %>vs<%= match.away %>%20結果はこちら👇%0Ahttps://bisutazia-site.onrender.com/match/<%= match.id %>" target="_blank">
+        🐦 X（Twitter）でシェアする
+      </a>
+
+      <p class="insta-note">📷 Instagramストーリーでのスクショ投稿も歓迎！ #ピカイチ</p>
     </div>
-    <% } %>
 
-    <a class="share-button" href="https://twitter.com/intent/tweet?text=%23ピカイチ投票%20<%= match.home %>vs<%= match.away %>%20結果はこちら👇%0Ahttps://bisutazia-site.onrender.com/match/<%= match.id %>" target="_blank">
-      🐦 X（Twitter）で共有する
-    </a>
-
-    <p class="insta-note">📷 ストーリーで #ピカイチ をシェアしよう！</p>
+    <a href="/" class="home-link">🏠 ホームに戻る</a>
   </div>
 
-  <a href="/" class="home-link">🏠 ホームに戻る</a>
-</div>
+  <script>
+    const ctx = document.getElementById('voteChart').getContext('2d');
+    const raw = JSON.parse(document.getElementById('chartData').textContent);
 
-<script>
-  const ctx = document.getElementById('voteChart').getContext('2d');
-  const raw = JSON.parse(document.getElementById('chartData').textContent);
-
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: Object.keys(raw.home),
-      datasets: [
-        {
-          label: '<%= match.home %>',
-          data: Object.values(raw.home),
-          backgroundColor: '#42a5f5'
-        },
-        {
-          label: '<%= match.away %>',
-          data: Object.values(raw.away),
-          backgroundColor: '#ef5350'
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: {
-          beginAtZero: true
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: Object.keys(raw.home),
+        datasets: [
+          {
+            label: '<%= match.home %>',
+            data: Object.values(raw.home),
+            backgroundColor: '#1E88E5'
+          },
+          {
+            label: '<%= match.away %>',
+            data: Object.values(raw.away),
+            backgroundColor: '#E53935'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { beginAtZero: true }
         }
       }
-    }
-  });
-</script>
-<script id="chartData" type="application/json">
-  {"home":<%-JSON.stringify(homeVotes)%>,"away":<%-JSON.stringify(awayVotes)%>}
-</script>
+    });
+  </script>
+
+  <script id="chartData" type="application/json">
+    {"home":<%- JSON.stringify(homeVotes) %>, "away":<%- JSON.stringify(awayVotes) %>}
+  </script>
 </body>
 </html>
