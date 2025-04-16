@@ -68,28 +68,98 @@
   <canvas id="voteChart"></canvas>
 
   <div class="social-share">
-    <h2>📣 結果をシェアして仲間と盛り上がろう！</h2>
-
+    <h2>📣 ピカイチ投票の結果をみんなにシェアしよう！</h2>
+  
     <% if (topHome) { %>
-    <div>
-      <h3>🏠 <%= match.home %>のピカイチ：<%= topHome %></h3>
-      <textarea readonly>#ピカイチ投票 で<%= match.home %>の「<%= topHome %>」を応援！⚽🔥
-https://your-site.com/match/<%= match.id %></textarea>
-    </div>
+      <div class="share-block">
+        <h3>🏠 <%= match.home %> のピカイチは <span class="highlight"><%= topHome %></span>！</h3>
+        <textarea readonly>#ピカイチ投票 <%= match.home %>のMIPは「<%= topHome %>」！⚽🔥 応援の気持ちを届けよう👇  
+          https://bisutazia-site.onrender.com/<%= match.id %></textarea>
+      </div>
     <% } %>
-
+  
     <% if (topAway) { %>
-    <div>
-      <h3>🚩 <%= match.away %>のピカイチ：<%= topAway %></h3>
-      <textarea readonly>#ピカイチ投票 で<%= match.away %>の「<%= topAway %>」を応援！⚽🔥
-https://your-site.com/match/<%= match.id %></textarea>
-    </div>
+      <div class="share-block">
+        <h3>🚩 <%= match.away %> のピカイチは <span class="highlight"><%= topAway %></span>！</h3>
+        <textarea readonly>#ピカイチ投票 <%= match.away %>のMIPは「<%= topAway %>」！⚽🔥 今すぐチェック👇  
+  https://your-site.com/match/<%= match.id %></textarea>
+      </div>
     <% } %>
-
-    <a class="share-button" href="https://twitter.com/intent/tweet?text=%23ピカイチ投票%20<%= match.home %>vs<%= match.away %>%20結果はこちら👇%0Ahttps://your-site.com/match/<%= match.id %>" target="_blank">🐦 Xでシェアする</a>
-
-    <p style="margin-top: 1rem;">📲 Instagramストーリーでスクショを共有しよう！ #ピカイチ</p>
+  
+    <a class="share-button" href="https://twitter.com/intent/tweet?text=%23ピカイチ投票%20<%= match.home %>vs<%= match.away %>%20結果はこちら👇%0Ahttps://bisutazia-site.onrender.com/<%= match.id %>" target="_blank">
+      🐦 X（Twitter）で共有する
+    </a>
+  
+    <p class="insta-note">📷 Instagramストーリーでスクショ投稿も歓迎！ #ピカイチ</p>
   </div>
+  <style>
+    .social-share {
+      margin-top: 2em;
+      padding: 1.5em;
+      background: linear-gradient(135deg, #f5f5ff, #e0f7fa);
+      border-radius: 16px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      animation: fadeIn 0.8s ease;
+    }
+    
+    .social-share h2 {
+      font-size: 1.4em;
+      color: #114488;
+      margin-bottom: 1em;
+    }
+    
+    .share-block {
+      margin-bottom: 1em;
+      text-align: left;
+    }
+    
+    .share-block textarea {
+      width: 100%;
+      background: #eef6ff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 0.7em;
+      font-size: 0.9em;
+      line-height: 1.5em;
+      resize: none;
+    }
+    
+    .share-button {
+      display: block;
+      width: 100%;
+      background-color: #1da1f2;
+      color: white;
+      padding: 1em;
+      text-align: center;
+      font-size: 1em;
+      border-radius: 12px;
+      font-weight: bold;
+      text-decoration: none;
+      margin-top: 1em;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+    
+    .share-button:hover {
+      background-color: #0d8ddb;
+      transform: scale(1.03);
+    }
+    
+    .insta-note {
+      font-size: 0.85em;
+      text-align: center;
+      margin-top: 1em;
+      color: #666;
+    }
+    
+    .highlight {
+      color: #d32f2f;
+      font-weight: bold;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    </style>
 
   <a href="/" class="home-link">🏠 ホームに戻る</a>
 </div>
