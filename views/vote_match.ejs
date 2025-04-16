@@ -4,52 +4,62 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= match.home %> vs <%= match.away %> - ピカイチ投票</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+JP">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap">
   <style>
     body {
       font-family: 'Noto Sans JP', sans-serif;
-      background-color: #f7f9fc;
-      padding: 0;
+      background: linear-gradient(135deg, #e3f2fd, #ffffff);
       margin: 0;
-      font-size: 16px;
+      padding: 0;
       color: #333;
     }
     .container {
-      padding: 15px;
-      max-width: 500px;
+      max-width: 600px;
       margin: auto;
+      padding: 1.5rem;
     }
     h1 {
-      font-size: 20px;
       text-align: center;
-      color: #222;
+      font-size: 1.8rem;
+      color: #0d47a1;
+      margin-bottom: 1.2rem;
     }
     .team-section {
       background: #fff;
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 1.2rem;
+      margin-bottom: 2rem;
+      animation: fadeIn 0.5s ease;
+    }
+    .team-section label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
     }
     select {
       width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      border-radius: 8px;
-      margin-top: 10px;
-      margin-bottom: 15px;
+      padding: 1rem;
+      font-size: 1rem;
+      border-radius: 10px;
       border: 1px solid #ccc;
+      margin-bottom: 1rem;
     }
     button {
       width: 100%;
-      padding: 15px;
-      font-size: 16px;
-      font-weight: bold;
+      padding: 1rem;
+      background-color: #43a047;
       color: #fff;
-      background-color: #28a745;
       border: none;
       border-radius: 10px;
+      font-size: 1rem;
+      font-weight: bold;
       cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #2e7d32;
     }
     button:disabled {
       background-color: #aaa;
@@ -57,11 +67,17 @@
     }
     .footer {
       text-align: center;
-      margin-top: 20px;
+      margin-top: 2rem;
+      font-size: 0.9rem;
     }
     .footer a {
-      color: #007bff;
+      color: #1e88e5;
       text-decoration: none;
+      font-weight: bold;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -70,30 +86,16 @@
   <h1>🔥 ピカイチ投票 🔥<br><%= match.home %> vs <%= match.away %></h1>
 
   <% if (!expired) { %>
-
     <div class="team-section">
       <form action="/vote/<%= match.id %>" method="post">
-        <select name="player">
-          <% (match.homePlayers || []).forEach(player => { %>
+        <label>🏠 <strong><%= match.home %></strong> のピカイチは？</label>
+        <select name="player" required>
+          <% match.homePlayers.forEach(player => { %>
             <option value="<%= player %>"><%= player %></option>
           <% }) %>
         </select>
-        <input type="hidden" name="team" value="home"> <!-- または away -->
-        <button type="submit">投票する</button>
-      </form>
-      
-    </div>
-
-    <div class="team-section">
-      <form action="/vote/<%= match.id %>" method="post">
-        <input type="hidden" name="team" value="away">
-        <label>⚽️ <strong><%= match.away %></strong>のピカイチは？</label>
-        <select name="player" required>
-          <% match.awayPlayers.forEach(player => { %>
-            <option value="<%= player %>"><%= player %></option>
-          <% }); %>
-        </select>
-        <% if (!voted.away) { %>
+        <input type="hidden" name="team" value="home">
+        <% if (!voted.home) { %>
           <button type="submit">投票する</button>
         <% } else { %>
           <button disabled>✅ 投票済み</button>
@@ -101,14 +103,29 @@
       </form>
     </div>
 
+    <div class="team-section">
+      <form action="/vote/<%= match.id %>" method="post">
+        <label>🚩 <strong><%= match.away %></strong> のピカイチは？</label>
+        <select name="player" required>
+          <% match.awayPlayers.forEach(player => { %>
+            <option value="<%= player %>"><%= player %></option>
+          <% }); %>
+        </select>
+        <input type="hidden" name="team" value="away">
+        <% if (!voted.away) { %>
+          <button type="submit">投票する</button>
+        <% } else { %>
+          <button disabled>✅ 投票済み</button>
+        <% } %>
+      </form>
+    </div>
   <% } else { %>
     <p style="text-align:center;color:red;font-weight:bold;">投票受付は終了しました。</p>
   <% } %>
 
   <div class="footer">
-    <a href="/">🏠 トップページに戻る</a>
+    <a href="/">🏠 ホームに戻る</a>
   </div>
 </div>
-
 </body>
 </html>
