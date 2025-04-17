@@ -32,3 +32,6 @@ coverage/
 # 画像生成アプリなどのキャッシュ
 __pycache__/
 .cache/
+
+# Firebase の秘密鍵を Git 管理外にする
+firebase-service-account.json
