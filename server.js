@@ -5,8 +5,8 @@ const path = require('path');
 const admin = require('firebase-admin');
 const FirebaseStore = require('connect-session-firebase')(session);
 
-// Firebase 初期化
-const serviceAccount = require('./firebase-service-account.json');
+// Renderなどの環境では環境変数から読み込む（JSON文字列）
+const serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
