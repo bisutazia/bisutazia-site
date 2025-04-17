@@ -8,6 +8,7 @@ const FirebaseStore = require('connect-session-firebase')(session);
 // Renderなどの環境では環境変数から読み込む（JSON文字列）
 const serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
 
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://pikaiti-vote-project-default-rtdb.asia-southeast1.firebasedatabase.app"  // 🔁 ←自分のURLに差し替え
