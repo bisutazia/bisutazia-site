@@ -188,7 +188,7 @@ app.get('/history', (req, res) => {
   res.render('history', { history });
 });
 
-const admin = require('firebase-admin');
+
 const serviceAccount = require('./firebase-service-account.json');
 
 admin.initializeApp({
