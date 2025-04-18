@@ -2,13 +2,16 @@ const express = require('express');
 const session = require('express-session');
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config(); // ← .env を読み込むために必須
+
 const admin = require('firebase-admin');
 
+// ✅ .env の内容を変数にマッピング
 const serviceAccount = {
   type: process.env.FIREBASE_TYPE,
   project_id: process.env.FIREBASE_PROJECT_ID,
   private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID,
-  private_key: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'), // 🔥 ここが最重要ポイント
+  private_key: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
   client_email: process.env.FIREBASE_CLIENT_EMAIL,
   client_id: process.env.FIREBASE_CLIENT_ID,
   auth_uri: process.env.FIREBASE_AUTH_URI,
@@ -19,8 +22,31 @@ const serviceAccount = {
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://pikaiti-vote-project-default-rtdb.asia-southeast1.firebasedatabase.app"  // 🔁 ←自分のURLに差し替え
+  databaseURL: process.env.FIREBASE_DATABASE_URL
 });
+require('dotenv').config(); // ← .env を読み込むために必須
+
+const admin = require('firebase-admin');
+
+// ✅ .env の内容を変数にマッピング
+const serviceAccount = {
+  type: process.env.FIREBASE_TYPE,
+  project_id: process.env.FIREBASE_PROJECT_ID,
+  private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID,
+  private_key: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+  client_email: process.env.FIREBASE_CLIENT_EMAIL,
+  client_id: process.env.FIREBASE_CLIENT_ID,
+  auth_uri: process.env.FIREBASE_AUTH_URI,
+  token_uri: process.env.FIREBASE_TOKEN_URI,
+  auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_PROVIDER_CERT_URL,
+  client_x509_cert_url: process.env.FIREBASE_CLIENT_CERT_URL
+};
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: process.env.FIREBASE_DATABASE_URL
+});
+
 
 const app = express();
 
