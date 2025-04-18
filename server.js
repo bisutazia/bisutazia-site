@@ -26,7 +26,7 @@ admin.initializeApp({
 });
 require('dotenv').config(); // ← .env を読み込むために必須
 
-const admin = require('firebase-admin');
+
 
 // ✅ .env の内容を変数にマッピング
 const serviceAccount = {
