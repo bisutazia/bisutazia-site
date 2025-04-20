@@ -37,15 +37,14 @@ app.use(express.static('public'));
 
 app.use(session({
   store: new FirebaseStore({
-    database: admin.firestore()
+    database: admin.database(),
   }),
-  secret: 'your_secret_key',  // ⚠️ 長くてランダムな文字列を推奨
+  secret: process.env.SESSION_SECRET,  // 環境変数化しておくと安全
   resave: false,
   saveUninitialized: false,
-  cookie: {
-    maxAge: 1000 * 60 * 60 * 24  // 1日有効
+  cookie: { maxAge: 1000 * 60 * 60 * 24 }
   }
-}));
+));
 
 app.set('view engine', 'ejs');
 
