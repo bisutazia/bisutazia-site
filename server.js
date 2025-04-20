@@ -5,6 +5,7 @@ const path = require('path');
 require('dotenv').config(); // ← .env を読み込むために必須
 
 const admin = require('firebase-admin');
+const FirebaseStore = require('connect-session-firebase')(session);
 
 // ✅ .env の内容を変数にマッピング
 const serviceAccount = {
@@ -25,6 +26,8 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: process.env.FIREBASE_DATABASE_URL
 });
+
+const db = admin.firestore();
 
 
 const app = express();
@@ -205,11 +208,14 @@ app.get('/history', (req, res) => {
 
 
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
 
-const db = admin.firestore();
 
-const port = process.env.PORT || 3000;
+
+
+// Render では必ず環境変数 PORT が渡される想定なので、ここは必須に
+const port = process.env.PORT;
+if (!port) {
+  throw new Error('❌ PORT が定義されていません');
+}
 app.listen(port, () => console.log(`Server running on port ${port}`));
+
