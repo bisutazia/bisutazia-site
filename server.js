@@ -35,16 +35,20 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
+// 先頭で .env からロード済み
+const sessionSecret = process.env.SESSION_SECRET;
+if (!sessionSecret) {
+  throw new Error('❌ SESSION_SECRET が定義されていません');
+}
+
 app.use(session({
-  store: new FirebaseStore({
-    database: admin.database(),
-  }),
-  secret: process.env.SESSION_SECRET,  // 環境変数化しておくと安全
+  store: new FirebaseStore({ database: admin.database() }),
+  secret: sessionSecret,      // ←ここで env から安全に取得
   resave: false,
   saveUninitialized: false,
   cookie: { maxAge: 1000 * 60 * 60 * 24 }
-  }
-));
+}));
+
 
 app.set('view engine', 'ejs');
 
