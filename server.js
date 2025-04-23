@@ -162,7 +162,11 @@ app.post('/vote/:id', async (req, res) => {
 
 
   if (!req.session.history) req.session.history = [];
-  req.session.history.push({ match: `${match.home} vs ${match.away}`, player });
+  req.session.history.push({
+       matchId: id,
+       team: team,
+       player: player
+     });
 
   // …投票成功後…
 const redirectUrl = `/result/${id}?team=${team}&player=${encodeURIComponent(player)}`;
@@ -177,9 +181,18 @@ return res.redirect(redirectUrl);
 
 app.get('/result/:id', (req, res) => {
   const { id } = req.params;
-  // クエリから投票情報を受け取る
-  const votedTeam   = req.query.team;    // 'home' or 'away'
-  const votedPlayer = req.query.player;  // 例: '山田太郎'
+    // クエリがなければセッション履歴から最後の投票を拾う
+  let votedTeam   = req.query.team;
+  let votedPlayer = req.query.player;
+  if (!votedTeam || !votedPlayer) {
+    const hist = req.session.history || [];
+    const last = hist[hist.length - 1];
+    if (last) {
+      votedTeam   = last.team;
+      votedPlayer = last.player;
+    }
+  }
+  
 
   const matchesData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'matches.json')));
   let match = null;
@@ -217,7 +230,7 @@ app.get('/result/:id', (req, res) => {
   res.render('results', {
     homeVotes, awayVotes, match,
     topHome, topAway,
-    votedTeam, votedPlayer,votedTeam,votedPlayer
+    votedTeam, votedPlayer
   });
 });
 
