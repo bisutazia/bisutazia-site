@@ -27,7 +27,9 @@ admin.initializeApp({
   databaseURL: process.env.FIREBASE_DATABASE_URL
 });
 
-const db = admin.firestore();
+// Firestore と Realtime DB をそれぞれ別で定義
+const firestore = admin.firestore();
+const rtdb      = admin.database();
 
 
 const app = express();
@@ -42,7 +44,7 @@ if (!sessionSecret) {
 }
 
 app.use(session({
-  store: new FirebaseStore({ database: admin.database() }),
+  store: new FirebaseStore({ database: rtdb }),
   secret: sessionSecret,      // ←ここで env から安全に取得
   resave: false,
   saveUninitialized: false,
@@ -93,9 +95,9 @@ app.get('/match/:id', (req, res) => {
 
 
 
-app.post('/vote/:id', (req, res) => {
-  const { id } = req.params;
-  const { team, player } = req.body;
+app.post('/vote/:id', async (req, res) => {
+  try {
+    const { id, team, player } = req.params;
 
   const matchesData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'matches.json')));
   let match = null;
@@ -129,16 +131,12 @@ app.post('/vote/:id', (req, res) => {
 
   req.session.voted[id][team] = true;
   // Firestore に保存する
-db.collection('votes').add({
-  matchId: id,
-  team: team,
-  player: player,
-  timestamp: admin.firestore.FieldValue.serverTimestamp()
-}).then(() => {
-  console.log('✅ Firestore に保存完了');
-}).catch(err => {
-  console.error('❌ Firestore 保存エラー:', err);
-});
+  await firestore.collection('votes').add({
+    matchId: id,
+    team,
+    player,
+    timestamp: admin.firestore.FieldValue.serverTimestamp()
+  });
 
 
 
@@ -152,14 +150,21 @@ db.collection('votes').add({
 
   // ファイル保存後などの処理の後に追記
 
-  const firebaseRef = db.ref(`votes/${id}/${team}/${player}`);
-  firebaseRef.transaction(current => (current || 0) + 1);
+  const voteRef = rtdb.ref(`votes/${id}/${team}/${player}`);
+    await voteRef.transaction(current => (current || 0) + 1);
 
 
   if (!req.session.history) req.session.history = [];
   req.session.history.push({ match: `${match.home} vs ${match.away}`, player });
 
-  res.redirect(`/result/${id}?voted=${team}`);
+  return res.redirect(`/result/${id}?voted=${team}`);
+
+} catch (err) {
+  // 例外発生時はこちらに飛んでくる
+  console.error('❌ POST /vote エラー:', err);
+  // クライアントにエラースタックやメッセージを返す
+  return res.status(500).send(`<h1>Internal Server Error</h1><pre>${err.stack}</pre>`);
+}
 });
 
 
