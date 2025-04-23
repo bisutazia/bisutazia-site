@@ -46,5 +46,13 @@ select {
     font-size: 18px; /* スマホ画面では基本18pxに拡大 */
   }
 }
+/* results.ejs の .thankyou と .social-share の間を詰める */
+.thankyou {
+  margin-bottom: 0.5rem; /* ←もともと 1.5rem なので半分に */
+}
+
+.social-share {
+  margin-top: 0.5rem; /* ←もともと 2rem なので小さく */
+}
 
 
