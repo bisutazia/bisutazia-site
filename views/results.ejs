@@ -119,30 +119,38 @@
 
     <div class="social-share">
       <h2>📣 あなたの投票結果をシェアしよう！</h2>
+    
       <% 
-  // 投票チーム名
-  const teamName = votedTeam === 'home' ? match.home : match.away;
-  // 完全なメッセージを「+」で連結
-  const shareTextRaw =
-    `#ピカイチ投票 ${teamName}のヒーローに「${votedPlayer}」を選びました！\n` +
-    `https://bisutazia-site.onrender.com`;
-  const text = encodeURIComponent(shareTextRaw);
-%>
-<div class="share-block">
-  <h3>
-    <%= votedTeam === 'home' ? '🏠 ' : '🚩 ' %>
-    <%= teamName %> に投票した選手：<span class="highlight"><%= votedPlayer %></span>
-  </h3>
-  <textarea readonly style="white-space: pre-wrap;"><%= shareTextRaw %></textarea>
-  <a 
-    class="share-button" 
-    href="https://twitter.com/intent/tweet?text=<%= text %>" 
-    target="_blank"
-  >
-    🐦 X（Twitter）でシェアする
-  </a>
-</div>
-</div>
+        // 必ず値が入る前提で定義
+        const teamName = votedTeam === 'home' ? match.home : match.away;
+        const hero     = votedPlayer             || '(投票選手なし)';
+        const shareTextRaw =
+          `#ピカイチ投票 ${teamName}のヒーローに「${hero}」を選びました！\n` +
+          `https://bisutazia-site.onrender.com`;
+        const text = encodeURIComponent(shareTextRaw);
+      %>
+    
+      <!-- ここからは条件なしで必ず出力 -->
+      <div class="share-block" style="outline:2px solid red;">
+        <h3>
+          <%= votedTeam === 'home' ? '🏠 ' : '🚩 ' %>
+          <%= teamName %> に投票した選手：<span class="highlight"><%= hero %></span>
+        </h3>
+    
+        <!-- text-area の枠を見るために outline を一時的に入れています -->
+        <textarea readonly style="white-space:pre-wrap; outline:1px solid green;">
+    <%= shareTextRaw %>
+        </textarea>
+    
+        <a
+          class="share-button"
+          style="outline:1px solid blue;"
+          href="https://twitter.com/intent/tweet?text=<%= text %>"
+          target="_blank"
+        >🐦 X（Twitter）でシェアする</a>
+      </div>
+    </div>
+    
     
     
     
