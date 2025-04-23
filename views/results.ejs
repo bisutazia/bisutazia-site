@@ -118,27 +118,40 @@
     <canvas id="voteChart" height="280"></canvas>
 
     <div class="social-share">
-      <h2>📣 結果をシェアして仲間と盛り上がろう！</h2>
-
-      <% if (topHome) { %>
+      <h2>📣 あなたの投票結果をシェアしよう！</h2>
+    
+      <% if (votedTeam && votedPlayer) { %>
         <div class="share-block">
-          <h3>🏠 <%= match.home %> のピカイチ：<span class="highlight"><%= topHome %></span></h3>
-          <textarea readonly>#ピカイチ投票 <%= match.home %>のヒーローは「<%= topHome %>」！⚽🔥  
-https://bisutazia-site.onrender.com/match/<%= match.id %></textarea>
+          <% const teamName = votedTeam==='home' ? match.home : match.away; %>
+          <h3>
+            <%= votedTeam==='home' ? '🏠 ' : '🚩 ' %>
+            <%= teamName %> に投票した選手： 
+            <span class="highlight"><%= votedPlayer %></span>
+          </h3>
+          <% 
+            // シェア用テキストをエンコード
+            const text = encodeURIComponent(
+              `#ピカイチ投票 ${teamName}のヒーローに「${votedPlayer}」を選びました！\n` +
+              `https://bisutazia-site.onrender.com/match/${match.id}`
+            );
+          %>
+          <textarea readonly>
+    #ピカイチ投票 ${teamName}のヒーローに「${votedPlayer}」を選びました！
+    https://bisutazia-site.onrender.com/match/<%= match.id %>
+          </textarea>
+          <a 
+            class="share-button" 
+            href="https://twitter.com/intent/tweet?text=<%= text %>" 
+            target="_blank"
+          >
+            🐦 X（Twitter）でシェアする
+          </a>
         </div>
+      <% } else { %>
+        <p>シェア情報が見つかりませんでした。</p>
       <% } %>
-
-      <% if (topAway) { %>
-        <div class="share-block">
-          <h3>🚩 <%= match.away %> のピカイチ：<span class="highlight"><%= topAway %></span></h3>
-          <textarea readonly>#ピカイチ投票 <%= match.away %>のヒーローは「<%= topAway %>」！💥💪  
-https://bisutazia-site.onrender.com/match/<%= match.id %></textarea>
-        </div>
-      <% } %>
-
-      <a class="share-button" href="https://twitter.com/intent/tweet?text=%23ピカイチ投票%20<%= match.home %>vs<%= match.away %>%20結果はこちら👇%0Ahttps://bisutazia-site.onrender.com/match/<%= match.id %>" target="_blank">
-        🐦 X（Twitter）でシェアする
-      </a>
+    </div>
+    
 
       <p class="insta-note">📷 Instagramストーリーでのスクショ投稿も歓迎！ #ピカイチ</p>
     </div>
