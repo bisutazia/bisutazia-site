@@ -122,57 +122,40 @@
     <canvas id="voteChart" height="280"></canvas>
 
     <div class="social-share">
-      <h2>📣 あなたの投票結果をシェアしよう！</h2>
-        <!-- DEBUG: share-block 前 -->
-  <p style="background:#ff0;color:#000;text-align:center; padding:0.3rem;">
-    DEBUG: share-block がここから始まります
-  </p>
+      <div class="social-share">
+        <h2>📣 あなたの投票結果をシェアしよう！</h2>
     
-      <% 
-        const teamName = votedTeam==='home' ? match.home : match.away;
-        const hero     = votedPlayer || '(投票選手なし)';
-        const shareTextRaw =
-          `#ピカイチ投票 ${teamName}のヒーローに「${hero}」を選びました！\n` +
-          `https://bisutazia-site.onrender.com`;
-        const text = encodeURIComponent(shareTextRaw);
-      %>
+        <% 
+          const teamName    = votedTeam==='home' ? match.home : match.away;
+          const hero        = votedPlayer || '(投票選手なし)';
+          const shareTextRaw =
+            `#ピカイチ投票 ${teamName}のヒーローに「${hero}」を選びました！\n` +
+            `https://bisutazia-site.onrender.com`;
+          const text        = encodeURIComponent(shareTextRaw);
+        %>
     
-      <!-- ここで必ず wrap する -->
-      <div class="share-block">
-        <h3>
-          <%= votedTeam==='home' ? '🏠 ' : '🚩 ' %>
-          <%= teamName %> に投票した選手：<span class="highlight"><%= hero %></span>
-        </h3>
-        <textarea readonly style="white-space:pre-wrap;"><%= shareTextRaw %></textarea>
-        <a
-          class="share-button"
-          href="https://twitter.com/intent/tweet?text=<%= text %>"
-          target="_blank"
-        >🐦 X（Twitter）でシェアする</a>
-      </div>
-        <!-- DEBUG: share-block 後 -->
-  <p style="background:#ff0;color:#000;text-align:center; padding:0.3rem;">
-    DEBUG: share-block はここで終わります
-  </p>
+        <!-- ① share-block を必ず開く -->
+        <div class="share-block">
+          <h3>
+            <%= votedTeam==='home' ? '🏠 ' : '🚩 ' %>
+            <%= teamName %> に投票した選手：<span class="highlight"><%= hero %></span>
+          </h3>
+          <textarea readonly style="white-space:pre-wrap;"><%= shareTextRaw %></textarea>
+          <a
+            class="share-button"
+            href="https://twitter.com/intent/tweet?text=<%= text %>"
+            target="_blank"
+          >🐦 X（Twitter）でシェアする</a>
+        </div> <!-- ① を閉じる -->
     
-      <!-- Instagram の注釈も social-share の中で閉じる -->
-      <p class="insta-note">📷 Instagramストーリーでのスクショ投稿も歓迎！ #ピカイチ</p>
+        <!-- ② insta-note は social-share の内部に１回だけ -->
+        <p class="insta-note">📷 Instagramストーリーでのスクショ投稿も歓迎！ #ピカイチ</p>
     
-    </div> <!-- ← ここで social-share を閉じるだけ -->
+      </div> <!-- social-share を閉じ -->
     
+      <!-- ③ home-link は container の内部、social-share の外側 -->
+      <a href="/" class="home-link">🏠 ホームに戻る</a>
     
-    
-    
-    
-    
-    
-
-      <p class="insta-note">📷 Instagramストーリーでのスクショ投稿も歓迎！ #ピカイチ</p>
-    </div>
-
-    <a href="/" class="home-link">🏠 ホームに戻る</a>
-  </div>
-
   <script>
     const ctx = document.getElementById('voteChart').getContext('2d');
     const raw = JSON.parse(document.getElementById('chartData').textContent);
