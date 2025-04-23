@@ -181,18 +181,20 @@ return res.redirect(redirectUrl);
 
 app.get('/result/:id', (req, res) => {
   const { id } = req.params;
-    // クエリがなければセッション履歴から最後の投票を拾う（空配列ガード）
+   // ① クエリから最初に受け取る
+ let votedTeam   = req.query.team;    
+ let votedPlayer = req.query.player;
   if (!votedTeam || !votedPlayer) {
-    const hist = Array.isArray(req.session.history) ? req.session.history : [];
-    if (hist.length > 0) {
-      const last = hist[hist.length - 1];
-      // last がオブジェクトなら上書き
-      if (last && last.team && last.player) {
-        votedTeam   = last.team;
-        votedPlayer = last.player;
-      }
-    }
-  }  
+     const hist = Array.isArray(req.session.history) ? req.session.history : [];
+     if (hist.length > 0) {
+       const last = hist[hist.length - 1];
+       if (last && last.team && last.player) {
+         votedTeam   = last.team;
+         votedPlayer = last.player;
+       }
+     }
+   }
+    
   
 
   const matchesData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'matches.json')));
@@ -229,9 +231,13 @@ app.get('/result/:id', (req, res) => {
 
   // テンプレートに渡すプロパティを追加
   res.render('results', {
-    homeVotes, awayVotes, match,
-    topHome, topAway,
-    votedTeam, votedPlayer
+    homeVotes,
+    awayVotes,
+    match,
+    topHome,
+    topAway,
+    votedTeam,
+    votedPlayer
   });
 });
 
