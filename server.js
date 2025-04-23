@@ -164,7 +164,9 @@ app.post('/vote/:id', async (req, res) => {
   if (!req.session.history) req.session.history = [];
   req.session.history.push({ match: `${match.home} vs ${match.away}`, player });
 
-  return res.redirect(`/result/${id}?voted=${team}`);
+  // …投票成功後…
+const redirectUrl = `/result/${id}?team=${team}&player=${encodeURIComponent(player)}`;
+return res.redirect(redirectUrl);
   } catch (err) {
     console.error('❌ POST /vote エラー:', err);
     return res.status(500).send(`<h1>Internal Server Error</h1><pre>${err.stack}</pre>`);
@@ -175,6 +177,9 @@ app.post('/vote/:id', async (req, res) => {
 
 app.get('/result/:id', (req, res) => {
   const { id } = req.params;
+  // クエリから投票情報を受け取る
+  const votedTeam   = req.query.team;    // 'home' or 'away'
+  const votedPlayer = req.query.player;  // 例: '山田太郎'
 
   const matchesData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'matches.json')));
   let match = null;
@@ -204,10 +209,16 @@ app.get('/result/:id', (req, res) => {
 
   const getTopPlayer = votes => Object.entries(votes).sort(([, a], [, b]) => b - a)[0]?.[0] || '';
 
+  // …votes ファイル読み込み・集計…
   const topHome = getTopPlayer(homeVotes);
   const topAway = getTopPlayer(awayVotes);
 
-  res.render('results', { homeVotes, awayVotes, match, topHome, topAway });
+  // テンプレートに渡すプロパティを追加
+  res.render('results', {
+    homeVotes, awayVotes, match,
+    topHome, topAway,
+    votedTeam, votedPlayer
+  });
 });
 
 
