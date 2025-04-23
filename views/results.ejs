@@ -123,6 +123,10 @@
 
     <div class="social-share">
       <h2>📣 あなたの投票結果をシェアしよう！</h2>
+        <!-- DEBUG: share-block 前 -->
+  <p style="background:#ff0;color:#000;text-align:center; padding:0.3rem;">
+    DEBUG: share-block がここから始まります
+  </p>
     
       <% 
         const teamName = votedTeam==='home' ? match.home : match.away;
@@ -146,6 +150,10 @@
           target="_blank"
         >🐦 X（Twitter）でシェアする</a>
       </div>
+        <!-- DEBUG: share-block 後 -->
+  <p style="background:#ff0;color:#000;text-align:center; padding:0.3rem;">
+    DEBUG: share-block はここで終わります
+  </p>
     
       <!-- Instagram の注釈も social-share の中で閉じる -->
       <p class="insta-note">📷 Instagramストーリーでのスクショ投稿も歓迎！ #ピカイチ</p>
