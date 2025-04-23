@@ -215,10 +215,10 @@ app.get('/history', (req, res) => {
 
 
 
-// Render では必ず環境変数 PORT が渡される想定なので、ここは必須に
-const port = process.env.PORT;
-if (!port) {
-  throw new Error('❌ PORT が定義されていません');
-}
-app.listen(port, () => console.log(`Server running on port ${port}`));
+// ↓ 最後に静的ファイルを配信
+app.use(express.static('public'));
 
+// ポート設定・起動
+const port = process.env.PORT;
+if (!port) throw new Error('❌ PORT が定義されていません');
+app.listen(port, () => console.log(`Server running on port ${port}`));
