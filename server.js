@@ -147,13 +147,7 @@ app.post('/vote/:id', async (req, res) => {
 
 
 
-  const filePath = path.join(__dirname, 'data', 'votes', `${id}-${team}.json`);
-  let votes = {};
-  if (fs.existsSync(filePath)) {
-    votes = JSON.parse(fs.readFileSync(filePath));
-  }
-  votes[player] = (votes[player] || 0) + 1;
-  fs.writeFileSync(filePath, JSON.stringify(votes, null, 2));
+  
 
   // ファイル保存後などの処理の後に追記
 
@@ -179,7 +173,7 @@ return res.redirect(redirectUrl);
 
 
 
-app.get('/result/:id', (req, res) => {
+app.get('/result/:id', async (req, res) => {
   const { id } = req.params;
    // ① クエリから最初に受け取る
  let votedTeam   = req.query.team;    
@@ -220,8 +214,13 @@ app.get('/result/:id', (req, res) => {
   const homePath = path.join(__dirname, 'data', 'votes', `${id}-home.json`);
   const awayPath = path.join(__dirname, 'data', 'votes', `${id}-away.json`);
 
-  const homeVotes = fs.existsSync(homePath) ? JSON.parse(fs.readFileSync(homePath)) : {};
-  const awayVotes = fs.existsSync(awayPath) ? JSON.parse(fs.readFileSync(awayPath)) : {};
+   // Realtime Database から一発取得
+ const [snapHome, snapAway] = await Promise.all([
+   rtdb.ref(`votes/${id}/home`).once('value'),
+   rtdb.ref(`votes/${id}/away`).once('value')
+ ]);
+ const homeVotes = snapHome.val() || {};
+ const awayVotes = snapAway.val() || {};
 
   const getTopPlayer = votes => Object.entries(votes).sort(([, a], [, b]) => b - a)[0]?.[0] || '';
 
