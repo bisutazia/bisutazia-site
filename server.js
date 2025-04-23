@@ -174,6 +174,8 @@ return res.redirect(redirectUrl);
 
 
 app.get('/result/:id', async (req, res) => {
+  console.log('🍺 /result called. req.query =', req.query,
+    ' session.history =', req.session.history);
   const { id } = req.params;
    // ① クエリでもセッションでも取れなければ、デフォルトで home のトップ選手を使う
  let votedTeam   = req.query.team   || (req.session.history?.at(-1)?.team);
