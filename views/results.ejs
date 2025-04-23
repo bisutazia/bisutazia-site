@@ -122,12 +122,12 @@
     
       <% if (votedTeam && votedPlayer) { %>
         <% 
-          // 投票したチーム名とメッセージを組み立てる
-          const teamName     = votedTeam === 'home' ? match.home : match.away;
-          const shareTextRaw =     `#ピカイチ投票 ${teamName}のヒーローに「${votedPlayer}」を選びました！\n`     
-          `https://bisutazia-site.onrender.com`;
-          const text = encodeURIComponent(shareTextRaw);
-        %>
+  const shareTextRaw =
+    `#ピカイチ投票 ${teamName}のヒーローに「${votedPlayer}」を選びました！\n` +
+    `https://bisutazia-site.onrender.com`;
+  const text = encodeURIComponent(shareTextRaw);
+%>
+
         <div class="share-block">
           <h3>
             <%= votedTeam === 'home' ? '🏠 ' : '🚩 ' %>
