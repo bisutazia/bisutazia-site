@@ -119,31 +119,29 @@
 
     <div class="social-share">
       <h2>📣 あなたの投票結果をシェアしよう！</h2>
-    
       <% 
-        // ここは必ず動くようになったので if を外し、
-        // teamName と shareText を作成
-        const teamName = votedTeam === 'home' ? match.home : match.away;
+        // ① 万が一のためデフォルト値を用意
+        const teamName     = (votedTeam==='home'?match.home:match.away) || match.home;
+        const hero         = votedPlayer || '選手';
         const shareTextRaw =
-          `#ピカイチ投票 ${teamName}のヒーローに「${votedPlayer}」を選びました！\n` +
+          `#ピカイチ投票 ${teamName}のヒーローに「${hero}」を選びました！\n` +
           `https://bisutazia-site.onrender.com`;
         const text = encodeURIComponent(shareTextRaw);
       %>
       <div class="share-block">
         <h3>
-          <%= votedTeam === 'home' ? '🏠 ' : '🚩 ' %>
-          <%= teamName %> に投票した選手：<span class="highlight"><%= votedPlayer %></span>
+          <%= votedTeam==='home' ? '🏠 ' : '🚩 ' %>
+          <%= teamName %> に投票した選手：<span class="highlight"><%= hero %></span>
         </h3>
         <textarea readonly><%= shareTextRaw %></textarea>
         <a
           class="share-button"
           href="https://twitter.com/intent/tweet?text=<%= text %>"
           target="_blank"
-        >
-          🐦 X（Twitter）でシェアする
-        </a>
+        >🐦 X（Twitter）でシェアする</a>
       </div>
     </div>
+    
     
     
     
