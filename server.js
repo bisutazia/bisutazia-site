@@ -181,17 +181,18 @@ return res.redirect(redirectUrl);
 
 app.get('/result/:id', (req, res) => {
   const { id } = req.params;
-    // クエリがなければセッション履歴から最後の投票を拾う
-  let votedTeam   = req.query.team;
-  let votedPlayer = req.query.player;
+    // クエリがなければセッション履歴から最後の投票を拾う（空配列ガード）
   if (!votedTeam || !votedPlayer) {
-    const hist = req.session.history || [];
-    const last = hist[hist.length - 1];
-    if (last) {
-      votedTeam   = last.team;
-      votedPlayer = last.player;
+    const hist = Array.isArray(req.session.history) ? req.session.history : [];
+    if (hist.length > 0) {
+      const last = hist[hist.length - 1];
+      // last がオブジェクトなら上書き
+      if (last && last.team && last.player) {
+        votedTeam   = last.team;
+        votedPlayer = last.player;
+      }
     }
-  }
+  }  
   
 
   const matchesData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'matches.json')));
