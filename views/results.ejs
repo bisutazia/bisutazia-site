@@ -120,22 +120,21 @@
     <div class="social-share">
       <h2>📣 あなたの投票結果をシェアしよう！</h2>
     
-      <% if (votedTeam && votedPlayer) { %>
-        <% 
-  const teamName = votedTeam === 'home' ? match.home : match.away;
-  const shareTextRaw =
-    `#ピカイチ投票 ${teamName}のヒーローに「${votedPlayer}」を選びました！\n` +
-    `https://bisutazia-site.onrender.com`;
-  const text = encodeURIComponent(shareTextRaw);
-%>
-
-
-
+      <% if (votedTeam && votedPlayer) { 
+           // ① チーム名を決定
+           const teamName = votedTeam === 'home' ? match.home : match.away;
+           // ② 文字列は必ず「+」で連結！
+           const shareTextRaw =
+             `#ピカイチ投票 ${teamName}のヒーローに「${votedPlayer}」を選びました！\n` +
+             `https://bisutazia-site.onrender.com`;
+           const text = encodeURIComponent(shareTextRaw);
+      %>
         <div class="share-block">
           <h3>
             <%= votedTeam === 'home' ? '🏠 ' : '🚩 ' %>
             <%= teamName %> に投票した選手：<span class="highlight"><%= votedPlayer %></span>
           </h3>
+          <!-- ここに完成済みの文字列を表示 -->
           <textarea readonly><%= shareTextRaw %></textarea>
           <a
             class="share-button"
@@ -149,6 +148,7 @@
         <p>シェア情報が見つかりませんでした。</p>
       <% } %>
     </div>
+    
     
     
 
