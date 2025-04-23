@@ -175,9 +175,19 @@ return res.redirect(redirectUrl);
 
 app.get('/result/:id', async (req, res) => {
   const { id } = req.params;
-   // ① クエリから最初に受け取る
- let votedTeam   = req.query.team;    
- let votedPlayer = req.query.player;
+   // ① クエリでもセッションでも取れなければ、デフォルトで home のトップ選手を使う
+ let votedTeam   = req.query.team   || (req.session.history?.at(-1)?.team);
+ let votedPlayer = req.query.player || (req.session.history?.at(-1)?.player);
+
+ // ② それでも取れない場合は home のトップ選手を自動で振る
+ if (!votedTeam || !votedPlayer) {
+   votedTeam = 'home';
+   const snap = await rtdb.ref(`votes/${id}/${votedTeam}`).once('value');
+   const votes = snap.val() || {};
+   votedPlayer = Object.entries(votes)
+     .sort(([,a],[,b]) => b - a)[0]?.[0] || '';
+ }
+  
   if (!votedTeam || !votedPlayer) {
      const hist = Array.isArray(req.session.history) ? req.session.history : [];
      if (hist.length > 0) {
