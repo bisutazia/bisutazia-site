@@ -121,27 +121,21 @@
       <h2>📣 あなたの投票結果をシェアしよう！</h2>
     
       <% if (votedTeam && votedPlayer) { %>
+        <% 
+          // 投票したチーム名とメッセージを組み立てる
+          const teamName     = votedTeam === 'home' ? match.home : match.away;
+          const shareTextRaw = `#ピカイチ投票 ${teamName}のヒーローに「${votedPlayer}」を選びました！\nhttps://bisutazia-site.onrender.com/match/${match.id}`;
+          const text         = encodeURIComponent(shareTextRaw);
+        %>
         <div class="share-block">
-          <% const teamName = votedTeam==='home' ? match.home : match.away; %>
           <h3>
-            <%= votedTeam==='home' ? '🏠 ' : '🚩 ' %>
-            <%= teamName %> に投票した選手： 
-            <span class="highlight"><%= votedPlayer %></span>
+            <%= votedTeam === 'home' ? '🏠 ' : '🚩 ' %>
+            <%= teamName %> に投票した選手：<span class="highlight"><%= votedPlayer %></span>
           </h3>
-          <% 
-            // シェア用テキストをエンコード
-            const text = encodeURIComponent(
-              `#ピカイチ投票 ${teamName}のヒーローに「${votedPlayer}」を選びました！\n` +
-              `https://bisutazia-site.onrender.com/match/${match.id}`
-            );
-          %>
-          <textarea readonly>
-    #ピカイチ投票 ${teamName}のヒーローに「${votedPlayer}」を選びました！
-    https://bisutazia-site.onrender.com/match/<%= match.id %>
-          </textarea>
-          <a 
-            class="share-button" 
-            href="https://twitter.com/intent/tweet?text=<%= text %>" 
+          <textarea readonly><%= shareTextRaw %></textarea>
+          <a
+            class="share-button"
+            href="https://twitter.com/intent/tweet?text=<%= text %>"
             target="_blank"
           >
             🐦 X（Twitter）でシェアする
@@ -151,6 +145,7 @@
         <p>シェア情報が見つかりませんでした。</p>
       <% } %>
     </div>
+    
     
 
       <p class="insta-note">📷 Instagramストーリーでのスクショ投稿も歓迎！ #ピカイチ</p>
