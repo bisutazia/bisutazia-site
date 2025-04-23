@@ -217,7 +217,7 @@ app.get('/result/:id', (req, res) => {
   res.render('results', {
     homeVotes, awayVotes, match,
     topHome, topAway,
-    votedTeam, votedPlayer
+    votedTeam, votedPlayer,votedTeam,votedPlayer
   });
 });
 
