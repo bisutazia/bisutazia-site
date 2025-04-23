@@ -97,7 +97,13 @@ app.get('/match/:id', (req, res) => {
 
 app.post('/vote/:id', async (req, res) => {
   try {
-    const { id, team, player } = req.params;
+    const id = req.params.id;
+    const { team, player } = req.body;
+
+    // 必須チェック
+    if (!team || !player) {
+      return res.status(400).send('Bad Request: team または player が指定されていません');
+    }
 
   const matchesData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'matches.json')));
   let match = null;
@@ -131,10 +137,11 @@ app.post('/vote/:id', async (req, res) => {
 
   req.session.voted[id][team] = true;
   // Firestore に保存する
+  // Firestore ログ
   await firestore.collection('votes').add({
     matchId: id,
-    team,
-    player,
+    team,    // ← ここに正しい文字列が入る
+    player,  // ← こっちも同様
     timestamp: admin.firestore.FieldValue.serverTimestamp()
   });
 
@@ -158,13 +165,10 @@ app.post('/vote/:id', async (req, res) => {
   req.session.history.push({ match: `${match.home} vs ${match.away}`, player });
 
   return res.redirect(`/result/${id}?voted=${team}`);
-
-} catch (err) {
-  // 例外発生時はこちらに飛んでくる
-  console.error('❌ POST /vote エラー:', err);
-  // クライアントにエラースタックやメッセージを返す
-  return res.status(500).send(`<h1>Internal Server Error</h1><pre>${err.stack}</pre>`);
-}
+  } catch (err) {
+    console.error('❌ POST /vote エラー:', err);
+    return res.status(500).send(`<h1>Internal Server Error</h1><pre>${err.stack}</pre>`);
+  }
 });
 
 
