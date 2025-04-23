@@ -111,83 +111,61 @@
   </style>
 </head>
 <body>
-  <!-- DEBUG: Version 3 -->
-  <p style="background:#f66;color:#fff;padding:0.5rem;text-align:center;">
-    DEBUG: Template Version 3
-  </p>
   <div class="container">
     <h1>🏆 ピカイチ投票結果</h1>
-    <p class="thankyou">🎉 <%= match.home %> vs <%= match.away %> の結果です！</p>
+    <p class="thankyou">
+      🎉 <%= match.home %> vs <%= match.away %> の結果です！
+    </p>
 
+    <!-- チャート -->
     <canvas id="voteChart" height="280"></canvas>
 
+    <!-- 共有セクション -->
     <div class="social-share">
-      <div class="social-share">
-        <h2>📣 あなたの投票結果をシェアしよう！</h2>
-    
-        <% 
-          const teamName    = votedTeam==='home' ? match.home : match.away;
-          const hero        = votedPlayer || '(投票選手なし)';
-          const shareTextRaw =
-            `#ピカイチ投票 ${teamName}のヒーローに「${hero}」を選びました！\n` +
-            `https://bisutazia-site.onrender.com`;
-          const text        = encodeURIComponent(shareTextRaw);
-        %>
-    
-        <!-- ① share-block を必ず開く -->
-        <div class="share-block">
-          <h3>
-            <%= votedTeam==='home' ? '🏠 ' : '🚩 ' %>
-            <%= teamName %> に投票した選手：<span class="highlight"><%= hero %></span>
-          </h3>
-          <textarea readonly style="white-space:pre-wrap;"><%= shareTextRaw %></textarea>
-          <a
-            class="share-button"
-            href="https://twitter.com/intent/tweet?text=<%= text %>"
-            target="_blank"
-          >🐦 X（Twitter）でシェアする</a>
-        </div> <!-- ① を閉じる -->
-    
-        <!-- ② insta-note は social-share の内部に１回だけ -->
-        <p class="insta-note">📷 Instagramストーリーでのスクショ投稿も歓迎！ #ピカイチ</p>
-    
-      </div> <!-- social-share を閉じ -->
-    
-      <!-- ③ home-link は container の内部、social-share の外側 -->
-      <a href="/" class="home-link">🏠 ホームに戻る</a>
-    
-  <script>
-    const ctx = document.getElementById('voteChart').getContext('2d');
-    const raw = JSON.parse(document.getElementById('chartData').textContent);
+      <h2>📣 あなたの投票結果をシェアしよう！</h2>
 
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: Object.keys(raw.home),
-        datasets: [
-          {
-            label: '<%= match.home %>',
-            data: Object.values(raw.home),
-            backgroundColor: '#1E88E5'
-          },
-          {
-            label: '<%= match.away %>',
-            data: Object.values(raw.away),
-            backgroundColor: '#E53935'
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: { beginAtZero: true }
-        }
-      }
-    });
-  </script>
+      <% 
+        // 投票チーム／選手名を確実にセット
+        const teamName = votedTeam === 'home' ? match.home : match.away;
+        const hero     = votedPlayer || '(投票選手なし)';
+        // X シェア用テキストを作成
+        const shareTextRaw =
+          `#ピカイチ投票 ${teamName}のヒーローに「${hero}」を選びました！\n` +
+          `https://bisutazia-site.onrender.com`;
+        const text = encodeURIComponent(shareTextRaw);
+      %>
 
-  <script id="chartData" type="application/json">
-    {"home":<%- JSON.stringify(homeVotes) %>, "away":<%- JSON.stringify(awayVotes) %>}
-  </script>
+      <!-- ここでラッパー開く -->
+      <div class="share-block">
+        <h3>
+          <%= votedTeam === 'home' ? '🏠 ' : '🚩 ' %>
+          <%= teamName %> に投票した選手：
+          <span class="highlight"><%= hero %></span>
+        </h3>
+        <textarea readonly style="white-space:pre-wrap;">
+<%= shareTextRaw %>
+        </textarea>
+        <a
+          class="share-button"
+          href="https://twitter.com/intent/tweet?text=<%= text %>"
+          target="_blank"
+        >
+          🐦 X（Twitter）でシェアする
+        </a>
+      </div>
+      <!-- ラッパー閉じ -->
+
+      <!-- Instagram案内 -->
+      <p class="insta-note">
+        📷 Instagramストーリーでのスクショ投稿も歓迎！ #ピカイチ
+      </p>
+    </div>
+    <!-- social-share閉じ -->
+
+    <!-- ホームに戻るリンク -->
+    <a href="/" class="home-link">🏠 ホームに戻る</a>
+  </div>
+  <!-- container閉じ -->
 </body>
+
 </html>
