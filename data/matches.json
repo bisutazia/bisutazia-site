@@ -175,7 +175,16 @@
           "homePlayers": ["あ"],
           "awayPlayers": ["い"
 ],
-          "deadline": "2025-04-25T15:00:00+09:00"
+          "deadline": "2025-04-25T15:50:00+09:00"
+        },
+        {
+          "id": "j3-2025-04-18-h",
+          "home": "FC4",
+          "away": "SC4",
+          "homePlayers": ["あ"],
+          "awayPlayers": ["い"
+],
+          "deadline": "2025-04-25T15:50:00+09:00"
         }
       ]
     }
