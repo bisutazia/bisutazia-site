@@ -116,43 +116,41 @@
     <p class="thankyou">🎉 <%= match.home %> vs <%= match.away %> の結果です！</p>
     <canvas id="voteChart" height="280"></canvas>
 
-       <!-- ここで一旦 share セクションをすべて削除 or コメントアウトして -->
-   <!-- client-side JS で後から差し込みます -->
+       <!-- 既存のシェアボタンの下に置く -->
+<button id="nativeShareBtn" style="margin-top:1rem; padding:0.8rem; font-size:1rem; border-radius:8px;">
+  🔗 共有メニューを開く
+</button>
 
-   <!-- ↓ このスクリプトを追加 -->
-   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const votedTeam   = '<%= votedTeam %>';
-      const votedPlayer = '<%= votedPlayer %>';
-      const matchHome   = '<%= match.home %>';
-      const matchAway   = '<%= match.away %>';
-      const teamName    = votedTeam === 'home' ? matchHome : matchAway;
-      const shareText   = `#ピカイチ投票 ${teamName}のヒーローに「${votedPlayer}」を選びました！\nhttps://bisutazia-site.onrender.com`;
-      const tweetText   = encodeURIComponent(shareText);
-  
-      // ① 結果ページの最後まで行ってから
-      const container = document.querySelector('.container');
-      if (!container) return;
-  
-      // ② シェア欄を組み立て
-      const section = document.createElement('div');
-      section.className = 'social-share';
-      section.innerHTML = `
-        <h2>📣 あなたの投票結果をシェアしよう！</h2>
-        <div class="share-block">
-          <h3>${votedTeam==='home'?'🏠 ': '🚩 '}${teamName} に投票した選手：<span class="highlight">${votedPlayer}</span></h3>
-          <textarea readonly style="white-space:pre-wrap;">${shareText}</textarea>
-          <a class="share-button" href="https://twitter.com/intent/tweet?text=${tweetText}" target="_blank">
-            🐦 X（Twitter）でシェアする
-          </a>
-        </div>
-        <p class="insta-note">📷 Instagramストーリーでのスクショ投稿も歓迎！ #ピカイチ</p>
-      `;
-  
-      // ③ 末尾に必ず追加
-      container.appendChild(section);
-    });
-  </script>
+<script>
+  document.getElementById('nativeShareBtn').addEventListener('click', async () => {
+    const votedTeam   = '<%= votedTeam %>';
+    const votedPlayer = '<%= votedPlayer %>';
+    const teamName    = votedTeam === 'home' ? '<%= match.home %>' : '<%= match.away %>';
+    const text = `#ピカイチ投票 ${teamName}のヒーローに「${votedPlayer}」を選びました！\nhttps://bisutazia-site.onrender.com`;
+
+    // Web Share API が使えるかチェック
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `ピカイチ投票結果：${teamName} vs ${votedPlayer}`,
+          text,
+          url: 'https://bisutazia-site.onrender.com'
+        });
+      } catch (err) {
+        console.error('シェア失敗:', err);
+      }
+    } else {
+      // フォールバック：テキストをクリップボードにコピー
+      try {
+        await navigator.clipboard.writeText(text);
+        alert('共有テキストをコピーしました。お好きな方法でペーストしてシェアしてください。');
+      } catch {
+        alert('シェア機能が使えませんでした。テキストを手動でコピーしてください：\n' + text);
+      }
+    }
+  });
+</script>
+
 
    <!-- ホームに戻るリンク -->
    <a href="/" class="home-link">🏠 ホームに戻る</a>
