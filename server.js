@@ -234,6 +234,13 @@ app.get('/result/:id', async (req, res) => {
  const homeVotes = snapHome.val() || {};
  const awayVotes = snapAway.val() || {};
 
+ // パーセンテージ計算
+ const sumHome = Object.values(homeVotes).reduce((a, b) => a + b, 0);
+ const sumAway = Object.values(awayVotes).reduce((a, b) => a + b, 0);
+ const total   = sumHome + sumAway || 1;
+ const homePercent = Math.round((sumHome / total) * 100);
+ const awayPercent = 100 - homePercent;
+
   const getTopPlayer = votes => Object.entries(votes).sort(([, a], [, b]) => b - a)[0]?.[0] || '';
 
   // …votes ファイル読み込み・集計…
@@ -248,7 +255,11 @@ app.get('/result/:id', async (req, res) => {
     topHome,
     topAway,
     votedTeam,
-    votedPlayer
+    votedPlayer,
+    totalVotes: {
+      homePercent,
+      awayPercent
+    }
   });
 });
 
