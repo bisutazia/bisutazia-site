@@ -249,17 +249,13 @@ app.get('/result/:id', async (req, res) => {
 
   // テンプレートに渡すプロパティを追加
   res.render('results', {
-    homeVotes,
-    awayVotes,
-    match,
-    topHome,
-    topAway,
-    votedTeam,
-    votedPlayer,
-    totalVotes: {
-      homePercent,
-      awayPercent
-    }
+      homeVotes,
+      awayVotes,
+      match,
+      topHome,
+      topAway,
+      votedTeam,
+      votedPlayer
   });
 });
 
