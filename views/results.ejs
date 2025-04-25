@@ -7,143 +7,76 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+JP">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    body {
-      font-family: 'Noto Sans JP', sans-serif;
-      background: linear-gradient(135deg, #f2f7fb, #ffffff);
-      margin: 0;
-      padding: 1rem;
-      color: #333;
-      text-align: center;
-    }
-    .container {
-      background-color: #fff;
-      max-width: 600px;
-      margin: auto;
-      border-radius: 16px;
-      padding: 1.5rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    h1 {
-      font-size: 1.8rem;
-      color: #0d47a1;
-      margin-bottom: 0.25rem;
-    }
-    .thankyou {
-      color: #4CAF50;
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-      font-size: 1.1rem;
-    }
-    .share-prompt {
-      font-size: 1rem;
-      margin: 0.5rem 0;
-      color: #333;
-    }
-    canvas {
-      margin: 1rem 0;
-    }
-    /* 共有セクション */
-    .social-share {
-      margin-top: 1rem;
-      padding: 1rem;
-      background: #e3f2fd;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-    }
-    .native-share-btn {
-      display: block;
-      width: 100%;
-      padding: 1rem;
-      margin: 0.75rem 0;
-      background-color: #1DA1F2;
-      color: #fff;
-      font-size: 1.1rem;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      text-align: center;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-    }
-    .native-share-btn:hover {
-      background-color: #0d8ddb;
-    }
-    .insta-note {
-      font-size: 0.85rem;
-      color: #555;
-      margin-top: 0.5rem;
-    }
-    .home-link {
-      display: block;
-      margin: 1.5rem 0 0;
-      color: #0d47a1;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1rem;
-    }
-    .highlight {
-      color: #d32f2f;
-      font-weight: bold;
-    }
+    body { font-family: 'Noto Sans JP', sans-serif; background: #f7f9fc; margin: 0; padding: 1rem; }
+    .container { max-width: 600px; margin: auto; background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    h1 { font-size: 1.8rem; color: #0d47a1; margin-bottom: 0.5rem; }
+    .chart-container { margin: 1rem 0; }
+    canvas { width: 100% !important; height: auto !important; }
+    .result-summary { font-size: 1rem; color: #333; margin: 0.5rem 0; }
+    .social-share { margin-top: 1rem; padding: 1rem; background: #e1f5fe; border-radius: 8px; text-align: center; }
+    .share-title { font-size: 1.1rem; margin-bottom: 0.5rem; color: #0277bd; }
+    .share-btn { display: inline-block; padding: 0.8rem 1.2rem; background: #0288d1; color: #fff; font-size: 1rem; font-weight: bold; border-radius: 6px; text-decoration: none; transition: background 0.2s; }
+    .share-btn:hover { background: #0277bd; }
+    .home-link { display: block; margin: 1.2rem 0 0; color: #0277bd; text-decoration: none; font-size: 0.9rem; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>🏆 ピカイチ投票結果</h1>
-    <p class="thankyou">🎉 <%= match.home %> vs <%= match.away %> の結果です！</p>
-    <!-- 投票完了のプロンプト -->
-    <p class="share-prompt">投票ありがとうございます！<br>この熱をみんなに伝えましょう！</p>
-
-    <!-- チャート -->
-    <canvas id="voteChart" height="280"></canvas>
-
-    <!-- ネイティブ共有ボタン -->
-    <div class="social-share">
-      <button class="native-share-btn" id="nativeShareBtn">
-        🚀 シェアして盛り上がろう！
-      </button>
-      <p class="insta-note">📷 Instagramストーリーへのシェアも大歓迎！ #ピカイチ</p>
+    <h1>🏆 <%= match.home %> vs <%= match.away %> のピカイチ結果</h1>
+    
+    <p class="result-summary">（※個別の投票は非公開。結果のみをシェア）</p>
+    
+    <!-- 集計チャート -->
+    <div class="chart-container">
+      <canvas id="voteChart"></canvas>
     </div>
-
+    
+    <!-- ここでは%を表示 -->
+    <p class="result-summary">
+      <%= match.home %>: <%= totalVotes.homePercent %>% ／ <%= match.away %>: <%= totalVotes.awayPercent %>%
+    </p>
+    
+    <!-- SNS シェア -->
+    <div class="social-share">
+      <p class="share-title">みんなの熱意をSNSで拡散しよう🔥</p>
+      <a id="nativeShareBtn" class="share-btn">今すぐシェアする</a>
+    </div>
+    
     <a href="/" class="home-link">🏠 ホームに戻る</a>
   </div>
 
   <script id="chartData" type="application/json">
-    {"home":<%- JSON.stringify(homeVotes) %>, "away":<%- JSON.stringify(awayVotes) %>}
+    {"home":<%- JSON.stringify(homeVotes) %>,"away":<%- JSON.stringify(awayVotes) %>}
   </script>
   <script>
     // チャート描画
     const ctx = document.getElementById('voteChart').getContext('2d');
     const raw = JSON.parse(document.getElementById('chartData').textContent);
+    const sumHome = Object.values(raw.home).reduce((a,b)=>a+b,0);
+    const sumAway = Object.values(raw.away).reduce((a,b)=>a+b,0);
+    const total = sumHome + sumAway || 1;
+    const homePercent = Math.round((sumHome/total)*100);
+    const awayPercent = 100 - homePercent;
+    // テンプレート用データ
+    window.totalVotes = { homePercent, awayPercent };
+
     new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: Object.keys(raw.home),
-        datasets: [
-          { label: '<%= match.home %>', data: Object.values(raw.home) },
-          { label: '<%= match.away %>', data: Object.values(raw.away) }
-        ]
-      },
-      options: { responsive: true, scales: { y: { beginAtZero: true } } }
+      type: 'doughnut', data: {
+        labels: ['<%= match.home %>', '<%= match.away %>'],
+        datasets: [{ data: [sumHome, sumAway] }]
+      }, options: { cutout: '70%', responsive: true }
     });
 
     // ネイティブ共有
     document.getElementById('nativeShareBtn').addEventListener('click', async () => {
-      const votedTeam   = '<%= votedTeam %>';
-      const votedPlayer = '<%= votedPlayer %>';
-      const teamName    = votedTeam === 'home' ? '<%= match.home %>' : '<%= match.away %>';
-      const shareText   = `#ピカイチ投票 ${teamName}のヒーローに「${votedPlayer}」を選びました！\nhttps://bisutazia-site.onrender.com`;
+      const text = `【ピカイチ投票結果】<%= match.home %> vs <%= match.away %>\n` +
+                   `<%= match.home %>: ${homePercent}% ／ <%= match.away %>: ${awayPercent}%\n` +
+                   `みんなの応援を拡散しよう！ #ピカイチ投票 https://bisutazia-site.onrender.com`;
       if (navigator.share) {
-        try {
-          await navigator.share({ title: 'ピカイチ投票結果', text: shareText, url: 'https://bisutazia-site.onrender.com' });
-        } catch (e) { console.error(e); }
+        await navigator.share({ title: 'ピカイチ投票結果', text, url: 'https://bisutazia-site.onrender.com' });
       } else {
-        try {
-          await navigator.clipboard.writeText(shareText);
-          alert('共有テキストをコピーしました！お好きなSNSに貼り付けてシェアしてください。');
-        } catch {
-          alert('共有機能が利用できません。以下のテキストを手動でコピーしてください。\n' + shareText);
-        }
+        try { await navigator.clipboard.writeText(text); alert('共有テキストをコピーしました！'); }
+        catch { alert('Ctrl+Cでコピーし、SNSに貼り付けてください\n' + text); }
       }
     });
   </script>
