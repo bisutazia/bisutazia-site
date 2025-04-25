@@ -69,5 +69,46 @@
       }
     });
   </script>
+  <!-- HTML：好きな場所にボタンを置く -->
+<button id="shareBtn" style=" 
+display:block; 
+margin:1rem auto; 
+padding:1rem 2rem; 
+background:#0288d1; 
+color:#fff; 
+font-size:1rem; 
+border:none; 
+border-radius:8px;
+">
+共有メニューを開く
+</button>
+
+<!-- JavaScript：ボタンのすぐ下か末尾に入れる -->
+<script>
+document.getElementById('shareBtn').addEventListener('click', async () => {
+  const shareData = {
+    title: 'ピカイチ投票結果',
+    text: `【ピカイチ投票】<%= match.home %> vs <%= match.away %>\n結果はこちら: https://bisutazia-site.onrender.com`,
+    url: window.location.href
+  };
+
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData);
+    } catch (err) {
+      console.error('Share failed:', err);
+    }
+  } else {
+    // フォールバック：クリップボードにコピー
+    try {
+      await navigator.clipboard.writeText(`${shareData.text}\n${shareData.url}`);
+      alert('共有テキストをコピーしました！SNSに貼り付けてシェアしてください。');
+    } catch {
+      alert('共有機能が利用できません。手動で以下をコピーしてください：\n' + shareData.text + '\n' + shareData.url);
+    }
+  }
+});
+</script>
+
 </body>
 </html>
