@@ -20,93 +20,70 @@
       max-width: 600px;
       margin: auto;
       border-radius: 16px;
-      padding: 2rem 1.5rem;
+      padding: 1.5rem;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
     h1 {
-      font-size: 1.6rem;
+      font-size: 1.8rem;
       color: #0d47a1;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.25rem;
     }
     .thankyou {
       color: #4CAF50;
       font-weight: bold;
-      margin-bottom: 1.5rem;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    .share-prompt {
+      font-size: 1rem;
+      margin: 0.5rem 0;
+      color: #333;
     }
     canvas {
-      margin-top: 1rem;
+      margin: 1rem 0;
     }
-
+    /* 共有セクション */
     .social-share {
-      margin-top: 2rem;
-      padding: 1.5rem;
-      background: #e3f2fd;
-      border-radius: 16px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.08);
-      animation: fadeIn 0.6s ease;
-    }
-    .social-share h2 {
-      font-size: 1.3rem;
-      color: #0d47a1;
-      margin-bottom: 1rem;
-    }
-    .share-block {
-      margin-bottom: 1.2rem;
-      text-align: left;
-    }
-    .share-block h3 {
-      margin: 0.2rem 0 0.5rem;
-    }
-    .share-block textarea {
-      width: 100%;
-      background: #f1f8ff;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      padding: 0.8rem;
-      font-size: 0.9rem;
-      line-height: 1.5;
-      resize: none;
-    }
-
-    .share-button {
-      display: block;
-      width: 100%;
-      background-color: #1da1f2;
-      color: #fff;
-      padding: 1rem;
-      border-radius: 12px;
-      font-weight: bold;
-      text-decoration: none;
       margin-top: 1rem;
-      transition: background-color 0.3s, transform 0.2s;
+      padding: 1rem;
+      background: #e3f2fd;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
     }
-    .share-button:hover {
-      background-color: #0d8ddb;
-      transform: scale(1.03);
-    }
-
-    .home-link {
+    .native-share-btn {
       display: block;
-      margin-top: 2rem;
-      color: #0d47a1;
-      text-decoration: none;
+      width: 100%;
+      padding: 1rem;
+      margin: 0.75rem 0;
+      background-color: #1DA1F2;
+      color: #fff;
+      font-size: 1.1rem;
       font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
     }
-
+    .native-share-btn:hover {
+      background-color: #0d8ddb;
+    }
     .insta-note {
       font-size: 0.85rem;
       color: #555;
-      margin-top: 0.8rem;
+      margin-top: 0.5rem;
     }
-
+    .home-link {
+      display: block;
+      margin: 1.5rem 0 0;
+      color: #0d47a1;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+    }
     .highlight {
       color: #d32f2f;
       font-weight: bold;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -114,45 +91,61 @@
   <div class="container">
     <h1>🏆 ピカイチ投票結果</h1>
     <p class="thankyou">🎉 <%= match.home %> vs <%= match.away %> の結果です！</p>
+    <!-- 投票完了のプロンプト -->
+    <p class="share-prompt">投票ありがとうございます！<br>この熱をみんなに伝えましょう！</p>
+
+    <!-- チャート -->
     <canvas id="voteChart" height="280"></canvas>
 
-       <!-- 既存のシェアボタンの下に置く -->
-<button id="nativeShareBtn" style="margin-top:1rem; padding:0.8rem; font-size:1rem; border-radius:8px;">
-  🔗 共有メニューを開く
-</button>
+    <!-- ネイティブ共有ボタン -->
+    <div class="social-share">
+      <button class="native-share-btn" id="nativeShareBtn">
+        🚀 シェアして盛り上がろう！
+      </button>
+      <p class="insta-note">📷 Instagramストーリーへのシェアも大歓迎！ #ピカイチ</p>
+    </div>
 
-<script>
-  document.getElementById('nativeShareBtn').addEventListener('click', async () => {
-    const votedTeam   = '<%= votedTeam %>';
-    const votedPlayer = '<%= votedPlayer %>';
-    const teamName    = votedTeam === 'home' ? '<%= match.home %>' : '<%= match.away %>';
-    const text = `#ピカイチ投票 ${teamName}のヒーローに「${votedPlayer}」を選びました！\nhttps://bisutazia-site.onrender.com`;
+    <a href="/" class="home-link">🏠 ホームに戻る</a>
+  </div>
 
-    // Web Share API が使えるかチェック
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: `ピカイチ投票結果：${teamName} vs ${votedPlayer}`,
-          text,
-          url: 'https://bisutazia-site.onrender.com'
-        });
-      } catch (err) {
-        console.error('シェア失敗:', err);
+  <script id="chartData" type="application/json">
+    {"home":<%- JSON.stringify(homeVotes) %>, "away":<%- JSON.stringify(awayVotes) %>}
+  </script>
+  <script>
+    // チャート描画
+    const ctx = document.getElementById('voteChart').getContext('2d');
+    const raw = JSON.parse(document.getElementById('chartData').textContent);
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: Object.keys(raw.home),
+        datasets: [
+          { label: '<%= match.home %>', data: Object.values(raw.home) },
+          { label: '<%= match.away %>', data: Object.values(raw.away) }
+        ]
+      },
+      options: { responsive: true, scales: { y: { beginAtZero: true } } }
+    });
+
+    // ネイティブ共有
+    document.getElementById('nativeShareBtn').addEventListener('click', async () => {
+      const votedTeam   = '<%= votedTeam %>';
+      const votedPlayer = '<%= votedPlayer %>';
+      const teamName    = votedTeam === 'home' ? '<%= match.home %>' : '<%= match.away %>';
+      const shareText   = `#ピカイチ投票 ${teamName}のヒーローに「${votedPlayer}」を選びました！\nhttps://bisutazia-site.onrender.com`;
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: 'ピカイチ投票結果', text: shareText, url: 'https://bisutazia-site.onrender.com' });
+        } catch (e) { console.error(e); }
+      } else {
+        try {
+          await navigator.clipboard.writeText(shareText);
+          alert('共有テキストをコピーしました！お好きなSNSに貼り付けてシェアしてください。');
+        } catch {
+          alert('共有機能が利用できません。以下のテキストを手動でコピーしてください。\n' + shareText);
+        }
       }
-    } else {
-      // フォールバック：テキストをクリップボードにコピー
-      try {
-        await navigator.clipboard.writeText(text);
-        alert('共有テキストをコピーしました。お好きな方法でペーストしてシェアしてください。');
-      } catch {
-        alert('シェア機能が使えませんでした。テキストを手動でコピーしてください：\n' + text);
-      }
-    }
-  });
-</script>
-
-
-   <!-- ホームに戻るリンク -->
-   <a href="/" class="home-link">🏠 ホームに戻る</a>
- </div>
+    });
+  </script>
 </body>
+</html>
