@@ -10,16 +10,13 @@
     body { margin:0; padding:0; font-family:'Noto Sans JP',sans-serif; background:#f0f2f5; }
     .container { max-width:600px; margin:2rem auto; padding:1.5rem; background:#fff; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.1); }
     h1 { font-size:1.9rem; color:#0d47a1; text-align:center; margin-bottom:0.5rem; }
-    .chart-wrapper { position:relative; width:100%; padding-bottom:100%; }
+    .chart-wrapper { position:relative; width:100%; padding-bottom:100%; margin-bottom:1rem; }
     canvas { position:absolute; top:0; left:0; width:100% !important; height:100% !important; }
     .result-summary { text-align:center; font-size:1.1rem; margin:1rem 0; color:#333; }
     .result-summary span { font-weight:bold; color:#d32f2f; }
     .share-prompt { text-align:center; font-size:1rem; margin-bottom:1rem; color:#555; }
-    .social-share { text-align:center; }
-    .share-btn { display:inline-block; padding:1rem 2rem; background:linear-gradient(90deg,#ff6f00,#fdd835); color:#fff; font-size:1.1rem; font-weight:bold; border:none; border-radius:999px; cursor:pointer; box-shadow:0 6px 12px rgba(0,0,0,0.15); transition:transform 0.2s; }
-    .share-btn:hover { transform:scale(1.05); }
-    .insta-note { text-align:center; font-size:0.9rem; margin-top:0.75rem; color:#777; }
-    .home-link { display:block; text-align:center; margin:1.5rem 0 0; color:#0d47a1; text-decoration:none; font-size:0.9rem; }
+    .social-share { text-align:center; margin-bottom:1rem; }
+    .home-link { display:block; text-align:center; margin:1.5rem 0; color:#0d47a1; text-decoration:none; font-size:0.9rem; }
   </style>
 </head>
 <body>
@@ -29,12 +26,15 @@
       <canvas id="voteChart"></canvas>
     </div>
     <p class="result-summary">
-      <span><%= totalVotes.homePercent %>%</span> <%= match.home %>　vs　<span><%= totalVotes.awayPercent %>%</span> <%= match.away %>
+      <span><%= totalVotes.homePercent %>%</span> <%= match.home %> vs <span><%= totalVotes.awayPercent %>%</span> <%= match.away %>
     </p>
     <p class="share-prompt">結果をみんなに見せて、次の試合も一緒に盛り上がろう！</p>
+    <!-- 共有ボタンを配置 -->
     <div class="social-share">
-      <button id="shareBtn" class="share-btn">📤 共有メニューを開く</button>
-      <p class="insta-note">InstagramやTikTokでも #ピカイチ で拡散！</p>
+      <!-- HTML：共有メニューを開くボタン -->
+      <button id="shareBtn" style="display:block; margin:1rem auto; padding:1rem 2rem; background:#0288d1; color:#fff; font-size:1rem; border:none; border-radius:8px;">
+        📤 共有メニューを開く
+      </button>
     </div>
     <a href="/" class="home-link">🏠 ホームに戻る</a>
   </div>
@@ -59,13 +59,13 @@
 
     // 共有機能
     document.getElementById('shareBtn').addEventListener('click', async () => {
-      const text = `【ピカイチ投票結果】\n${'<%= match.home %>'}: ${totalVotes.homePercent}% vs ${'<%= match.away %>'}: ${totalVotes.awayPercent}%\n結果をチェック👉 ${window.location.href}`;
+      const text = `【ピカイチ投票結果】\n<%= match.home %>: ${totalVotes.homePercent}% vs <%= match.away %>: ${totalVotes.awayPercent}%\n結果をチェック👉 ${window.location.href}`;
       if (navigator.share) {
         try { await navigator.share({ title: 'ピカイチ投票結果', text, url: window.location.href }); }
-        catch (e) { console.error(e); }
+        catch (e) { console.error('Share failed:', e); }
       } else {
-        try { await navigator.clipboard.writeText(text); alert('共有テキストをコピーしました！'); }
-        catch { prompt('以下をコピーしてSNSでシェアしてください', text); }
+        try { await navigator.clipboard.writeText(text); alert('共有テキストをコピーしました！SNSに貼り付けてシェアしてください。'); }
+        catch { prompt('共有テキストをコピーしてください', text); }
       }
     });
   </script>
