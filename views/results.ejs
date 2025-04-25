@@ -116,30 +116,47 @@
     <p class="thankyou">🎉 <%= match.home %> vs <%= match.away %> の結果です！</p>
     <canvas id="voteChart" height="280"></canvas>
        <!-- ↓ ここからネイティブ共有用スクリプトを差し込む -->
-   <script>
-     document.addEventListener('DOMContentLoaded', () => {
-       const votedTeam   = '<%= votedTeam %>';
-       const votedPlayer = '<%= votedPlayer %>';
-       const matchHome   = '<%= match.home %>';
-       const matchAway   = '<%= match.away %>';
-       const teamName    = votedTeam === 'home' ? matchHome : matchAway;
-       const shareText   = `#ピカイチ投票 ${teamName}のヒーローに「${votedPlayer}」を選びました！\nhttps://bisutazia-site.onrender.com`;
-       const tweetText   = encodeURIComponent(shareText);
+   <!-- HTML：好きな場所にボタンを置く -->
+<button id="shareBtn" style=" 
+display:block; 
+margin:1rem auto; 
+padding:1rem 2rem; 
+background:#0288d1; 
+color:#fff; 
+font-size:1rem; 
+border:none; 
+border-radius:8px;
+">
+共有メニューを開く
+</button>
 
-       if (navigator.share) {
-         navigator.share({
-           title: `ピカイチ投票結果：${teamName} vs ${votedPlayer}`,
-           text: shareText,
-           url: 'https://bisutazia-site.onrender.com'
-         }).catch(console.error);
-       } else {
-         navigator.clipboard.writeText(shareText)
-           .then(() => alert('共有テキストをコピーしました。\nお好きなSNSに貼り付けてシェアしてください。'))
-           .catch(() => alert('共有機能が利用できません。テキストを手動でコピーしてください。\n' + shareText));
-       }
-     });
-   </script>
-   <!-- ↑ ネイティブ共有用スクリプト ここまで -->
+<!-- JavaScript：ボタンのすぐ下か末尾に入れる -->
+<script>
+document.getElementById('shareBtn').addEventListener('click', async () => {
+  const shareData = {
+    title: 'ピカイチ投票結果',
+    text: `【ピカイチ投票】<%= match.home %> vs <%= match.away %>\n結果はこちら: https://bisutazia-site.onrender.com`,
+    url: window.location.href
+  };
+
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData);
+    } catch (err) {
+      console.error('Share failed:', err);
+    }
+  } else {
+    // フォールバック：クリップボードにコピー
+    try {
+      await navigator.clipboard.writeText(`${shareData.text}\n${shareData.url}`);
+      alert('共有テキストをコピーしました！SNSに貼り付けてシェアしてください。');
+    } catch {
+      alert('共有機能が利用できません。手動で以下をコピーしてください：\n' + shareData.text + '\n' + shareData.url);
+    }
+  }
+});
+</script>
+
 
        
 
