@@ -26,35 +26,14 @@
     <p class="result-summary"><%= match.home %>: <%= totalVotes.homePercent %>% vs <%= match.away %>: <%= totalVotes.awayPercent %>%</p>
     <p class="share-prompt">あなたの一票がチームを動かす！<br>今すぐ共有メニューで拡散しよう🔥</p>
 
-    <!-- SNS共有: 自動で共有シートを開くスクリプト -->
-    <canvas id="voteChart" height="280" style="display:none;"></canvas> <!-- placeholder to match diff location -->
-    <!-- ここで既存の share セクションは削除／コメントアウト -->
+        <!-- SNS共有：ボタンをタップすると共有シートを開きます -->
+    <div class="social-share">
+      <button id="nativeShareBtn" class="share-btn">
+        📤 共有メニューを開く
+      </button>
+    </div>
 
-    <!-- ↓ ネイティブ共有用スクリプトを差し込む -->
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const votedTeam   = '<%= votedTeam %>';
-        const votedPlayer = '<%= votedPlayer %>';
-        const matchHome   = '<%= match.home %>';
-        const matchAway   = '<%= match.away %>';
-        const teamName    = votedTeam === 'home' ? matchHome : matchAway;
-        const shareText   = `#ピカイチ投票 ${teamName}のヒーローに「${votedPlayer}」を選びました！\nhttps://bisutazia-site.onrender.com`;
-        const tweetText   = encodeURIComponent(shareText);
-        
-        if (navigator.share) {
-          navigator.share({
-            title: `ピカイチ投票結果：${teamName} vs ${votedPlayer}`,
-            text: shareText,
-            url: 'https://bisutazia-site.onrender.com'
-          }).catch(console.error);
-        } else {
-          navigator.clipboard.writeText(shareText)
-            .then(() => alert('共有テキストをコピーしました。SNSに貼り付けてシェアしてください。'))
-            .catch(() => alert('共有機能が利用できません。テキストを手動でコピーしてください。\n' + shareText));
-        }
-      });
-    </script>
-    <!-- ↑ ネイティブ共有用スクリプト ここまで -->
+    <!-- ホームリンクの前にクリックイベントをバインド -->
 
     <a href="/" class="home-link">🏠 ホームに戻る</a>
   </div>
@@ -67,6 +46,29 @@
     const sumHome = Object.values(raw.home).reduce((s,v)=>s+v,0);
     const sumAway = Object.values(raw.away).reduce((s,v)=>s+v,0);
     new Chart(ctx, {type:'doughnut',data:{labels:['<%= match.home %>','<%= match.away %>'],datasets:[{data:[sumHome,sumAway]}]},options:{cutout:'70%',responsive:true}});
+        // シェアボタンのクリックでネイティブ共有
+    document.getElementById('nativeShareBtn').addEventListener('click', async () => {
+      const teamName = '<%= votedTeam === "home" ? match.home : match.away %>';
+      const text = `#ピカイチ投票 ${teamName}のヒーローに「<%= votedPlayer %>」を選びました！\nhttps://bisutazia-site.onrender.com`;
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: 'ピカイチ投票結果',
+            text,
+            url: 'https://bisutazia-site.onrender.com'
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      } else {
+        try {
+          await navigator.clipboard.writeText(text);
+          alert('共有テキストをコピーしました！お好きなSNSに貼り付けてシェアしてください。');
+        } catch {
+          alert('共有機能が利用できません。以下のテキストをコピーしてシェアしてください：\n' + text);
+        }
+      }
+    });
   </script>
 </body>
 </html>
