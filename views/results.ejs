@@ -87,22 +87,25 @@ document.getElementById('shareBtn').addEventListener('click', async () => {
         labels: ['<%= match.home %>', '<%= match.away %>'],
         datasets: [{ data: [sumHome, sumAway], backgroundColor: ['#1976d2','#d32f2f'] }]
       },
-      options: { cutout: '70%', responsive: true, plugins: { legend: { position: 'bottom' } },
-      tooltip: {
-  callbacks: {
-    label: function(context) {
-      const value = context.raw;
-      const dataArr = context.dataset.data;
-      const total = dataArr.reduce((a, b) => a + b, 0) || 1;
-      const percent = Math.round((value / total) * 100);
-      return context.label + ': ' + percent + '%';
-    }
-  }
-}
- }
+      options: {
+        cutout: '70%',
+        responsive: true,
+        plugins: {
+          legend: { position: 'bottom' },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const value = context.raw;
+                const dataArr = context.dataset.data;
+                const total = dataArr.reduce((a, b) => a + b, 0) || 1;
+                const percent = Math.round((value / total) * 100);
+                return context.label + ': ' + percent + '%';
+              }
+            }
+          }
+        }
+      }
     });
-
-    
   </script>
   
 
