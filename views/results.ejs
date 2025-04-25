@@ -7,19 +7,14 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+JP">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    body { margin:0; padding:0; font-family:'Noto Sans JP', sans-serif; background:#f7f9fc; }
+    body { margin:0; padding:0; font-family:'Noto Sans JP',sans-serif; background:#f7f9fc; }
     .container { max-width:600px; margin:1rem auto; padding:1rem; background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1); }
     h1 { font-size:1.8rem; color:#0d47a1; text-align:center; margin-bottom:0.5rem; }
     .chart-container { padding:1rem 0; }
     canvas { width:100% !important; height:auto !important; }
     .result-summary { text-align:center; font-size:1rem; margin:0.5rem 0; color:#333; }
     .share-prompt { text-align:center; font-size:1.1rem; margin:1rem 0; color:#555; }
-    .social-share { text-align:center; margin:1rem 0; }
-    .share-btn { display:inline-block; padding:1rem 2rem; background:linear-gradient(90deg,#ff6a00,#ee0979); color:#fff; font-size:1.1rem; font-weight:bold; border:none; border-radius:30px; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,0.2); transition:transform 0.2s; }
-    .share-btn:hover { transform:scale(1.05); }
-    .insta-note { text-align:center; font-size:0.85rem; color:#777; margin-top:0.5rem; }
     .home-link { display:block; text-align:center; margin:1.5rem 0; color:#0d47a1; text-decoration:none; font-size:0.9rem; }
-    @media(max-width:480px) { .share-btn { width:90%; padding:1rem; } }
   </style>
 </head>
 <body>
@@ -29,11 +24,37 @@
       <canvas id="voteChart"></canvas>
     </div>
     <p class="result-summary"><%= match.home %>: <%= totalVotes.homePercent %>% vs <%= match.away %>: <%= totalVotes.awayPercent %>%</p>
-    <p class="share-prompt">あなたの一票でチームの歴史を刻もう！<br>今、この興奮をシェアしよう🔥</p>
-    <div class="social-share">
-      <button id="nativeShareBtn" class="share-btn">📣 みんなに知らせる</button>
-      <p class="insta-note">Instagramストーリーでも #ピカイチ で盛り上がろう！</p>
-    </div>
+    <p class="share-prompt">あなたの一票がチームを動かす！<br>今すぐ共有メニューで拡散しよう🔥</p>
+
+    <!-- SNS共有: 自動で共有シートを開くスクリプト -->
+    <canvas id="voteChart" height="280" style="display:none;"></canvas> <!-- placeholder to match diff location -->
+    <!-- ここで既存の share セクションは削除／コメントアウト -->
+
+    <!-- ↓ ネイティブ共有用スクリプトを差し込む -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const votedTeam   = '<%= votedTeam %>';
+        const votedPlayer = '<%= votedPlayer %>';
+        const matchHome   = '<%= match.home %>';
+        const matchAway   = '<%= match.away %>';
+        const teamName    = votedTeam === 'home' ? matchHome : matchAway;
+        const shareText   = `#ピカイチ投票 ${teamName}のヒーローに「${votedPlayer}」を選びました！\nhttps://bisutazia-site.onrender.com`;
+
+        if (navigator.share) {
+          navigator.share({
+            title: `ピカイチ投票結果：${teamName} vs ${votedPlayer}`,
+            text: shareText,
+            url: 'https://bisutazia-site.onrender.com'
+          }).catch(console.error);
+        } else {
+          navigator.clipboard.writeText(shareText)
+            .then(() => alert('共有テキストをコピーしました。SNSに貼り付けてシェアしてください。'))
+            .catch(() => alert('共有機能が利用できません。テキストを手動でコピーしてください。\n' + shareText));
+        }
+      });
+    </script>
+    <!-- ↑ ネイティブ共有用スクリプト ここまで -->
+
     <a href="/" class="home-link">🏠 ホームに戻る</a>
   </div>
   <script id="chartData" type="application/json">
@@ -44,15 +65,7 @@
     const raw = JSON.parse(document.getElementById('chartData').textContent);
     const sumHome = Object.values(raw.home).reduce((s,v)=>s+v,0);
     const sumAway = Object.values(raw.away).reduce((s,v)=>s+v,0);
-    new Chart(ctx,{type:'doughnut',data:{labels:['<%= match.home %>','<%= match.away %>'],datasets:[{data:[sumHome,sumAway]}]},options:{cutout:'70%',responsive:true}});
-
-    document.getElementById('nativeShareBtn').addEventListener('click',async()=>{
-      const text = `【ピカイチ投票結果】\n<%= match.home %>:${totalVotes.homePercent}% vs <%= match.away %>:${totalVotes.awayPercent}%\n一緒に応援しよう！ #ピカイチ投票 https://bisutazia-site.onrender.com`;
-      if(navigator.share){
-        try{await navigator.share({title:'ピカイチ投票結果',text,url:'https://bisutazia-site.onrender.com'});}catch{};
-      } else {
-        try{await navigator.clipboard.writeText(text);alert('共有テキストをコピーしました！');}catch{alert('コピー失敗。手動でシェアしてください:\n'+text);}      }
-    });
+    new Chart(ctx, {type:'doughnut',data:{labels:['<%= match.home %>','<%= match.away %>'],datasets:[{data:[sumHome,sumAway]}]},options:{cutout:'70%',responsive:true}});
   </script>
 </body>
 </html>
