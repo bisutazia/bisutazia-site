@@ -39,7 +39,8 @@
         const matchAway   = '<%= match.away %>';
         const teamName    = votedTeam === 'home' ? matchHome : matchAway;
         const shareText   = `#ピカイチ投票 ${teamName}のヒーローに「${votedPlayer}」を選びました！\nhttps://bisutazia-site.onrender.com`;
-
+        const tweetText   = encodeURIComponent(shareText);
+        
         if (navigator.share) {
           navigator.share({
             title: `ピカイチ投票結果：${teamName} vs ${votedPlayer}`,
