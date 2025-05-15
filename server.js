@@ -3,14 +3,12 @@ const session = require('express-session');
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config(); // ← .env を読み込むために必須
+// ── その他用選択肢を読み込む ──
+const othersFile   = path.join(__dirname, 'data', 'others.json');
+const OTHER_CHOICES = JSON.parse(fs.readFileSync(othersFile, 'utf8'));
 
 const admin = require('firebase-admin');
-// ── 投票カテゴリを定義 ──
-const VOTE_CATEGORIES = [
-  { key: 'goal',  label: 'ベストゴール'    },
-  { key: 'assist',label: 'ベストアシスト'  },
-  { key: 'keeper',label: '守護神'          }
-];
+
 const FirebaseStore = require('connect-session-firebase')(session);
 
 
@@ -97,7 +95,30 @@ app.get('/match/:id', (req, res) => {
   const now = Date.now();
   const expired = targetMatch.deadline && now > new Date(targetMatch.deadline).getTime();
 
-  res.render('vote_match', { match: targetMatch, voted, expired });
+  
+  // その他（match.id==='other'）用にカテゴリと選択肢を渡す
+  const extraData = match.id === 'other'
+    ? { categories: ['goal','assist','keeper'], choices: OTHER_CHOICES }
+    : {};
+    // ── ここから追加 ──
+  // “その他” のページなら choices と categories を渡す
+  let extra = {};
+  if (targetMatch.id === 'other') {
+    extra = {
+      categories: ['goal','assist','keeper'],
+      choices: OTHER_CHOICES
+    };
+  }
+  // ── ここまで追加 ──
+
+  res.render('vote_match', {
+    match: targetMatch,
+    voted,
+    expired,
+    // extra が {categories,choices} を持っていれば展開、
+    // 空オブジェクトなら何も展開しない
+    ...extra
+  });
 });
 
 
@@ -178,39 +199,7 @@ return res.redirect(redirectUrl);
   }
 });
 
-// ── その他手入力投票用エンドポイント ──
-app.post('/vote/custom', async (req, res) => {
-  try {
-    const { category, choice } = req.body;
-    // 入力チェック
-    if (!VOTE_CATEGORIES.some(c => c.key === category)) {
-      return res.status(400).send('無効な投票カテゴリです');
-    }
-    if (!choice) {
-      return res.status(400).send('チームと選手を入力してください');
-    }
 
-    // Firestore に保存
-    await firestore.collection('votes').add({
-      matchId: 'other',
-      category,
-      choice,  // 例: '鹿島アントラーズ: 鈴木優磨選手'
-      timestamp: admin.firestore.FieldValue.serverTimestamp()
-    });
-
-    // RTDB に集計
-    const ref = rtdb.ref(`votes/other/${category}/${encodeURIComponent(choice)}`);
-    await ref.transaction(curr => (curr || 0) + 1);
-
-    // リダイレクト（結果ページで choice を使えるように）
-    return res.redirect(
-      `/result/other?category=${category}&choice=${encodeURIComponent(choice)}`
-    );
-  } catch (err) {
-    console.error(err);
-    return res.status(500).send('投票の保存中にエラーが発生しました');
-  }
-});
 
 
 app.get('/result/:id', async (req, res) => {
