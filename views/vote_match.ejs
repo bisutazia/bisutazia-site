@@ -83,49 +83,77 @@
 <div class="container">
   <h1>🔥 ピカイチ投票 🔥<br><%= match.home %> vs <%= match.away %></h1>
 
-  <% if (!expired) { %>
+    <% if (!expired) { %>
 
-    <div class="team-section">
+    <% if (match.id === 'other') { %>
+      <!-- ＋＋ その他カテゴリ投票フォーム ＋＋ -->
+      <h2 style="text-align:center; margin-bottom:1rem;">🌟 その他投票 🌟</h2>
       <form action="/vote/<%= match.id %>" method="post">
-        <label>🏠 <strong><%= match.home %></strong> のピカイチは？</label>
-        <select name="player" required>
-          <% (match.homePlayers || []).forEach(player => { %>
-            <option value="<%= player %>"><%= player %></option>
+        <!-- カテゴリ選択 -->
+        <label>投票カテゴリ：</label>
+        <label><input type="radio" name="category" value="goal" checked> ベストゴール</label>
+        <label><input type="radio" name="category" value="assist"> ベストアシスト</label>
+        <label><input type="radio" name="category" value="keeper"> 守護神</label>
+
+        <!-- 予め読み込んだ choices オブジェクトから select を生成 -->
+        <label style="margin-top:1rem;">選手を選択：</label>
+        <select name="player" id="other-select" required>
+          <% choices['goal'].forEach(c => { %>
+            <option value="<%= c %>"><%= c %></option>
           <% }) %>
         </select>
-        <input type="hidden" name="team" value="home">
-        <% if (!voted.home) { %>
-          <button type="submit">✅ 投票する</button>
-        <% } else { %>
-          <button disabled>✅ 投票済み</button>
-        <% } %>
-      </form>
-    </div>
 
-    <div class="team-section">
-      <form action="/vote/<%= match.id %>" method="post">
-        <label>🚩 <strong><%= match.away %></strong> のピカイチは？</label>
-        <select name="player" required>
-          <% (match.awayPlayers || []).forEach(player => { %>
-            <option value="<%= player %>"><%= player %></option>
-          <% }); %>
-        </select>
-        <input type="hidden" name="team" value="away">
-        <% if (!voted.away) { %>
-          <button type="submit">✅ 投票する</button>
-        <% } else { %>
-          <button disabled>✅ 投票済み</button>
-        <% } %>
+        <button type="submit">✅ 投票する</button>
       </form>
-    </div>
+
+      <script>
+        // カテゴリ切り替えで選択肢を差し替え
+        const choices = <%- JSON.stringify(choices) %>;
+        document.querySelectorAll('input[name="category"]').forEach(r => {
+          r.addEventListener('change', e => {
+            const sel = document.getElementById('other-select');
+            sel.innerHTML = choices[e.target.value]
+              .map(c => `<option value="${c}">${c}</option>`).join('');
+          });
+        });
+      </script>
+    <% } else { %>
+      <!-- ← 以下は【変更前】そのまま：ホーム／アウェイ投票フォーム -->
+      <div class="team-section">
+        <form action="/vote/<%= match.id %>" method="post">
+          <label>🏠 <strong><%= match.home %></strong> のピカイチは？</label>
+          <select name="player" required>
+            <% (match.homePlayers || []).forEach(player => { %>
+              <option value="<%= player %>"><%= player %></option>
+            <% }) %>
+          </select>
+          <input type="hidden" name="team" value="home">
+          <% if (!voted.home) { %>
+            <button type="submit">✅ 投票する</button>
+          <% } else { %>
+            <button disabled>✅ 投票済み</button>
+          <% } %>
+        </form>
+      </div>
+
+      <div class="team-section">
+        <form action="/vote/<%= match.id %>" method="post">
+          <label>🚩 <strong><%= match.away %></strong> のピカイチは？</label>
+          <select name="player" required>
+            <% (match.awayPlayers || []).forEach(player => { %>
+              <option value="<%= player %>"><%= player %></option>
+            <% }); %>
+          </select>
+          <input type="hidden" name="team" value="away">
+          <% if (!voted.away) { %>
+            <button type="submit">✅ 投票する</button>
+          <% } else { %>
+            <button disabled>✅ 投票済み</button>
+          <% } %>
+        </form>
+      </div>
+    <% } %>
 
   <% } else { %>
     <p style="text-align:center;color:red;font-weight:bold;">投票受付は終了しました。</p>
   <% } %>
-
-  <div class="footer">
-    <a href="/">🏠 トップページに戻る</a>
-  </div>
-</div>
-</body>
-</html>
