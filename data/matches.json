@@ -70,11 +70,11 @@
       "matches": [
         {
           "id": "other",
-          "home": "その他",
-          "away": "投票",
+          "home": "",
+          "away": "その他投票",
           "homePlayers": [],
           "awayPlayers": [],
-          "deadline": "2099-12-31T23:59:59+09:00"
+          "deadline": "2025-05-17T24:00:00+09:00"
         }
       ]
     }
