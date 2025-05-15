@@ -95,30 +95,20 @@ app.get('/match/:id', (req, res) => {
   const now = Date.now();
   const expired = targetMatch.deadline && now > new Date(targetMatch.deadline).getTime();
 
-  
-  // その他（match.id==='other'）用にカテゴリと選択肢を渡す
-  const extraData = match.id === 'other'
-    ? { categories: ['goal','assist','keeper'], choices: OTHER_CHOICES }
-    : {};
-    // ── ここから追加 ──
-  // “その他” のページなら choices と categories を渡す
-    // “その他” 用の choices を渡すかどうか決める
+    // ── “その他” 用 choices の注入 ──
   let extra = {};
-  // ← ここを targetMatch.id に！
   if (targetMatch.id === 'other') {
     extra = {
       categories: ['goal','assist','keeper'],
       choices: OTHER_CHOICES
     };
   }
-  // ── ここまで追加 ──
 
   res.render('vote_match', {
-    match: targetMatch,
+    match:    targetMatch,
     voted,
     expired,
-    // extra が {categories,choices} を持っていれば展開、
-    // 空オブジェクトなら何も展開しない
+    // 「...extra」で、通常は {}、other の時だけ {categories,choices} が展開される
     ...extra
   });
 });
