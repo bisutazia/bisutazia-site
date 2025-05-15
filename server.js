@@ -102,7 +102,9 @@ app.get('/match/:id', (req, res) => {
     : {};
     // ── ここから追加 ──
   // “その他” のページなら choices と categories を渡す
+    // “その他” 用の choices を渡すかどうか決める
   let extra = {};
+  // ← ここを targetMatch.id に！
   if (targetMatch.id === 'other') {
     extra = {
       categories: ['goal','assist','keeper'],
