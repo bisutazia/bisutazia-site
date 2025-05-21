@@ -120,7 +120,11 @@
     <% } else { %>
       <!-- ← 以下は【変更前】そのまま：ホーム／アウェイ投票フォーム -->
       <div class="team-section">
-        <form action="/vote/<%= match.id %>" method="post">
+    <form
+      action="/vote/<%= match.id %>"
+      method="post"
+      onsubmit="return confirm('本当に「<%= match.home %>」の「' + this.player.value + '」に投票しますか？');"
+    >
           <label>🏠 <strong><%= match.home %></strong> のピカイチは？</label>
           <select name="player" required>
             <% (match.homePlayers || []).forEach(player => { %>
@@ -137,7 +141,11 @@
       </div>
 
       <div class="team-section">
-        <form action="/vote/<%= match.id %>" method="post">
+    <form
+      action="/vote/<%= match.id %>"
+      method="post"
+      onsubmit="return confirm('本当に「<%= match.away %>」の「' + this.player.value + '」に投票しますか？');"
+    >
           <label>🚩 <strong><%= match.away %></strong> のピカイチは？</label>
           <select name="player" required>
             <% (match.awayPlayers || []).forEach(player => { %>
