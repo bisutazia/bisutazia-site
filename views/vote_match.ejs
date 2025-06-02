@@ -8,124 +8,135 @@
   <style>
     body {
       font-family: 'Noto Sans JP', sans-serif;
-      background: linear-gradient(135deg, #f0faff, #ffffff);
+      background: linear-gradient(160deg, #e0f7fa, #ffffff);
       margin: 0;
       padding: 0;
       color: #333;
     }
     .container {
-      padding: 1.2rem;
-      max-width: 550px;
-      margin: auto;
+      padding: 1.5rem;
+      max-width: 600px;
+      margin: 1.5rem auto;
+      background: #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
     }
     h1 {
-      font-size: 1.5rem;
+      font-size: 1.7rem;
       text-align: center;
       color: #004080;
       margin-top: 1rem;
+      line-height: 1.3;
     }
+    .match-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 1rem 0 2rem;
+    }
+    .team-name {
+      font-size: 1.2rem;
+      font-weight: bold;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      color: #fff;
+      flex: 1;
+      text-align: center;
+    }
+    .team-home { background-color: #1976d2; }  /* ホームチームカラーを想定 */
+    .team-away { background-color: #d32f2f; }  /* アウェイチームカラーを想定 */
+    .vs-text {
+      margin: 0 0.5rem;
+      font-size: 1rem;
+      color: #555;
+    }
+
+    /* チームごとの投票セクション */
     .team-section {
-      background: #ffffff;
-      border-radius: 15px;
-      padding: 1.2rem;
+      background: #fafafa;
+      border-radius: 12px;
+      padding: 1.3rem;
       margin-bottom: 1.5rem;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
     .team-section:hover {
-      transform: translateY(-3px);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
     }
-    label {
+    .team-section label {
       font-weight: bold;
       display: block;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.6rem;
       color: #222;
+      font-size: 1.05rem;
     }
-    select {
+    .team-section select {
       width: 100%;
       padding: 12px;
       font-size: 1rem;
-      border-radius: 10px;
+      border-radius: 8px;
       border: 1px solid #ccc;
       margin-bottom: 1rem;
+      appearance: none;
+      background: #fff url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23888'><polygon points='0,0 16,0 8,8'/></svg>") no-repeat right 12px center;
+      background-size: 12px 12px;
     }
-    button {
+
+    .team-section button {
       width: 100%;
       padding: 14px;
       font-size: 1rem;
       font-weight: bold;
       color: #fff;
-      background-color: #28a745;
+      background: linear-gradient(90deg, #ff8f00, #ffc400);
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
-    button:hover {
-      background-color: #218838;
+    .team-section button:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
     }
-    button:disabled {
-      background-color: #aaa;
+    .team-section button:disabled {
+      background-color: #bbb;
       cursor: not-allowed;
+      box-shadow: none;
     }
+
     .footer {
       text-align: center;
       margin-top: 2rem;
     }
     .footer a {
-      color: #007bff;
+      color: #004080;
       text-decoration: none;
       font-weight: bold;
+      font-size: 0.95rem;
     }
   </style>
 </head>
 <body>
-<div class="container">
-  <h1>🔥 ピカイチ投票 🔥<br><%= match.home %> vs <%= match.away %></h1>
+  <div class="container">
+    <!-- ★ 見出しとチーム名を目立たせる ★ -->
+    <h1>🏆 Jリーグ ピカイチ投票 🏆</h1>
+    <div class="match-header">
+      <div class="team-name team-home"><%= match.home %></div>
+      <div class="vs-text">VS</div>
+      <div class="team-name team-away"><%= match.away %></div>
+    </div>
 
     <% if (!expired) { %>
-
-    <% if (match.id === 'other') { %>
-      <!-- ＋＋ その他カテゴリ投票フォーム ＋＋ -->
-      <h2 style="text-align:center; margin-bottom:1rem;">🌟 その他投票 🌟</h2>
-      <form action="/vote/<%= match.id %>" method="post">
-        <!-- カテゴリ選択 -->
-        <label>投票カテゴリ：</label>
-        <label><input type="radio" name="category" value="goal" checked> ベストゴール</label>
-        <label><input type="radio" name="category" value="assist"> ベストアシスト</label>
-        <label><input type="radio" name="category" value="keeper"> 守護神</label>
-
-        <!-- 予め読み込んだ choices オブジェクトから select を生成 -->
-        <label style="margin-top:1rem;">選手を選択：</label>
-        <select name="player" id="other-select" required>
-          <% choices['goal'].forEach(c => { %>
-            <option value="<%= c %>"><%= c %></option>
-          <% }) %>
-        </select>
-
-        <button type="submit">✅ 投票する</button>
-      </form>
-
-      <script>
-        // カテゴリ切り替えで選択肢を差し替え
-        const choices = <%- JSON.stringify(choices) %>;
-        document.querySelectorAll('input[name="category"]').forEach(r => {
-          r.addEventListener('change', e => {
-            const sel = document.getElementById('other-select');
-            sel.innerHTML = choices[e.target.value]
-              .map(c => `<option value="${c}">${c}</option>`).join('');
-          });
-        });
-      </script>
-    <% } else { %>
-      <!-- ← 以下は【変更前】そのまま：ホーム／アウェイ投票フォーム -->
+      <!-- ★ ホームチーム投票エリア ★ -->
       <div class="team-section">
-    <form
-      action="/vote/<%= match.id %>"
-      method="post"
-      onsubmit="return confirm('本当に「<%= match.home %>」の「' + this.player.value + '」選手に投票しますか？');"
-    >
-          <label>🏠 <strong><%= match.home %></strong> のピカイチは？</label>
+        <form
+          action="/vote/<%= match.id %>"
+          method="post"
+          onsubmit="return confirm('【確認】\\n本当に「<%= match.home %>」の「' + this.player.value + '」選手に投票しますか？');"
+        >
+          <label>🏠 <strong><%= match.home %></strong> のイチオシ選手</label>
           <select name="player" required>
             <% (match.homePlayers || []).forEach(player => { %>
               <option value="<%= player %>"><%= player %></option>
@@ -133,35 +144,45 @@
           </select>
           <input type="hidden" name="team" value="home">
           <% if (!voted.home) { %>
-            <button type="submit">✅ 投票する</button>
+            <button type="submit">⚽ 投票する</button>
           <% } else { %>
-            <button disabled>✅ 投票済み</button>
+            <button type="button" disabled>✅ すでに投票済み</button>
           <% } %>
         </form>
       </div>
 
+      <!-- ★ アウェイチーム投票エリア ★ -->
       <div class="team-section">
-    <form
-      action="/vote/<%= match.id %>"
-      method="post"
-      onsubmit="return confirm('本当に「<%= match.away %>」の「' + this.player.value + '」選手に投票しますか？');"
-    >
-          <label>🚩 <strong><%= match.away %></strong> のピカイチは？</label>
+        <form
+          action="/vote/<%= match.id %>"
+          method="post"
+          onsubmit="return confirm('【確認】\\n本当に「<%= match.away %>」の「' + this.player.value + '」選手に投票しますか？');"
+        >
+          <label>🚩 <strong><%= match.away %></strong> のイチオシ選手</label>
           <select name="player" required>
             <% (match.awayPlayers || []).forEach(player => { %>
               <option value="<%= player %>"><%= player %></option>
-            <% }); %>
+            <% }) %>
           </select>
           <input type="hidden" name="team" value="away">
           <% if (!voted.away) { %>
-            <button type="submit">✅ 投票する</button>
+            <button type="submit">⚽ 投票する</button>
           <% } else { %>
-            <button disabled>✅ 投票済み</button>
+            <button type="button" disabled>✅ すでに投票済み</button>
           <% } %>
         </form>
       </div>
+
+    <% } else { %>
+      <p style="text-align:center; color:#d32f2f; font-weight:bold; margin-top:2rem;">
+        ⏰ この試合の投票受付は終了しました。
+      </p>
     <% } %>
 
-  <% } else { %>
-    <p style="text-align:center;color:red;font-weight:bold;">投票受付は終了しました。</p>
-  <% } %>
+    <!-- ★ フッター（トップに戻る） ★ -->
+    <div class="footer">
+      <a href="/">🏠 トップページに戻る</a>
+    </div>
+  </div>
+</body>
+</html>
