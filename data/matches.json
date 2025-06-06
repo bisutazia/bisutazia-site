@@ -7,16 +7,61 @@
   }
 },
   "J2": { 
-    "第18節": {
+    "第17節": {
     "matches":[
-      
+      {
+        "id": "j2-2025-06-07",
+          "home": "FC今治",
+          "away": "大分トリニータ",
+          "homePlayers": [],
+          "awayPlayers": [],
+          "deadline": "2025-06-10T24:00:00+09:00" 
+      }
       ]
     }
   },
   "J3": {
-    "第14節": {
+    "第15節": {
       "matches": [
-       
+        {
+        "id": "j3-2025-06-07",
+          "home": "松本山雅FC",
+          "away": "福島ユナイテッドFC",
+          "homePlayers": [],
+          "awayPlayers": [],
+          "deadline": "2025-06-10T24:00:00+09:00" 
+      },
+      {
+        "id": "j3-2025-06-07-b",
+          "home": "カマタマーレ讃岐",
+          "away": "FC大阪",
+          "homePlayers": [],
+          "awayPlayers": [],
+          "deadline": "2025-06-10T24:00:00+09:00" 
+      },
+      {
+        "id": "j3-2025-06-07-c",
+          "home": "鹿児島ユナイテッドFC",
+          "away": "FC岐阜",
+          "homePlayers": [],
+          "awayPlayers": [],
+          "deadline": "2025-06-10T24:00:00+09:00" 
+      },
+      {
+        "id": "j3-2025-06-07-d",
+          "home": "栃木SC",
+          "away": "ザスパ群馬",
+          "homePlayers": [],
+          "awayPlayers": [],
+          "deadline": "2025-06-10T24:00:00+09:00" 
+      },{
+        "id": "j3-2025-06-07-e",
+          "home": "テゲバジャーロ宮崎",
+          "away": "SC相模原",
+          "homePlayers": [],
+          "awayPlayers": [],
+          "deadline": "2025-06-10T24:00:00+09:00" 
+      }
       ]
     }
   },
