@@ -51,13 +51,22 @@
   </header>
 
   <div class="container">
-    <div class="hero">
-      <h1>ピカイチ投票へようこそ！</h1>
-      <p>一番輝いた選手に一票を投じて、Jリーグをもっとアツくしよう！</p>
-    </div>
-
-    <div id="matchList" class="match-grid"></div>
+  <div class="hero" style="padding:1.5rem; background:linear-gradient(135deg,#004c99,#66aaff); border-radius:8px; color:#fff; text-align:center; margin-bottom:1rem;">
+    <h1 style="font-size:1.8rem; margin-bottom:0.5rem; text-shadow:0 1px 3px rgba(0,0,0,0.5);">
+      🏆 Jリーグ ピカイチ投票 🏆
+    </h1>
+    <p style="font-size:1rem; line-height:1.4; margin-bottom:1rem;">
+      この試合で一番輝いた選手は誰だ？<br>
+      あなたの“渾身の一票”で、ヒーローを誕生させよう！
+    </p>
+    <button onclick="showLeague('J1')" style="padding:0.8rem 1.6rem; background:#ffcc00; color:#004c99; font-weight:bold; border:none; border-radius:6px; font-size:1rem; cursor:pointer; box-shadow:0 3px 6px rgba(0,0,0,0.2);">
+      🚀 さあ、投票を始める！
+    </button>
   </div>
+
+  <div id="matchList" class="match-grid"></div>
+</div>
+
 
   <script>
     const matchesData = <%- JSON.stringify(matches) %>;
