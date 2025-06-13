@@ -7,107 +7,138 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+JP">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    body { margin:0; padding:0; font-family:'Noto Sans JP',sans-serif; background:#f0f2f5; }
-    .container { max-width:600px; margin:2rem auto; padding:1.5rem; background:#fff; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.1); }
-    h1 { font-size:1.9rem; color:#0d47a1; text-align:center; margin-bottom:0.5rem; }
-    .chart-wrapper { position:relative; width:100%; padding-bottom:100%; margin-bottom:1rem; }
-    canvas { position:absolute; top:0; left:0; width:100% !important; height:100% !important; }
-    .result-summary { text-align:center; font-size:1.1rem; margin:1rem 0; color:#333; }
-    .result-summary span { font-weight:bold; color:#d32f2f; }
-    .share-prompt { text-align:center; font-size:1rem; margin-bottom:1rem; color:#555; }
-    .social-share { text-align:center; margin-bottom:1rem; }
-    .home-link { display:block; text-align:center; margin:1.5rem 0; color:#0d47a1; text-decoration:none; font-size:0.9rem; }
+    body { margin: 0; padding: 0; font-family: 'Noto Sans JP', sans-serif; background: #f0f2f5; }
+    .header {
+      background: linear-gradient(90deg, #006bb2, #004080);
+      color: #fff;
+      text-align: center;
+      padding: 1.5rem 0;
+      font-size: 1.6rem;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .container {
+      max-width: 600px;
+      margin: 1.5rem auto;
+      padding: 1.5rem;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .chart-card {
+      position: relative;
+      width: 100%;
+      padding-bottom: 100%;
+      margin-bottom: 1.5rem;
+    }
+    .chart-card canvas {
+      position: absolute; top: 0; left: 0;
+      width: 100% !important; height: 100% !important;
+    }
+    .result-text {
+      text-align: center;
+      font-size: 1.2rem;
+      margin: 1rem 0;
+      color: #333;
+    }
+    .result-text span {
+      font-weight: bold;
+      color: #d32f2f;
+      font-size: 1.4rem;
+    }
+    .actions {
+      text-align: center;
+      margin: 1.5rem 0;
+    }
+    .share-button {
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      background: linear-gradient(90deg, #ff6f00, #ffc400);
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: transform 0.2s;
+    }
+    .share-button:hover { transform: scale(1.05); }
+    .home-link {
+      display: block;
+      margin-top: 1rem;
+      color: #006bb2;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+    .insta-note {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #777;
+    }
   </style>
 </head>
 <body>
+  <!-- ★ ユーザーを祝福するヘッダー ★ -->
+  <div class="header">🎉 投票完了！結果はこちら 🎉</div>
   <div class="container">
-    <h1>🏆 試合結果をシェアしよう！</h1>
-    <!-- HTML：好きな場所にボタンを置く -->
-<button id="shareBtn" style=" 
-display:block; 
-margin:1rem auto; 
-padding:1rem 2rem; 
-background:#0288d1; 
-color:#fff; 
-font-size:1rem; 
-border:none; 
-border-radius:8px;
-">
-共有メニューを開く
-</button>
-
-<!-- JavaScript：ボタンのすぐ下か末尾に入れる -->
-<script>
-document.getElementById('shareBtn').addEventListener('click', async () => {
-  const shareData = {
-    title: 'ピカイチ投票結果',
-    text: `【ピカイチ投票】<%= match.home %> vs <%= match.away %>\n結果はこちら: https://bisutazia-site.onrender.com`,
-    url: window.location.href
-  };
-
-  if (navigator.share) {
-    try {
-      await navigator.share(shareData);
-    } catch (err) {
-      console.error('Share failed:', err);
-    }
-  } else {
-    // フォールバック：クリップボードにコピー
-    try {
-      await navigator.clipboard.writeText(`${shareData.text}\n${shareData.url}`);
-      alert('共有テキストをコピーしました！SNSに貼り付けてシェアしてください。');
-    } catch {
-      alert('共有機能が利用できません。手動で以下をコピーしてください：\n' + shareData.text + '\n' + shareData.url);
-    }
-  }
-});
-</script>
-    <div class="chart-wrapper">
+    <!-- ★ パーセント表示だけ残すチャート ★ -->
+    <div class="chart-card">
       <canvas id="voteChart"></canvas>
     </div>
-    <p class="result-summary">
-      <span><%= totalVotes.homePercent %>%</span> <%= match.home %> vs <span><%= totalVotes.awayPercent %>%</span> <%= match.away %>
+
+    <!-- ★ 結果テキスト ★ -->
+    <p class="result-text">
+      <span><%= totalVotes.homePercent %>%</span> <%= match.home %>
+       vs 
+      <span><%= totalVotes.awayPercent %>%</span> <%= match.away %>
     </p>
-   
-    <a href="/" class="home-link">🏠 ホームに戻る</a>
+
+    <!-- ★ シェア＆CTAボタン ★ -->
+    <div class="actions">
+      <button id="shareBtn" class="share-button">📤 みんなにシェアして盛り上がろう！</button>
+      <a href="/" class="home-link">🏠 他の試合も投票しに戻る</a>
+    </div>
+
+    <!-- ★ SNS拡散呼びかけ ★ -->
+    <p class="insta-note">InstagramやTikTokでも <strong>#ピカイチ</strong> で拡散しよう！</p>
   </div>
 
+  <!-- ★ データ埋め込み ★ -->
   <script id="chartData" type="application/json">
     {"home":<%- JSON.stringify(homeVotes) %>,"away":<%- JSON.stringify(awayVotes) %>}
   </script>
+
+  <!-- ★ チャート描画 & 共有機能 ★ -->
   <script>
-    // チャート描画
+    // チャート
     const ctx = document.getElementById('voteChart').getContext('2d');
-    const data = JSON.parse(document.getElementById('chartData').textContent);
-    const sumHome = Object.values(data.home).reduce((a,b)=>a+b,0);
-    const sumAway = Object.values(data.away).reduce((a,b)=>a+b,0);
+    const raw = JSON.parse(document.getElementById('chartData').textContent);
+    const sumHome = Object.values(raw.home).reduce((a,b)=>a+b,0);
+    const sumAway = Object.values(raw.away).reduce((a,b)=>a+b,0);
     new Chart(ctx, {
       type: 'doughnut',
       data: {
-        labels: ['<%= match.home %>', '<%= match.away %>'],
-        datasets: [{ data: [sumHome, sumAway], backgroundColor: ['#1976d2','#d32f2f'] }]
+        labels: ['<%= match.home %>','<%= match.away %>'],
+        datasets:[{ data: [sumHome,sumAway], backgroundColor:['#1976d2','#d32f2f'] }]
       },
       options: {
-        cutout: '70%',
-        responsive: true,
-        plugins: {
-          legend: { position: 'bottom' },
-          tooltip: {
-            callbacks: {
-              label: function(context) {
-                const value = context.raw;
-                const dataArr = context.dataset.data;
-                const total = dataArr.reduce((a, b) => a + b, 0) || 1;
-                const percent = Math.round((value / total) * 100);
-                return context.label + ': ' + percent + '%';
-              }
-            }
-          }
-        }
+        cutout: '70%', responsive: true,
+        plugins: { legend:{ position:'bottom' } }
+      }
+    });
+
+    // 共有機能
+    document.getElementById('shareBtn').addEventListener('click', async () => {
+      const shareText = `【ピカイチ投票結果】 ${match.home} ${totalVotes.homePercent}% vs ${match.away} ${totalVotes.awayPercent}% \n${window.location.href}`;
+      if (navigator.share) {
+        try { await navigator.share({ title:'ピカイチ投票結果', text:shareText, url:window.location.href }); }
+        catch (e) { console.error(e); }
+      } else {
+        try { await navigator.clipboard.writeText(shareText); alert('共有テキストをコピーしました！'); }
+        catch { prompt('以下をコピー＆貼付してシェアしてください', shareText); }
       }
     });
   </script>
-  
-
 </body>
 </html>
