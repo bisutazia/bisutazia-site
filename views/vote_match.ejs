@@ -147,7 +147,7 @@
         <form
           action="/vote/<%= match.id %>"
           method="post"
-          onsubmit="return confirm('🔥 本当に「<%= match.home %>」の『' + this.player.value + '』選手選手に投票しますか？🔥');"
+          onsubmit="return confirm('🔥 本当に「<%= match.home %>」の『' + this.player.value + '』選手に投票しますか？🔥');"
         >
           <label>🏠 <strong><%= match.home %></strong> のピカイチ選手</label>
           <select name="player" required>
