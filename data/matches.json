@@ -197,9 +197,9 @@
           "id": "other",
           "home": "",
           "away": "その他投票",
-          "homePlayers": ["ああ"],
+          "homePlayers": [],
           "awayPlayers": [],
-          "deadline": "2025-06-14T24:00:00+09:00"
+          "deadline": "2025-06-12T24:00:00+09:00"
         }
       ]
     }
