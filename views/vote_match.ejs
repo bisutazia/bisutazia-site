@@ -21,30 +21,42 @@
       border-radius: 14px;
       box-shadow: 0 4px 16px rgba(0,0,0,0.08);
     }
+        /* ★ ヒーロー見出し強化 ★ */
     h1 {
-      font-size: 1.7rem;
+      font-size: 2rem;
       text-align: center;
-      color: #004080;
-      margin-top: 1rem;
-      line-height: 1.3;
+      color: #fff;
+      margin: 0;
+      padding: 1.2rem 0;
+      background: linear-gradient(90deg, #006bb2, #004080);
+      border-radius: 12px 12px 0 0;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
     .match-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 1rem 0 2rem;
+      margin: 1.5rem 0;
+      gap: 0.5rem;
     }
     .team-name {
-      font-size: 1.2rem;
-      font-weight: bold;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      color: #fff;
       flex: 1;
+      padding: 0.6rem 0;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
       text-align: center;
+      color: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    .team-home { background-color: #1976d2; }  /* ホームチームカラーを想定 */
-    .team-away { background-color: #d32f2f; }  /* アウェイチームカラーを想定 */
+    .team-home {
+      background: #1976d2 url('/icons/home.svg') no-repeat 10px center;
+      background-size: 20px;
+    }
+    .team-away {
+      background: #d32f2f url('/icons/away.svg') no-repeat 10px center;
+      background-size: 20px;
+    }
     .vs-text {
       margin: 0 0.5rem;
       font-size: 1rem;
@@ -89,7 +101,8 @@
       font-size: 1rem;
       font-weight: bold;
       color: #fff;
-      background: linear-gradient(90deg, #ff8f00, #ffc400);
+      /* ★ 投票ボタンを熱く ★ */
+      background: linear-gradient(90deg, #ff6f00, #ffca28);
       border: none;
       border-radius: 8px;
       cursor: pointer;
@@ -134,7 +147,7 @@
         <form
           action="/vote/<%= match.id %>"
           method="post"
-          onsubmit="return confirm('【確認】本当に「<%= match.home %>」の「' + this.player.value + '」選手に投票しますか？');"
+          onsubmit="return confirm('🔥 本当に「<%= match.home %>」の『' + this.player.value + '』選手選手に投票しますか？🔥');"
         >
           <label>🏠 <strong><%= match.home %></strong> のピカイチ選手</label>
           <select name="player" required>
@@ -156,7 +169,7 @@
         <form
           action="/vote/<%= match.id %>"
           method="post"
-          onsubmit="return confirm('【確認】本当に「<%= match.away %>」の「' + this.player.value + '」選手に投票しますか？');"
+          onsubmit="return confirm('🔥 本当に「<%= match.home %>」の『' + this.player.value + '』選手に投票しますか？🔥');"
         >
           <label>🚩 <strong><%= match.away %></strong> のピカイチ選手</label>
           <select name="player" required>
@@ -181,7 +194,9 @@
 
     <!-- ★ フッター（トップに戻る） ★ -->
     <div class="footer">
-      <a href="/">🏠 トップページに戻る</a>
+      <a href="/" style="display:inline-block; margin-top:1.2rem; color:#006bb2; font-weight:bold; text-decoration:none;">
+        ← ホームに戻って他の試合も投票しよう！
+      </a>
     </div>
   </div>
 </body>
