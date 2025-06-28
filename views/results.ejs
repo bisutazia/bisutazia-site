@@ -124,7 +124,19 @@
       },
       options: {
         cutout: '70%', responsive: true,
-        plugins: { legend:{ position:'bottom' } }
+        plugins: { legend:{ position:'bottom' },
+            tooltip: {
+            callbacks: {
+              label: function(context) {
+                const data = context.dataset.data;
+                const total = data.reduce((sum, v) => sum + v, 0) || 1;
+                const value = context.raw;
+                const percent = Math.round((value / total) * 100);
+                return `${context.label}: ${percent}%`;
+              }
+            }
+          }
+        }
       }
     });
 
