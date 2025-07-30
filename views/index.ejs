@@ -3,26 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>ピカイチ投票｜一番輝いた選手を1タップで応援！ビスタジア</title>
-  <meta name="description" content="サポーターのピカイチ投票で“今日一番輝いた選手”を決めよう！SNSから来たあなたの一票がJリーグを変える。投票は超簡単・離脱ゼロ体験。" />
-  <meta property="og:title" content="ピカイチ投票｜ビスタジア | SNSから1タップで投票" />
-  <meta property="og:description" content="スマホで1タップ！今すぐ“推し”にピカイチ投票。離脱ゼロUX。" />
+  <title>ピカイチ投票｜SNSサポの一票がヒーローを生む</title>
+  <meta name="description" content="SNSから今すぐ1タップ！Jリーグ・WEリーグ全試合対応、ピカイチ投票で“今日一番輝いた選手”を決めよう。あなたの一票でサッカーが熱くなる！" />
+  <meta property="og:title" content="ピカイチ投票｜SNSから1タップで推しをヒーローに" />
+  <meta property="og:description" content="Jリーグサポの“本気の一票”で輝いた選手をピカイチに！SNS時代の離脱ゼロUX。" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://bisutazia.com/" />
   <meta property="og:image" content="https://bisutazia.com/ogp.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="ピカイチ投票 | Jリーグで一番輝いた選手に1タップ投票！" />
-  <meta name="twitter:description" content="SNSサポーターの“今すぐ投票”体験。あなたの一票でヒーロー誕生！" />
+  <meta name="twitter:title" content="ピカイチ投票 | Jリーグ・WEリーグで一番輝いた選手に1タップ投票" />
+  <meta name="twitter:description" content="SNSサポーターの一票がヒーローを生む！離脱ゼロUXの“ピカイチ投票”" />
   <meta name="twitter:image" content="https://bisutazia.com/ogp.png" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --primary: #0056b3;
-      --accent: #ffae00;
-      --bg: #f7faff;
+      --primary: #0366d6;
+      --accent: #ffbe16;
+      --danger: #ff4949;
+      --bg: #f9fafb;
       --card-bg: #fff;
       --text: #222;
-      --shadow: 0 2px 14px rgba(0,0,0,0.10);
+      --shadow: 0 2px 24px rgba(0,0,0,0.13);
+      --glass: rgba(255,255,255,0.8);
     }
     html,body { height:100%; }
     body {
@@ -34,288 +36,251 @@
       -webkit-tap-highlight-color:transparent;
       overflow-x:hidden;
       position:relative;
+      font-size:17px;
     }
-    header {
-      background: var(--primary);
-      color: #fff;
-      padding: 0.6rem 0.5rem 0.3rem 0.5rem;
-      text-align: center;
-      box-shadow: var(--shadow);
-      position:sticky; top:0; z-index:11;
-      user-select:none;
-    }
-    .logo-ani {
-      max-height:32px;
-      vertical-align:middle;
-      margin-bottom:0.1em;
-      filter: drop-shadow(0 0 7px #ffe06680);
-      animation: none;
-      transition: transform 0.13s;
-      cursor:pointer;
-    }
-    .logo-ani:active { transform:scale(1.12) rotate(-9deg);}
-    nav {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0.11rem;
-      overflow-x:auto;
-      margin-top:0.08em;
-      background:transparent;
-      padding-bottom:0.2em;
-    }
-    nav button {
-      flex:1 1 70px;
-      background: var(--accent);
-      color: var(--primary);
-      border: none;
-      border-radius: 99px;
-      font-size: 1em;
-      padding: 0.48em 1em;
-      font-weight: bold;
-      margin: 0.1em 0.12em;
-      cursor: pointer;
-      transition: background 0.14s, color 0.13s;
-      min-width:65px;
-      box-shadow:0 2px 6px rgba(255,174,0,0.07);
-    }
-    nav button.active, nav button:active, nav button:focus {
-      background: var(--primary);
-      color: var(--accent);
-    }
-    .container {
-      max-width: 480px;
-      margin: 0 auto;
-      padding: 0 0.2em 1.2em;
-      position:relative;
-      z-index:1;
-    }
-    /* ピカイチスターアニメ：初回のみ中央に1回フェードイン */
-    .pikapika {
-      position:fixed;
-      top:18%;
-      left:50%;
-      transform:translateX(-50%);
-      width: 48px; height:48px;
-      z-index:40;
-      opacity:0;
-      pointer-events:none;
-      user-select:none;
-      animation: pikaFadeIn 1.3s cubic-bezier(0.32,1.2,0.58,1) forwards, pikaShine 2.2s 1.2s infinite;
-    }
-    @keyframes pikaFadeIn {
-      0% { opacity:0; transform:translateX(-50%) scale(0.2);}
-      70% { opacity:1; transform:translateX(-50%) scale(1.11);}
-      100% { opacity:0.85; transform:translateX(-50%) scale(1);}
-    }
-    @keyframes pikaShine {
-      0%,100% { filter:drop-shadow(0 0 0 #ffe06660);}
-      60% { filter:drop-shadow(0 0 12px #ffe066bb);}
-    }
-    /* ロゴ下端小さくアニメ・押しやすさ維持 */
-    .logo-float {
-      position: fixed;
-      right:3vw;
-      bottom:2.5vw;
-      width: 24px; height: 24px;
-      z-index:21;
-      pointer-events: auto;
-      user-select:none;
-      opacity:0.73;
-      animation: logoJump 2.2s cubic-bezier(0.7,0,0.4,1) infinite alternate;
-      filter:drop-shadow(0 0 7px #ffe06640);
-      transition:filter 0.12s;
-    }
-    @keyframes logoJump {
-      0% { transform: translateY(0);}
-      22% { transform: translateY(-5px) scale(1.07);}
-      36% { transform: translateY(-8px) scale(1.11);}
-      48% { transform: translateY(-3px);}
-      62% { transform: translateY(0);}
-      100% { transform: translateY(0);}
-    }
-    .logo-float:active {
-      filter:drop-shadow(0 0 20px #ffe066cc) brightness(1.13);
-      animation-play-state: paused;
-    }
+    /* ---- HERO ---- */
     .hero {
-      margin-top:1.1em;
-      margin-bottom: 1em;
-      background: linear-gradient(110deg,var(--primary) 75%,#ffae00 100%);
-      color: #fff;
-      border-radius: 17px;
-      padding: 1.8em 0.7em 1em;
+      margin-top:3vw;
+      margin-bottom: 1.5em;
+      padding: 2.4em 0.7em 1.4em 0.7em;
+      border-radius: 2.2em;
       text-align: center;
+      background: linear-gradient(120deg, var(--primary) 85%, var(--accent) 100%);
+      color: #fff;
       box-shadow: var(--shadow);
       position:relative;
       overflow:hidden;
-      z-index:3;
+      max-width:480px;
+      margin-left:auto; margin-right:auto;
+      isolation:isolate;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: -28px; left: 20%;
+      width: 110px; height: 110px;
+      background: radial-gradient(circle,#fff5b7bb 0%,transparent 80%);
+      opacity: .55;
+      z-index:0;
     }
     .hero h1 {
-      font-size: 1.3em;
-      margin: 0 0 0.22em 0;
-      font-weight: bold;
-      letter-spacing:0.01em;
-      line-height:1.19;
-      text-shadow:0 2px 8px #0056b3c2,0 0 12px #ffe06619;
-      position:relative;
-      z-index:2;
-      animation: fadeInUp 0.7s 0.11s both;
+      font-size: 1.55em;
+      margin: 0 0 0.34em 0;
+      font-weight: 900;
+      letter-spacing:0.025em;
+      line-height:1.2;
+      text-shadow:0 3px 16px #0366d655, 0 0 17px #ffbe1640;
+      z-index:2; position:relative;
+      display:inline-block;
+      animation: fadeDown .78s cubic-bezier(.7,0,.38,1.22);
     }
-    @keyframes fadeInUp {
-      0% { opacity:0; transform: translateY(20px);}
-      100% { opacity:1; transform: translateY(0);}
+    @keyframes fadeDown {
+      0% { opacity:0; transform:translateY(-30px) scale(0.98);}
+      100% { opacity:1; transform:translateY(0) scale(1);}
+    }
+    .hero .star-bounce {
+      display:inline-block;
+      font-size:1.3em;
+      margin-left:0.08em;
+      animation: pikapika 1.3s cubic-bezier(.77,0,.18,1.14) infinite;
+      vertical-align:middle;
+      filter:drop-shadow(0 0 11px #ffbe16aa);
+    }
+    @keyframes pikapika {
+      0%,100% { transform:translateY(0) scale(1);}
+      15% { transform:translateY(-9px) scale(1.14);}
+      30% { transform:translateY(-2px) scale(1.02);}
+      50% { transform:translateY(0) scale(1);}
     }
     .hero p {
-      margin: 0.4em 0 1.1em 0;
-      font-size: 1.03em;
-      line-height:1.66;
-      color: #fffbe9;
+      margin: 0.7em 0 1.3em 0;
+      font-size: 1.09em;
+      line-height:1.65;
       font-weight:500;
-      z-index:2;
-      position:relative;
-      animation: fadeInUp 0.7s 0.21s both;
+      z-index:2; position:relative;
+      animation: fadeDown .9s .12s both cubic-bezier(.73,0,.2,1.18);
+      letter-spacing:0.012em;
     }
     .timer {
+      display: inline-block;
       background: var(--accent);
       color: var(--primary);
-      display: inline-block;
       font-size:1em;
       font-weight:bold;
       border-radius:8px;
-      padding:0.31em 0.85em;
-      margin-bottom: 1.07em;
-      margin-top: 0.1em;
-      box-shadow:0 0 12px #ffe0661a;
-      animation: fadeInUp 0.7s 0.31s both;
+      padding:0.38em 0.95em;
+      margin-bottom: 1.17em;
+      margin-top: 0.2em;
+      box-shadow:0 0 12px #ffe0661c;
+      letter-spacing:0.01em;
+      animation: fadeDown .82s .21s both cubic-bezier(.73,0,.2,1.18);
     }
+    /* ---- CTAボタン ---- */
     .cta-btn {
       display: block;
       width: 100%;
-      background: var(--accent);
+      background: linear-gradient(90deg,var(--accent) 65%,#fff1c0 100%);
       color: var(--primary);
-      font-size: 1.14em;
+      font-size: 1.24em;
       font-weight: 900;
-      padding: 1.1em 0;
+      padding: 1.18em 0;
       border: none;
       border-radius: 99px;
-      margin-top: 0.7em;
-      margin-bottom: 0.2em;
-      box-shadow: 0 4px 13px rgba(255,174,0,0.13);
-      transition: background 0.11s, color 0.13s, box-shadow 0.13s;
-      letter-spacing: 0.01em;
+      margin-top: 0.8em;
+      margin-bottom: 0.13em;
+      box-shadow: 0 7px 28px #ffe06633;
+      transition: background 0.12s, color 0.14s, box-shadow 0.17s, transform 0.12s;
+      letter-spacing: 0.03em;
       cursor:pointer;
       position:relative;
       overflow:hidden;
-      animation: fadeInUp 0.7s 0.38s both;
-    }
-    .cta-btn:active,.cta-btn:hover {
-      background: #ffe066;
-      color: var(--primary);
-      box-shadow:0 0 20px #ffe06670;
+      animation: ctaPop .9s .19s both cubic-bezier(.77,0,.18,1.14);
+      will-change:transform,box-shadow;
     }
     .cta-btn .star {
-      display:inline-block; vertical-align:middle; margin-left:0.06em;
-      animation: starspin 1.3s linear infinite;
+      display:inline-block;
+      vertical-align:middle;
+      margin-left:0.09em;
+      animation: pikapika 1.8s cubic-bezier(.77,0,.18,1.14) infinite;
+      filter:drop-shadow(0 0 10px #ffe066aa);
     }
-    @keyframes starspin {
-      0% { transform:rotate(0deg);}
-      100% { transform:rotate(360deg);}
-    }
-    .catch-nudge {
-      margin: 1.06em auto 0.23em;
-      background: #fff;
+    .cta-btn:active,.cta-btn:hover {
+      background:linear-gradient(90deg,#ffe066 70%,#fffbe6 100%);
       color: var(--primary);
-      font-size: 1.01em;
+      transform: scale(1.04);
+      box-shadow:0 0 24px #ffe066cc;
+    }
+    @keyframes ctaPop {
+      0% { opacity:0; transform:scale(.96);}
+      70% { opacity:.7; transform:scale(1.10);}
+      100% { opacity:1; transform:scale(1);}
+    }
+    /* ---- ナッジ ---- */
+    .catch-nudge {
+      margin: 1.15em auto 0.28em;
+      background: var(--glass);
+      color: var(--primary);
+      font-size: 1.06em;
       border-left: 7px solid var(--accent);
-      padding: 0.7em 0.9em;
-      border-radius: 10px;
+      padding: 0.78em 1.2em;
+      border-radius: 12px;
       font-weight: bold;
-      box-shadow:0 2px 13px rgba(0,0,0,0.04);
+      box-shadow:0 2px 19px rgba(0,0,0,0.03);
       line-height:1.5;
       text-align:center;
-      animation: fadeInUp 0.7s 0.48s both;
+      max-width:440px;
+      animation: fadeDown .9s .33s both cubic-bezier(.73,0,.2,1.18);
+      isolation:isolate;
     }
+    /* ---- 投票カード ---- */
     .match-list {
-      margin: 1em 0 0 0;
+      margin: 1.28em 0 0 0;
       display: flex;
       flex-direction: column;
-      gap: 0.77em;
-      animation: fadeInUp 0.7s 0.7s both;
+      gap: 1.01em;
+      animation: fadeDown .7s .41s both cubic-bezier(.73,0,.2,1.18);
     }
     .match-card {
       background: var(--card-bg);
-      border-radius: 12px;
-      box-shadow: 0 2px 13px rgba(0,0,0,0.09);
-      padding: 0.98em 0.38em 0.7em;
+      border-radius: 1.2em;
+      box-shadow: 0 3px 20px rgba(0,0,0,0.09);
+      padding: 1.1em 0.5em 0.75em;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      border-left: 5px solid var(--primary);
+      border-left: 6px solid var(--primary);
       position:relative;
       overflow:hidden;
-      animation: cardPop 0.7s cubic-bezier(0.68,-0.55,0.27,1.55) both;
+      animation: cardPop .7s cubic-bezier(.68,-0.55,.27,1.55) both;
+      will-change:transform,box-shadow;
+      transition:box-shadow 0.14s,transform 0.13s;
     }
     @keyframes cardPop {
-      0% {opacity:0;transform:scale(0.9);}
+      0% {opacity:0;transform:scale(0.95);}
       100% {opacity:1;transform:scale(1);}
     }
     .match-card h3 {
-      font-size: 1.06em;
+      font-size: 1.13em;
       color: var(--primary);
-      margin: 0.18em 0 0.36em;
+      margin: 0.21em 0 0.41em;
       font-weight: bold;
       letter-spacing:0.01em;
+      text-shadow:0 1px 7px #ffbe1630;
     }
     .match-card .vote-btn {
-      background: var(--accent);
+      background: linear-gradient(90deg,var(--accent) 65%,#fffbe6 100%);
       color: var(--primary);
       border: none;
       border-radius: 99px;
-      padding: 0.77em 0;
+      padding: 0.97em 0;
       width: 97%;
-      font-size: 1.07em;
-      font-weight: bold;
-      margin: 0.63em 0 0.1em 0;
+      font-size: 1.09em;
+      font-weight: 900;
+      margin: 0.59em 0 0.1em 0;
       cursor: pointer;
-      transition: background 0.12s, color 0.11s;
-      box-shadow:0 2px 8px rgba(255,174,0,0.08);
+      transition: background 0.12s, color 0.12s, box-shadow 0.11s, transform 0.13s;
+      box-shadow:0 2px 8px #ffe06651;
       position:relative;
       overflow:hidden;
-      letter-spacing:0.01em;
-      animation: fadeInUp 0.7s 0.81s both;
+      letter-spacing:0.015em;
+      animation: ctaPop .7s .51s both;
+      will-change:transform,box-shadow;
+    }
+    .match-card .vote-btn .star {
+      display:inline-block; vertical-align:middle; margin-left:0.07em;
+      animation: pikapika 1.6s cubic-bezier(.77,0,.18,1.14) infinite;
     }
     .match-card .vote-btn:active,.match-card .vote-btn:hover {
-      background: #ffe066;
+      background:linear-gradient(90deg,#ffe066 75%,#fffbe6 100%);
       color: var(--primary);
-      box-shadow:0 0 14px #ffe06660;
-    }
-    .vote-btn .star {
-      display:inline-block; vertical-align:middle; margin-left:0.05em;
-      animation: starspin 1.3s linear infinite;
+      transform:scale(1.04);
+      box-shadow:0 0 18px #ffe06690;
     }
     .info-tip {
-      font-size: 0.95em;
+      font-size: 0.97em;
       color: #555;
-      margin: 0.7em 0 0.21em 0;
+      margin: 1.08em 0 0.28em 0;
       text-align: center;
-      animation: fadeInUp 0.7s 0.97s both;
+      animation: fadeDown .7s .69s both cubic-bezier(.73,0,.2,1.18);
     }
-    /* スマホレスポンシブ */
+    /* ---- フローティング・ロゴ ---- */
+    .logo-float {
+      position: fixed;
+      right:3vw;
+      bottom:2.7vw;
+      width: 25px; height: 25px;
+      z-index:21;
+      pointer-events: auto;
+      user-select:none;
+      opacity:0.71;
+      animation: logoPop 2.2s cubic-bezier(.67,0,.36,1.13) infinite alternate;
+      filter:drop-shadow(0 0 10px #ffe06633);
+      transition:filter 0.13s;
+    }
+    @keyframes logoPop {
+      0% { transform: translateY(0);}
+      24% { transform: translateY(-7px) scale(1.13);}
+      54% { transform: translateY(0);}
+      100% { transform: translateY(0);}
+    }
+    .logo-float:active {
+      filter:drop-shadow(0 0 22px #ffe066cc) brightness(1.11);
+      animation-play-state: paused;
+    }
+    /* ---- レスポンシブ ---- */
     @media (max-width:480px){
-      .container { padding: 0 0.03em;}
-      .hero{padding:1.1em 0.2em 0.6em;}
-      .match-card{padding:0.5em 0.05em 0.57em;}
-      .pikapika{width:38px;height:38px;}
-      .logo-float{width:18px;height:18px;}
+      body { font-size:16px;}
+      .hero{padding:1.6em 0.16em 0.8em;}
+      .match-card{padding:0.55em 0.03em 0.65em;}
+      .logo-float{width:17px;height:17px;}
     }
   </style>
 </head>
 <body>
-  <!-- ピカイチ・スターアニメ（流入直後のみ中央でフェード） -->
+  <!-- ピカイチスターはSVGやPNGで用意、例: https://www.svgrepo.com/svg/528642/star  -->
   <img src="/pikapika_star.svg" alt="ピカイチスター" class="pikapika" aria-hidden="true">
-  <!-- ロゴが右下に小さく控えめに跳ねる（タップで光る） -->
+  <!-- ロゴ右下に小さく -->
   <img src="/logo.png" alt="ビスタジア ロゴ" class="logo-float" id="floatLogo"
     onclick="window.scrollTo({top:0,behavior:'smooth'})" tabindex="0" aria-label="ページトップに戻る" />
   <header>
@@ -329,13 +294,13 @@
       <button onclick="showLeague('その他')" id="その他">その他</button>
     </nav>
   </header>
-  <main class="container">
+  <main>
     <section class="hero">
-      <h1>ピカイチ投票 <span class="star">✨</span></h1>
+      <h1>ピカイチ投票 <span class="star-bounce">✨</span></h1>
       <p>
-        “今日一番輝いた選手”を<br>
-        <b>あなたの1タップ</b>で応援しよう！<br>
-        SNSサポの一票がヒーローを生む。
+        SNSサポーターが<br>
+        <b>“一番輝いた選手”</b>に1タップ投票！<br>
+        今しかできない、<span style="color:#fff;">あなたの“本気”を届けよう。</span>
       </p>
       <div class="timer" id="voteTimer">本日の投票 締切まで残り --時間--分</div>
       <button class="cta-btn" onclick="scrollToList()">
@@ -343,12 +308,13 @@
       </button>
     </section>
     <div class="catch-nudge">
-      サポーターの“今すぐ投票”が公式化の力に。<br>
-      投票体験はスマホで1タップ、離脱ゼロ！
+      サポーターの投票が<br>
+      “公式化”の推進力になる。<br>
+      スマホ1タップ、離脱ゼロ！
     </div>
     <div class="match-list" id="matchList"></div>
     <div class="info-tip">
-      投票後は #ピカイチ投票 #ビスタジア で推しをシェアしよう！
+      投票後は <b>#ピカイチ投票 #ビスタジア</b> でSNS拡散！みんなの推し熱が未来を変える。
     </div>
   </main>
   <footer>
@@ -413,11 +379,11 @@
     }
     window.onload = () => {
       showLeague(getSNSLeague());
-      // ピカイチスターを数秒表示後消す（邪魔しない）
+      // ピカイチスターを1.2秒で消す（UX阻害しない）
       setTimeout(()=>{
         const pika = document.querySelector('.pikapika');
         if(pika) pika.style.display='none';
-      },1600);
+      },1200);
     };
     // 右下ロゴにタップアニメ追加
     document.addEventListener('DOMContentLoaded',()=>{
@@ -425,11 +391,11 @@
       if(logo){
         logo.addEventListener('click',()=>{
           logo.style.transition='transform 0.22s';
-          logo.style.transform='scale(1.24) rotate(13deg)';
+          logo.style.transform='scale(1.19) rotate(16deg)';
           setTimeout(()=>{
             logo.style.transform='';
             logo.style.transition='';
-          },240);
+          },180);
         });
       }
     });
