@@ -3,119 +3,273 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>ピカイチ投票 | Jリーグ公式級ファン投票サイト【ビスタジア】</title>
-  <meta name="description" content="Jリーグ・WEリーグ全試合対応！あなたが試合で一番輝いた選手に“ピカイチ投票”しよう。ファンの想いがヒーローを作る。今すぐスマホで1分、投票体験！" />
-  <meta property="og:title" content="ピカイチ投票 | Jリーグ・WEリーグ ファンが選ぶヒーロー" />
-  <meta property="og:description" content="SNSからも即投票！あなたが「一番輝いた」と思う選手にピカイチ投票を。" />
+  <title>【ピカイチ投票】Jリーグ全カテゴリ｜一番輝いた選手に投票しよう！ビスタジア</title>
+  <meta name="description" content="サポーターの“ピカイチ投票”で一番輝いた選手を讃えよう！Jリーグ全カテゴリ対応、あなたの一票がヒーローを生む。スマホでキラキラ投票体験！" />
+  <meta property="og:title" content="ピカイチ投票｜ビスタジア | 一番輝いた選手を決めるJリーグ投票" />
+  <meta property="og:description" content="“渾身の一票”であなたが選ぶピカイチ選手に投票！サポーターの声でヒーロー誕生。" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://bisutazia.com/" />
   <meta property="og:image" content="https://bisutazia.com/ogp.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="ピカイチ投票 | Jリーグ・WEリーグ" />
-  <meta name="twitter:description" content="試合で一番輝いた選手に、あなたの“ピカイチ投票”を！" />
+  <meta name="twitter:title" content="ピカイチ投票 | Jリーグで一番輝いた選手は？" />
+  <meta name="twitter:description" content="あなたの“渾身の一票”が選手をヒーローに！今すぐ投票しよう。" />
   <meta name="twitter:image" content="https://bisutazia.com/ogp.png" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --primary: #004c99;
-      --accent: #ff5722;
-      --highlight: #ffe066;
-      --bg: #f8fafd;
+      --primary: #0056b3;
+      --accent: #ffae00;
+      --bg: #f7faff;
       --card-bg: #fff;
       --text: #222;
-      --shadow: 0 2px 10px rgba(0,0,0,0.07);
+      --shadow: 0 2px 14px rgba(0,0,0,0.10);
+      --glitter1: #ffe066;
+      --glitter2: #fffbe6;
+      --glitter3: #e3edff;
     }
     html,body { height:100%; }
     body {
-      margin:0; font-family:'Noto Sans JP',sans-serif; background:var(--bg); color:var(--text);
-      min-height:100vh; -webkit-tap-highlight-color:transparent;
+      margin: 0;
+      font-family: 'Noto Sans JP',sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height:100vh;
+      -webkit-tap-highlight-color:transparent;
+      overflow-x:hidden;
     }
     header {
-      background:var(--primary); color:#fff; padding:0.7rem 0.5rem;
-      display:flex; flex-direction:column; align-items:center; box-shadow:var(--shadow);
-      position:sticky; top:0; z-index:10;
+      background: var(--primary);
+      color: #fff;
+      padding: 0.65rem 0.5rem 0.3rem 0.5rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+      position:sticky; top:0; z-index:11;
     }
-    .logo { max-height:36px; margin-bottom:0.25em; }
+    .logo { max-height:36px; vertical-align:middle; }
     nav {
-      width:100%; display:flex; gap:0.3rem; overflow-x:auto; padding-bottom:0.2em;
-      justify-content:center; background:transparent; margin:0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.18rem;
+      overflow-x:auto;
+      margin-top:0.12em;
+      background:transparent;
+      padding-bottom:0.2em;
     }
     nav button {
-      flex:1 1 100px; min-width:90px; background:var(--accent); color:#fff; border:none;
-      border-radius:999px; font-size:1.02rem; padding:0.7em 1em; font-weight:700; margin:0.18em 0;
-      cursor:pointer; transition:background 0.17s;
+      flex:1 1 70px;
+      background: var(--accent);
+      color: var(--primary);
+      border: none;
+      border-radius: 99px;
+      font-size: 1em;
+      padding: 0.56em 1.15em;
+      font-weight: bold;
+      margin: 0.1em 0.12em;
+      letter-spacing:0.01em;
+      cursor: pointer;
+      transition: background 0.19s, color 0.17s;
+      min-width:70px;
+      box-shadow:0 2px 7px rgba(255,174,0,0.09);
     }
     nav button.active, nav button:active, nav button:focus {
-      background:var(--highlight); color:var(--primary);
+      background: var(--primary);
+      color: var(--accent);
     }
     .container {
-      max-width: 500px; margin:0 auto; padding:0 0.6em 1em;
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 0 0.5em 1.2em;
+      position:relative;
+      z-index:1;
+    }
+    /* キラキラアニメーション・サッカーボールアニメ用 */
+    .glitter {
+      pointer-events:none;
+      position:fixed;
+      z-index:30;
+      width:3.5em; height:3.5em;
+      top:2.5%; left:calc(50% - 1.7em);
+      animation: glitterFade 2.1s ease-in-out infinite alternate;
+      filter:drop-shadow(0 0 12px #ffe06680);
+      opacity:0.85;
+      user-select:none;
+    }
+    @keyframes glitterFade {
+      0% { opacity:0.7; filter:drop-shadow(0 0 12px #fffbe6); }
+      50% { opacity:1; filter:drop-shadow(0 0 36px #ffe066); }
+      100% { opacity:0.65; filter:drop-shadow(0 0 20px #ffe06650); }
+    }
+    .soccerball {
+      position:fixed;
+      z-index:29;
+      width: 3em; height: 3em;
+      left: 6%; bottom: 4%;
+      animation: ballMove 1.9s ease-in-out infinite alternate;
+      opacity:0.75;
+      filter:drop-shadow(0 0 10px #bbd5ff88);
+      user-select:none;
+    }
+    @keyframes ballMove {
+      0% { transform: translateY(0) rotate(0deg); }
+      60% { transform: translateY(-8px) rotate(40deg);}
+      100% { transform: translateY(0) rotate(100deg);}
     }
     .hero {
-      margin-top:1.1em; margin-bottom:0.7em;
-      background:linear-gradient(120deg,#004c99 90%,#4ea7ff 100%);
-      color:#fff; border-radius:18px; padding:2.2em 1em 1.1em 1em; text-align:center;
-      box-shadow:var(--shadow);
+      margin-top:1.2em;
+      margin-bottom: 1em;
+      background: linear-gradient(110deg,var(--primary) 70%,#75aaff 100%);
+      color: #fff;
+      border-radius: 22px;
+      padding: 2.1em 1em 1.2em;
+      text-align: center;
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
     }
     .hero h1 {
-      font-size:1.36em; margin:0 0 0.32em 0; font-weight:bold; letter-spacing:0.03em;
-      line-height:1.3; text-shadow:0 2px 6px rgba(0,0,0,0.15);
+      font-size: 1.5em;
+      margin: 0 0 0.25em 0;
+      font-weight: bold;
+      letter-spacing:0.02em;
+      line-height:1.21;
+      text-shadow:0 2px 10px #0056b3c7,0 0 12px #ffe06642;
+      position:relative;
+      z-index:2;
+    }
+    .hero .star {
+      display:inline-block;
+      vertical-align: middle;
+      margin-left:0.1em;
+      animation: starspin 2.2s linear infinite;
+    }
+    @keyframes starspin {
+      0% { transform:rotate(0deg);}
+      100% { transform:rotate(360deg);}
     }
     .hero p {
-      margin:0.45em 0 1.12em 0; font-size:1.08em; line-height:1.6;
-      color:#fffbe7; font-weight:500; letter-spacing:0.01em;
+      margin: 0.53em 0 1.09em 0;
+      font-size: 1.06em;
+      line-height:1.67;
+      letter-spacing:0.01em;
+      color: #fffbe9;
+      font-weight:500;
+      z-index:2;
+      position:relative;
     }
-    .hero .timer {
-      background:var(--highlight); color:var(--primary);
-      display:inline-block; font-size:1.04em; font-weight:bold;
-      border-radius:8px; padding:0.39em 0.89em; margin-bottom:1em; margin-top:0.15em;
+    .timer {
+      background: var(--accent);
+      color: var(--primary);
+      display: inline-block;
+      font-size:1.06em;
+      font-weight:bold;
+      border-radius:8px;
+      padding:0.35em 0.9em;
+      margin-bottom: 1.1em;
+      margin-top: 0.1em;
+      box-shadow:0 0 12px #ffe06633;
     }
     .cta-btn {
-      display:block; width:100%; background:var(--accent); color:#fff;
-      font-size:1.13em; font-weight:700; padding:1.05em 0; border:none; border-radius:99px;
-      margin-top:0.8em; margin-bottom:0.05em; box-shadow:0 4px 14px rgba(255,87,34,0.11);
-      transition:background 0.18s; letter-spacing:0.01em; cursor:pointer;
+      display: block;
+      width: 100%;
+      background: var(--accent);
+      color: var(--primary);
+      font-size: 1.15em;
+      font-weight: 900;
+      padding: 1.13em 0;
+      border: none;
+      border-radius: 99px;
+      margin-top: 0.77em;
+      margin-bottom: 0.2em;
+      box-shadow: 0 4px 20px rgba(255,174,0,0.18);
+      transition: background 0.16s, color 0.15s;
+      letter-spacing: 0.01em;
+      cursor:pointer;
+      position:relative;
+      overflow:hidden;
     }
-    .cta-btn:active, .cta-btn:hover {
-      background:#ff8352; color:#fff;
+    .cta-btn:active,.cta-btn:hover {
+      background: #ffe066;
+      color: var(--primary);
     }
-    .nudge-msg {
-      margin:1.1em auto 0.2em; background:#fff; color:var(--primary); font-size:1.06em;
-      border-left:6px solid var(--accent); padding:0.8em 1em; border-radius:10px; font-weight:700;
-      box-shadow:0 2px 10px rgba(0,0,0,0.07); line-height:1.55;
+    .catch-nudge {
+      margin: 1.28em auto 0.25em;
+      background: #fff;
+      color: var(--primary);
+      font-size: 1.07em;
+      border-left: 7px solid var(--accent);
+      padding: 0.8em 1.15em;
+      border-radius: 12px;
+      font-weight: bold;
+      box-shadow:0 2px 13px rgba(0,0,0,0.06);
+      line-height:1.5;
+      text-align:center;
     }
     .match-list {
-      margin:1.3em 0 0 0; display:flex; flex-direction:column; gap:0.9em;
+      margin: 1.1em 0 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.95em;
     }
     .match-card {
-      background:var(--card-bg); border-radius:15px; box-shadow:0 2px 13px rgba(0,0,0,0.09);
-      padding:1.1em 0.5em 0.85em; display:flex; flex-direction:column; align-items:center; justify-content:center;
-      border-left:5px solid var(--primary);
+      background: var(--card-bg);
+      border-radius: 15px;
+      box-shadow: 0 2px 13px rgba(0,0,0,0.08);
+      padding: 1.1em 0.5em 0.9em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-left: 6px solid var(--primary);
+      position:relative;
+      overflow:hidden;
     }
     .match-card h3 {
-      font-size:1.12em; color:var(--primary); margin:0.21em 0 0.35em; font-weight:700;
+      font-size: 1.13em;
+      color: var(--primary);
+      margin: 0.22em 0 0.41em;
+      font-weight: bold;
+      letter-spacing:0.01em;
     }
     .match-card .vote-btn {
-      background:var(--accent); color:#fff; border:none; border-radius:999px;
-      padding:0.8em 0; width:94%; font-size:1.04em; font-weight:700; margin:0.8em 0 0.13em 0;
-      cursor:pointer; transition:background 0.2s; box-shadow:0 2px 9px rgba(0,76,153,0.11);
+      background: var(--accent);
+      color: var(--primary);
+      border: none;
+      border-radius: 99px;
+      padding: 0.83em 0;
+      width: 94%;
+      font-size: 1.03em;
+      font-weight: bold;
+      margin: 0.72em 0 0.15em 0;
+      cursor: pointer;
+      transition: background 0.18s, color 0.14s;
+      box-shadow:0 2px 8px rgba(255,174,0,0.10);
+      position:relative;
+      overflow:hidden;
     }
-    .match-card .vote-btn:active, .match-card .vote-btn:hover {
-      background:#ff8352; color:#fff;
+    .match-card .vote-btn:active,.match-card .vote-btn:hover {
+      background: #ffe066;
+      color: var(--primary);
     }
     .info-tip {
-      font-size:0.95em; color:#666; margin:1.0em 0 0.18em 0; text-align:center;
+      font-size: 0.98em;
+      color: #555;
+      margin: 0.85em 0 0.25em 0;
+      text-align: center;
     }
-    footer {
-      margin:2.6em 0 1em 0; font-size:0.93em; color:#888; text-align:center;
-    }
+    /* スマホレスポンシブ */
     @media (max-width:480px){
-      .container { padding:0 0.19em;}
-      .hero{padding:1.3em 0.55em 0.7em;}
+      .container { padding: 0 0.07em;}
+      .hero{padding:1.4em 0.4em 0.85em;}
+      .match-card{padding:0.67em 0.15em 0.7em;}
     }
   </style>
 </head>
 <body>
+  <!-- キラキラアイコン/サッカーボールアニメ -->
+  <img src="/pikapika_star.svg" alt="キラキラ" class="glitter" aria-hidden="true">
+  <img src="/soccerball.svg" alt="サッカーボール" class="soccerball" aria-hidden="true">
+
   <header>
     <img src="/logo.png" alt="ビスタジア ロゴ" class="logo" />
     <nav id="leagues">
@@ -129,24 +283,27 @@
   </header>
   <main class="container">
     <section class="hero">
-      <h1>ピカイチ投票<br><span style="font-size:0.93em;">—「あなたが試合で一番輝いた選手」に一票を！</span></h1>
+      <h1>
+        <span>ピカイチ投票</span>
+        <span class="star">✨</span>
+      </h1>
       <p>
-        SNSから来てくれてありがとう！<br>
-        今すぐ“推し”や心を動かした選手を<br>
-        <b>あなたの一票でヒーローに</b>しよう。
+        今日の試合で“<b>一番輝いた選手</b>”は誰？<br>
+        サポーターの<br>
+        <b>「渾身の一票」</b>でヒーロー誕生！<br>
+        <span style="font-size:0.98em;">（Jリーグ・WEリーグ全カテゴリ対応）</span>
       </p>
       <div class="timer" id="voteTimer">本日の投票 締切まで残り --時間--分</div>
-      <button class="cta-btn" onclick="scrollToList()">今すぐピカイチ投票を始める</button>
+      <button class="cta-btn" onclick="scrollToList()">✨ いますぐピカイチ投票する！</button>
     </section>
-    <div class="nudge-msg">
-      迷う暇はない！<br>
-      「ピカイチ投票」は今日しかできません。<br>
-      <b>あなたの応援＝選手の誇り</b>です。
+    <div class="catch-nudge">
+      あなたの一票が、今日の“ピカイチ選手”を決める！<br>
+      サポーターの想いが公式化の一歩に。
     </div>
     <div class="match-list" id="matchList"></div>
     <div class="info-tip">
-      投票後は「#ピカイチ投票」「#ビスタジア」をつけてSNSで推しをアピールしよう！<br>
-      サポーターの声が、未来を変える。
+      投票後はX（旧Twitter）で<br>
+      <b>#ピカイチ投票 #ビスタジア</b> をつけて“推し選手”をアピールしよう！
     </div>
   </main>
   <footer>
@@ -154,7 +311,7 @@
     &copy; <script>document.write(new Date().getFullYear())</script> ビスタジア
   </footer>
   <script>
-    // 設定データ: matches = { J1: { 節: { matches:[{id,home,away}] } }, ... }
+    // matches: { J1: { 節: { matches:[{id,home,away}] } }, ... }
     const matchesData = <%- JSON.stringify(matches) %>;
 
     function showLeague(league) {
@@ -173,7 +330,9 @@
           card.className = 'match-card';
           card.innerHTML = `
             <h3>${m.home} vs ${m.away}</h3>
-            <button class="vote-btn" onclick="location.href='/match/${m.id}'">この試合でピカイチに投票する</button>
+            <button class="vote-btn" onclick="location.href='/match/${m.id}'">
+              この試合で一番輝いた選手にピカイチ投票
+            </button>
           `;
           list.appendChild(card);
         });
@@ -183,7 +342,9 @@
     // スマホで投票エリアまで自動スクロール
     function scrollToList(){
       const list=document.getElementById('matchList');
-      if(list){list.scrollIntoView({behavior:'smooth'});}
+      if(list){
+        list.scrollIntoView({behavior:'smooth', block:'start'});
+      }
     }
     // 限定感: 締切までのカウントダウン
     function updateTimer(){
@@ -197,7 +358,7 @@
         document.getElementById('voteTimer').textContent =
           `本日の投票 締切まで残り ${h}時間${m}分`;
       }else{
-        document.getElementById('voteTimer').textContent = "本日のピカイチ投票は締切ました";
+        document.getElementById('voteTimer').textContent = "本日の投票は締切ました";
       }
     }
     setInterval(updateTimer,1000); updateTimer();
