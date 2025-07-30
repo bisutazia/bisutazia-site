@@ -3,74 +3,110 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ビスタジア | ピカイチ投票</title>
-  <meta name="description" content="ビスタジアのピカイチ投票は、一番輝いたと思う選手に一票を投じるサッカー投票サイトです。Jリーグ全カテゴリ対応！" />
+  <title>【公式級】ビスタジア｜Jリーグ全カテゴリ ピカイチ投票所</title>
+  <meta name="description" content="Jリーグ・WEリーグ・ルヴァンの“本日のヒーロー”を決めるNo.1投票所。ファンの力でサッカーをもっと熱く！推しをヒーローにできるのは今だけ。ビスタジア公式投票サイト。" />
+  <!-- OGP for SNS -->
+  <meta property="og:title" content="ビスタジア｜Jリーグ・WEリーグ ピカイチ投票【ファンのヒーロー誕生】" />
+  <meta property="og:description" content="あなたの一票が選手を輝かせる！Jリーグ&WEリーグ投票はビスタジアへ" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bisutazia.com/" />
+  <meta property="og:image" content="https://bisutazia.com/ogp.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ビスタジア | Jリーグ ピカイチ投票" />
+  <meta name="twitter:description" content="Jリーグ＆WEリーグの“今日のヒーロー”をみんなで決めよう！" />
+  <meta name="twitter:image" content="https://bisutazia.com/ogp.png" />
+  <!-- 構造化データ (JSON-LD) for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "ビスタジア",
+    "url": "https://bisutazia.com",
+    "description": "Jリーグ/WEリーグ対応のピカイチ投票サイト。ファンがNo.1選手を決定！",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://bisutazia.com/?s={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     :root {
       --primary: #004c99;
       --accent: #ff5722;
+      --highlight: #ffcc00;
       --bg: #f7f9fc;
       --card-bg: #ffffff;
       --text: #333333;
       --light-text: #555555;
-      --shadow: rgba(0, 0, 0, 0.1);
+      --shadow: rgba(0,0,0,0.1);
     }
     * { box-sizing: border-box; }
-    body { margin: 0; font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); }
-    header { background: var(--primary); padding: 1rem; text-align: center; box-shadow: 0 2px 4px var(--shadow); }
-    header img.logo { max-height: 50px; }
-    nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
-    nav button { background: var(--accent); color: #fff; border: none; border-radius: 6px; padding: 0.6rem 1.2rem; font-weight: bold; cursor: pointer; transition: background 0.3s; }
-    nav button:hover { background: #e64a19; }
-    .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
-    .hero { background: var(--accent); color: #fff; padding: 2rem 1rem; border-radius: 8px; text-align: center; animation: fadeInDown 0.6s ease; }
-    .hero h1 { margin: 0; font-size: 2rem; }
-    .hero p { margin: 0.5rem 0 0; font-size: 1rem; }
-    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0);} }
-    .match-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin-top: 2rem; }
-    .match-card { background: var(--card-bg); border-radius: 8px; padding: 1rem; box-shadow: 0 4px 12px var(--shadow); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; }
-    .match-card:hover { transform: translateY(-4px); box-shadow: 0 6px 16px var(--shadow); }
-    .match-card h3 { margin: 0; font-size: 1.2rem; color: var(--primary); text-align: center; }
-    .match-card a.vote-button { display: block; margin-top: 1rem; text-align: center; background: var(--primary); color: #fff; text-decoration: none; padding: 0.8rem 0; border-radius: 6px; font-weight: bold; transition: background 0.3s; }
-    .match-card a.vote-button:hover { background: #003366; }
-    footer { text-align: center; margin: 3rem 0; font-size: 0.85rem; color: var(--light-text); }
+    body { margin: 0; font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text);}
+    header { background: var(--primary); padding: 1rem; text-align: center; box-shadow: 0 2px 4px var(--shadow);}
+    header img.logo { max-height: 50px;}
+    nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;}
+    nav button { background: var(--accent); color: #fff; border: none; border-radius: 6px; padding: 0.6rem 1.2rem; font-weight: bold; cursor: pointer; transition: background 0.3s;}
+    nav button.active, nav button:hover { background: var(--highlight); color: var(--primary);}
+    .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem;}
+    .hero { background: linear-gradient(135deg,#004c99,#66aaff); color: #fff; padding: 2.5rem 1rem 1rem 1rem; border-radius: 12px; text-align: center; margin-bottom:1rem; position:relative;}
+    .hero h1 { font-size: 2.2rem; margin-bottom: 0.2rem; letter-spacing: 0.02em; text-shadow:0 1px 6px rgba(0,0,0,0.25);}
+    .hero p { font-size: 1.08rem; margin: 0.6rem 0 1.2rem; line-height: 1.7;}
+    .cta-btn { padding: 1.1rem 2.2rem; background: var(--highlight); color: var(--primary); font-weight: bold; border: none; border-radius: 8px; font-size: 1.2rem; cursor: pointer; box-shadow: 0 3px 12px rgba(0,0,0,0.11); transition: background 0.22s;}
+    .cta-btn:hover { background: #ffe066;}
+    .hero-timer { font-size:1.1rem; margin-top:0.7rem; color: #fffbe6;}
+    .match-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.2rem; margin-top: 2.2rem;}
+    .match-card { background: var(--card-bg); border-radius: 10px; padding: 1.1rem; box-shadow: 0 4px 16px var(--shadow); display: flex; flex-direction: column; align-items: center; transition: transform 0.18s, box-shadow 0.18s; border-left: 5px solid var(--primary);}
+    .match-card:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 7px 25px var(--shadow);}
+    .match-card h3 { margin: 0 0 0.2em 0; font-size: 1.15rem; color: var(--primary);}
+    .match-card .vote-count { color: var(--accent); font-size: 0.92rem; margin-top: 0.4rem; }
+    .match-card a.vote-button { display: block; margin-top: 1.1rem; text-align: center; background: var(--primary); color: #fff; text-decoration: none; padding: 1rem 0; border-radius: 7px; font-weight: bold; font-size: 1.05rem; letter-spacing: 0.03em; transition: background 0.25s;}
+    .match-card a.vote-button:hover { background: #003366;}
+    .progress-bar-bg { width: 100%; background: #e6eaf1; border-radius: 4px; margin: 0.7em 0;}
+    .progress-bar { height: 10px; border-radius: 4px; background: var(--accent); transition: width 0.9s;}
+    .supporter-voice { background: #f1f7ff; border-left: 4px solid var(--accent); margin: 1.2em 0 0.7em 0; padding: 0.5em 1em; border-radius: 5px; color: var(--text);}
+    .supporter-voice span { color: var(--primary); font-weight: bold;}
+    footer { text-align: center; margin: 3rem 0 1.2rem; font-size: 0.89rem; color: var(--light-text);}
+    @media (max-width:600px){.hero h1{font-size:1.3rem;}.match-card{padding:0.6rem;}}
   </style>
 </head>
 <body>
   <header>
     <img src="/logo.png" alt="ビスタジア ロゴ" class="logo" />
-    <nav>
-      <button onclick="showLeague('J1')">J1リーグ</button>
-      <button onclick="showLeague('J2')">J2リーグ</button>
-      <button onclick="showLeague('J3')">J3リーグ</button>
-      <button onclick="showLeague('WE')">WEリーグ</button>
-      <button onclick="showLeague('ルヴァンカップ')">ルヴァンカップ</button>
-      <button onclick="showLeague('その他')">その他</button>
+    <nav id="leagues">
+      <button onclick="showLeague('J1')" id="J1">J1リーグ</button>
+      <button onclick="showLeague('J2')" id="J2">J2リーグ</button>
+      <button onclick="showLeague('J3')" id="J3">J3リーグ</button>
+      <button onclick="showLeague('WE')" id="WE">WEリーグ</button>
+      <button onclick="showLeague('ルヴァンカップ')" id="ルヴァンカップ">ルヴァン杯</button>
+      <button onclick="showLeague('その他')" id="その他">その他</button>
     </nav>
   </header>
-
   <div class="container">
-  <div class="hero" style="padding:1.5rem; background:linear-gradient(135deg,#004c99,#66aaff); border-radius:8px; color:#fff; text-align:center; margin-bottom:1rem;">
-    <h1 style="font-size:1.8rem; margin-bottom:0.5rem; text-shadow:0 1px 3px rgba(0,0,0,0.5);">
-      🏆 ピカイチ投票 🏆
-    </h1>
-    <p style="font-size:1rem; line-height:1.4; margin-bottom:1rem;">
-      この試合で一番輝いた選手は誰だ？<br>
-      あなたの“渾身の一票”で、ヒーローを誕生させよう！
-    </p>
-    <button onclick="showLeague('J1')" style="padding:0.8rem 1.6rem; background:#ffcc00; color:#004c99; font-weight:bold; border:none; border-radius:6px; font-size:1rem; cursor:pointer; box-shadow:0 3px 6px rgba(0,0,0,0.2);">
-      🚀 さあ、投票スタート！
-    </button>
+    <section class="hero">
+      <h1>Jリーグ公式級！<br>ファンが“本日のヒーロー”を決める【ピカイチ投票】</h1>
+      <p>「あなたの一票」が選手の未来を変える！推しを“ヒーロー”に、今すぐ投票でサポ魂を叫べ！<br>※Jリーグ/WEリーグ全カテゴリ対応。投票は1分で完了。</p>
+      <button class="cta-btn" onclick="showLeague('J1');document.getElementById('J1').scrollIntoView({behavior:'smooth'})">🚀 今すぐJ1に投票する</button>
+      <div class="hero-timer" id="voteTimer"></div>
+      <div id="latestSupporterVoice" class="supporter-voice" style="display:none;">
+        <span>🔥サポーターの声:</span> <span id="supporterMsg"></span>
+      </div>
+    </section>
+    <div id="matchList" class="match-grid"></div>
   </div>
-
-  <div id="matchList" class="match-grid"></div>
-</div>
-
-
   <script>
+    // ↓ matches: { J1: { 節番号: { matches: [ {id,home,away,votes}] } }, ... }
     const matchesData = <%- JSON.stringify(matches) %>;
+    // SNS流入パラメータ→自動でリーグ選択
+    function getSNSLeague(){
+      const u = new URL(window.location.href);
+      return u.searchParams.get("league") || "J1";
+    }
     function showLeague(league) {
+      // ボタンアクティブ制御
+      document.querySelectorAll('nav button').forEach(btn=>btn.classList.remove('active'));
+      if(document.getElementById(league))document.getElementById(league).classList.add('active');
       const list = document.getElementById('matchList');
       list.innerHTML = '';
       if (league==='その他') {
@@ -80,19 +116,54 @@
       const secData = matchesData[league] || {};
       Object.entries(secData).forEach(([section, data]) => {
         data.matches.forEach(m => {
+          const voteRate = m.votes ? Math.min(Math.round(m.votes/150*100),100) : 0;
           const card = document.createElement('div');
           card.className = 'match-card';
           card.innerHTML = `
             <h3>${m.home} vs ${m.away}</h3>
+            <div class="progress-bar-bg"><div class="progress-bar" style="width:${voteRate}%"></div></div>
+            <div class="vote-count">現在の投票数：${m.votes||0}票</div>
             <a href="/match/${m.id}" class="vote-button">ピカイチに投票する</a>
           `;
           list.appendChild(card);
         });
       });
     }
-    window.onload = () => showLeague('J1');
+    // 限定感ある締切までのタイマー（例：24時締切）
+    function updateTimer(){
+      const now = new Date();
+      const close = new Date();
+      close.setHours(23,59,59,999);
+      const diff = close-now;
+      if(diff>0){
+        const h = String(Math.floor(diff/3600000)).padStart(2,"0");
+        const m = String(Math.floor((diff%3600000)/60000)).padStart(2,"0");
+        document.getElementById('voteTimer').textContent =
+          `🕒 今日の投票締切まで残り ${h}時間${m}分`;
+      }else{
+        document.getElementById('voteTimer').textContent = "本日の投票は締切ました";
+      }
+    }
+    setInterval(updateTimer,1000);updateTimer();
+    // サポーター最新コメントの例（行動経済学：社会的証明）
+    const supporterComments = [
+      "「我らがエースに清き一票！最高のプレーでした」",
+      "「現地で観て泣いた。みんなも推してほしい！」",
+      "「守護神ありがとう。逆転劇の立役者に投票」"
+    ];
+    function showRandomSupporterVoice() {
+      const idx = Math.floor(Math.random()*supporterComments.length);
+      document.getElementById("supporterMsg").textContent = supporterComments[idx];
+      document.getElementById("latestSupporterVoice").style.display="block";
+    }
+    setTimeout(showRandomSupporterVoice,2000);
+    // 初回：SNS流入でパラメータあれば自動リーグ選択
+    window.onload = () => showLeague(getSNSLeague());
   </script>
-
-  <footer>© <script>document.write(new Date().getFullYear())</script> ビスタジア</footer>
+  <footer>
+    <div>このサイトは非公式プロジェクトです（Jリーグ公式化を目指しています）。ご意見・コラボ歓迎！
+      <br/>© <script>document.write(new Date().getFullYear())</script> ビスタジア | サイト名・投票で検索🟦
+    </div>
+  </footer>
 </body>
 </html>
