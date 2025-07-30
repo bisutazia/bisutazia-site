@@ -3,28 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>ピカイチ投票｜SNSサポの一票がヒーローを生む</title>
-  <meta name="description" content="SNSから今すぐ1タップ！Jリーグ・WEリーグ全試合対応、ピカイチ投票で“今日一番輝いた選手”を決めよう。あなたの一票でサッカーが熱くなる！" />
-  <meta property="og:title" content="ピカイチ投票｜SNSから1タップで推しをヒーローに" />
-  <meta property="og:description" content="Jリーグサポの“本気の一票”で輝いた選手をピカイチに！SNS時代の離脱ゼロUX。" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://bisutazia.com/" />
-  <meta property="og:image" content="https://bisutazia.com/ogp.png" />
+  <title>ピカイチ投票｜SNSサポの一票でヒーロー誕生</title>
+  <meta name="description" content="Jリーグ・WEリーグ全カテゴリ対応。SNSサポーターが1タップで推しをヒーローにする投票体験。スマホ最適化・超わかりやすいリーグ選択ナビ搭載！" />
+  <meta property="og:title" content="ピカイチ投票 | SNSサポの“推し投票”はここから" />
+  <meta property="og:description" content="リーグ選択が一目でわかる！スマホで超簡単ピカイチ投票体験。" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="ピカイチ投票 | Jリーグ・WEリーグで一番輝いた選手に1タップ投票" />
-  <meta name="twitter:description" content="SNSサポーターの一票がヒーローを生む！離脱ゼロUXの“ピカイチ投票”" />
-  <meta name="twitter:image" content="https://bisutazia.com/ogp.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet" />
+  <meta name="twitter:title" content="ピカイチ投票 | SNSで話題！推しに1タップ投票" />
+  <meta name="twitter:description" content="Jリーグ・WEリーグ・ルヴァン杯・WEリーグ。スマホ下ナビで迷わず投票！" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700&display=swap" rel="stylesheet" />
   <style>
     :root {
       --primary: #0366d6;
       --accent: #ffbe16;
       --danger: #ff4949;
-      --bg: #f9fafb;
+      --bg: #f8fafb;
       --card-bg: #fff;
-      --text: #222;
+      --text: #23272e;
       --shadow: 0 2px 24px rgba(0,0,0,0.13);
-      --glass: rgba(255,255,255,0.8);
+      --j1: #0366d6;   /* J1ブルー */
+      --j2: #39b54a;   /* J2グリーン */
+      --j3: #7e57c2;   /* J3パープル */
+      --we: #ff4893;   /* WEピンク */
+      --cup: #ffbe16;  /* カップ黄色 */
+      --other: #a2a2a2;
     }
     html,body { height:100%; }
     body {
@@ -38,67 +39,72 @@
       position:relative;
       font-size:17px;
     }
-    /* ---- HERO ---- */
+    header {
+      width:100vw;
+      background: transparent;
+      text-align: center;
+      position:sticky; top:0; z-index:30;
+      box-shadow: none;
+      padding: 0.7em 0 0.1em 0;
+    }
+    .logo-ani {
+      height:36px;
+      width:auto;
+      display:inline-block;
+      margin-bottom:0.25em;
+      filter: drop-shadow(0 0 7px #ffe06655);
+      animation:none;
+      transition: transform 0.18s;
+    }
+    .logo-ani:active { transform:scale(1.14) rotate(-6deg);}
+    /* -------- HERO -------- */
     .hero {
-      margin-top:3vw;
-      margin-bottom: 1.5em;
-      padding: 2.4em 0.7em 1.4em 0.7em;
-      border-radius: 2.2em;
+      margin: 0.1em auto 1em auto;
+      padding: 2.2em 0.7em 1.2em 0.7em;
+      border-radius: 1.6em;
       text-align: center;
       background: linear-gradient(120deg, var(--primary) 85%, var(--accent) 100%);
       color: #fff;
       box-shadow: var(--shadow);
       position:relative;
-      overflow:hidden;
-      max-width:480px;
-      margin-left:auto; margin-right:auto;
+      max-width:430px;
       isolation:isolate;
     }
-    .hero::before {
-      content: "";
-      position: absolute;
-      top: -28px; left: 20%;
-      width: 110px; height: 110px;
-      background: radial-gradient(circle,#fff5b7bb 0%,transparent 80%);
-      opacity: .55;
-      z-index:0;
-    }
     .hero h1 {
-      font-size: 1.55em;
-      margin: 0 0 0.34em 0;
+      font-size: 1.29em;
+      margin: 0 0 0.22em 0;
       font-weight: 900;
-      letter-spacing:0.025em;
-      line-height:1.2;
-      text-shadow:0 3px 16px #0366d655, 0 0 17px #ffbe1640;
+      letter-spacing:0.018em;
+      line-height:1.18;
+      text-shadow:0 2px 11px #0366d644, 0 0 15px #ffbe1633;
       z-index:2; position:relative;
       display:inline-block;
-      animation: fadeDown .78s cubic-bezier(.7,0,.38,1.22);
+      animation: fadeDown .7s cubic-bezier(.7,0,.38,1.22);
     }
     @keyframes fadeDown {
-      0% { opacity:0; transform:translateY(-30px) scale(0.98);}
-      100% { opacity:1; transform:translateY(0) scale(1);}
+      0% { opacity:0; transform:translateY(-20px);}
+      100% { opacity:1; transform:translateY(0);}
     }
     .hero .star-bounce {
       display:inline-block;
-      font-size:1.3em;
-      margin-left:0.08em;
-      animation: pikapika 1.3s cubic-bezier(.77,0,.18,1.14) infinite;
+      font-size:1.13em;
+      margin-left:0.09em;
+      animation: starpulse 1.18s cubic-bezier(.77,0,.18,1.14) infinite;
       vertical-align:middle;
       filter:drop-shadow(0 0 11px #ffbe16aa);
     }
-    @keyframes pikapika {
-      0%,100% { transform:translateY(0) scale(1);}
-      15% { transform:translateY(-9px) scale(1.14);}
-      30% { transform:translateY(-2px) scale(1.02);}
-      50% { transform:translateY(0) scale(1);}
+    @keyframes starpulse {
+      0%,100% { transform:scale(1);}
+      14% { transform:scale(1.25);}
+      28% { transform:scale(1);}
     }
     .hero p {
-      margin: 0.7em 0 1.3em 0;
-      font-size: 1.09em;
-      line-height:1.65;
+      margin: 0.6em 0 1.2em 0;
+      font-size: 1.08em;
+      line-height:1.6;
       font-weight:500;
       z-index:2; position:relative;
-      animation: fadeDown .9s .12s both cubic-bezier(.73,0,.2,1.18);
+      animation: fadeDown .9s .13s both cubic-bezier(.73,0,.2,1.18);
       letter-spacing:0.012em;
     }
     .timer {
@@ -108,88 +114,87 @@
       font-size:1em;
       font-weight:bold;
       border-radius:8px;
-      padding:0.38em 0.95em;
-      margin-bottom: 1.17em;
-      margin-top: 0.2em;
-      box-shadow:0 0 12px #ffe0661c;
+      padding:0.33em 0.89em;
+      margin-bottom: 1.05em;
+      margin-top: 0.1em;
+      box-shadow:0 0 12px #ffe06618;
       letter-spacing:0.01em;
-      animation: fadeDown .82s .21s both cubic-bezier(.73,0,.2,1.18);
+      animation: fadeDown .83s .21s both cubic-bezier(.73,0,.2,1.18);
     }
-    /* ---- CTAボタン ---- */
+    /* -------- CTAボタン -------- */
     .cta-btn {
       display: block;
       width: 100%;
-      background: linear-gradient(90deg,var(--accent) 65%,#fff1c0 100%);
+      background: linear-gradient(90deg,var(--accent) 70%,#fff1c0 100%);
       color: var(--primary);
-      font-size: 1.24em;
+      font-size: 1.18em;
       font-weight: 900;
-      padding: 1.18em 0;
+      padding: 1.11em 0;
       border: none;
       border-radius: 99px;
-      margin-top: 0.8em;
-      margin-bottom: 0.13em;
-      box-shadow: 0 7px 28px #ffe06633;
+      margin-top: 0.7em;
+      margin-bottom: 0.11em;
+      box-shadow: 0 4px 22px #ffe06644;
       transition: background 0.12s, color 0.14s, box-shadow 0.17s, transform 0.12s;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.02em;
       cursor:pointer;
       position:relative;
       overflow:hidden;
-      animation: ctaPop .9s .19s both cubic-bezier(.77,0,.18,1.14);
+      animation: ctaPop .88s .19s both cubic-bezier(.77,0,.18,1.14);
       will-change:transform,box-shadow;
     }
     .cta-btn .star {
       display:inline-block;
       vertical-align:middle;
       margin-left:0.09em;
-      animation: pikapika 1.8s cubic-bezier(.77,0,.18,1.14) infinite;
-      filter:drop-shadow(0 0 10px #ffe066aa);
+      animation: starpulse 1.4s cubic-bezier(.77,0,.18,1.14) infinite;
+      filter:drop-shadow(0 0 8px #ffe06677);
     }
     .cta-btn:active,.cta-btn:hover {
-      background:linear-gradient(90deg,#ffe066 70%,#fffbe6 100%);
+      background:linear-gradient(90deg,#ffe066 78%,#fffbe6 100%);
       color: var(--primary);
-      transform: scale(1.04);
+      transform: scale(1.05);
       box-shadow:0 0 24px #ffe066cc;
     }
     @keyframes ctaPop {
-      0% { opacity:0; transform:scale(.96);}
+      0% { opacity:0; transform:scale(.93);}
       70% { opacity:.7; transform:scale(1.10);}
       100% { opacity:1; transform:scale(1);}
     }
-    /* ---- ナッジ ---- */
+    /* -------- ナッジ -------- */
     .catch-nudge {
-      margin: 1.15em auto 0.28em;
-      background: var(--glass);
+      margin: 1.12em auto 0.22em;
+      background: #fff;
       color: var(--primary);
-      font-size: 1.06em;
+      font-size: 1.01em;
       border-left: 7px solid var(--accent);
-      padding: 0.78em 1.2em;
-      border-radius: 12px;
+      padding: 0.7em 0.9em;
+      border-radius: 11px;
       font-weight: bold;
-      box-shadow:0 2px 19px rgba(0,0,0,0.03);
+      box-shadow:0 2px 15px rgba(0,0,0,0.02);
       line-height:1.5;
       text-align:center;
-      max-width:440px;
-      animation: fadeDown .9s .33s both cubic-bezier(.73,0,.2,1.18);
-      isolation:isolate;
+      max-width:400px;
+      animation: fadeDown .8s .32s both cubic-bezier(.73,0,.2,1.18);
     }
-    /* ---- 投票カード ---- */
+    /* -------- 投票カード -------- */
     .match-list {
-      margin: 1.28em 0 0 0;
+      margin: 1.13em 0 0 0;
       display: flex;
       flex-direction: column;
-      gap: 1.01em;
-      animation: fadeDown .7s .41s both cubic-bezier(.73,0,.2,1.18);
+      gap: 0.98em;
+      animation: fadeDown .7s .44s both cubic-bezier(.73,0,.2,1.18);
     }
     .match-card {
       background: var(--card-bg);
-      border-radius: 1.2em;
-      box-shadow: 0 3px 20px rgba(0,0,0,0.09);
-      padding: 1.1em 0.5em 0.75em;
+      border-radius: 1.13em;
+      box-shadow: 0 3px 17px rgba(0,0,0,0.09);
+      padding: 1.09em 0.48em 0.74em;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      border-left: 6px solid var(--primary);
+      border-left: 5px solid var(--primary);
       position:relative;
       overflow:hidden;
       animation: cardPop .7s cubic-bezier(.68,-0.55,.27,1.55) both;
@@ -197,110 +202,124 @@
       transition:box-shadow 0.14s,transform 0.13s;
     }
     @keyframes cardPop {
-      0% {opacity:0;transform:scale(0.95);}
+      0% {opacity:0;transform:scale(0.96);}
       100% {opacity:1;transform:scale(1);}
     }
     .match-card h3 {
-      font-size: 1.13em;
+      font-size: 1.09em;
       color: var(--primary);
-      margin: 0.21em 0 0.41em;
+      margin: 0.19em 0 0.38em;
       font-weight: bold;
       letter-spacing:0.01em;
       text-shadow:0 1px 7px #ffbe1630;
     }
     .match-card .vote-btn {
-      background: linear-gradient(90deg,var(--accent) 65%,#fffbe6 100%);
+      background: linear-gradient(90deg,var(--accent) 67%,#fffbe6 100%);
       color: var(--primary);
       border: none;
       border-radius: 99px;
-      padding: 0.97em 0;
+      padding: 0.95em 0;
       width: 97%;
-      font-size: 1.09em;
+      font-size: 1.07em;
       font-weight: 900;
       margin: 0.59em 0 0.1em 0;
       cursor: pointer;
       transition: background 0.12s, color 0.12s, box-shadow 0.11s, transform 0.13s;
-      box-shadow:0 2px 8px #ffe06651;
+      box-shadow:0 2px 8px #ffe0663a;
       position:relative;
       overflow:hidden;
-      letter-spacing:0.015em;
-      animation: ctaPop .7s .51s both;
+      letter-spacing:0.013em;
+      animation: ctaPop .7s .54s both;
       will-change:transform,box-shadow;
     }
     .match-card .vote-btn .star {
       display:inline-block; vertical-align:middle; margin-left:0.07em;
-      animation: pikapika 1.6s cubic-bezier(.77,0,.18,1.14) infinite;
+      animation: starpulse 1.12s cubic-bezier(.77,0,.18,1.14) infinite;
     }
     .match-card .vote-btn:active,.match-card .vote-btn:hover {
       background:linear-gradient(90deg,#ffe066 75%,#fffbe6 100%);
       color: var(--primary);
       transform:scale(1.04);
-      box-shadow:0 0 18px #ffe06690;
+      box-shadow:0 0 16px #ffe06699;
     }
     .info-tip {
       font-size: 0.97em;
       color: #555;
-      margin: 1.08em 0 0.28em 0;
+      margin: 1.01em 0 0.25em 0;
       text-align: center;
-      animation: fadeDown .7s .69s both cubic-bezier(.73,0,.2,1.18);
+      animation: fadeDown .7s .71s both cubic-bezier(.73,0,.2,1.18);
     }
-    /* ---- フローティング・ロゴ ---- */
-    .logo-float {
-      position: fixed;
-      right:3vw;
-      bottom:2.7vw;
-      width: 25px; height: 25px;
-      z-index:21;
-      pointer-events: auto;
+    /* -------- 下部リーグナビ -------- */
+    .bottom-nav {
+      position:fixed;
+      bottom:0; left:0; width:100vw;
+      height:62px;
+      background: #fff;
+      border-top: 1px solid #eee;
+      display:flex;
+      justify-content:space-around;
+      align-items:center;
+      z-index:50;
+      box-shadow:0 -2px 20px #0366d611;
+    }
+    .nav-btn {
+      flex:1 1 0;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      font-size: 0.94em;
+      font-weight: 700;
+      color: #bbb;
+      background: none;
+      border: none;
+      border-radius: 8px;
+      padding: 0.25em 0 0.06em 0;
+      transition: color 0.12s, background 0.13s;
+      min-width:54px;
+      cursor:pointer;
+      outline:none;
+      position:relative;
       user-select:none;
-      opacity:0.71;
-      animation: logoPop 2.2s cubic-bezier(.67,0,.36,1.13) infinite alternate;
-      filter:drop-shadow(0 0 10px #ffe06633);
-      transition:filter 0.13s;
+      height:54px;
     }
-    @keyframes logoPop {
-      0% { transform: translateY(0);}
-      24% { transform: translateY(-7px) scale(1.13);}
-      54% { transform: translateY(0);}
-      100% { transform: translateY(0);}
+    .nav-btn.active {
+      color: var(--primary);
+      background: #f2faff;
+      font-size:1.06em;
     }
-    .logo-float:active {
-      filter:drop-shadow(0 0 22px #ffe066cc) brightness(1.11);
-      animation-play-state: paused;
+    .nav-btn .icon {
+      font-size:1.4em;
+      margin-bottom:0.08em;
+      filter:drop-shadow(0 1px 6px #eee3);
     }
-    /* ---- レスポンシブ ---- */
+    .nav-btn.j1.active   { color:var(--j1);}
+    .nav-btn.j2.active   { color:var(--j2);}
+    .nav-btn.j3.active   { color:var(--j3);}
+    .nav-btn.we.active   { color:var(--we);}
+    .nav-btn.cup.active  { color:var(--cup);}
+    .nav-btn.other.active{ color:var(--other);}
     @media (max-width:480px){
       body { font-size:16px;}
-      .hero{padding:1.6em 0.16em 0.8em;}
-      .match-card{padding:0.55em 0.03em 0.65em;}
-      .logo-float{width:17px;height:17px;}
+      .hero{padding:1.4em 0.1em 0.85em;}
+      .match-card{padding:0.47em 0.01em 0.54em;}
+      .bottom-nav{height:52px;}
+      .nav-btn{font-size:0.91em;min-width:42px;height:48px;}
+      .nav-btn .icon{font-size:1.1em;}
+      .logo-ani{height:26px;}
     }
   </style>
 </head>
 <body>
-  <!-- ピカイチスターはSVGやPNGで用意、例: https://www.svgrepo.com/svg/528642/star  -->
-  <img src="/pikapika_star.svg" alt="ピカイチスター" class="pikapika" aria-hidden="true">
-  <!-- ロゴ右下に小さく -->
-  <img src="/logo.png" alt="ビスタジア ロゴ" class="logo-float" id="floatLogo"
-    onclick="window.scrollTo({top:0,behavior:'smooth'})" tabindex="0" aria-label="ページトップに戻る" />
   <header>
     <img src="/logo.png" alt="ビスタジア ロゴ" class="logo-ani" />
-    <nav id="leagues">
-      <button onclick="showLeague('J1')" id="J1">J1</button>
-      <button onclick="showLeague('J2')" id="J2">J2</button>
-      <button onclick="showLeague('J3')" id="J3">J3</button>
-      <button onclick="showLeague('WE')" id="WE">WE</button>
-      <button onclick="showLeague('ルヴァンカップ')" id="ルヴァンカップ">ルヴァン杯</button>
-      <button onclick="showLeague('その他')" id="その他">その他</button>
-    </nav>
   </header>
   <main>
     <section class="hero">
       <h1>ピカイチ投票 <span class="star-bounce">✨</span></h1>
       <p>
-        SNSサポーターが<br>
-        <b>“一番輝いた選手”</b>に1タップ投票！<br>
-        今しかできない、<span style="color:#fff;">あなたの“本気”を届けよう。</span>
+        サポーターがSNSで1タップ！<br>
+        <b>“一番輝いた選手”</b>に投票しよう。
       </p>
       <div class="timer" id="voteTimer">本日の投票 締切まで残り --時間--分</div>
       <button class="cta-btn" onclick="scrollToList()">
@@ -308,26 +327,54 @@
       </button>
     </section>
     <div class="catch-nudge">
-      サポーターの投票が<br>
-      “公式化”の推進力になる。<br>
-      スマホ1タップ、離脱ゼロ！
+      リーグを選択 → 試合を選択 → 投票！<br>
+      <b>超シンプルな投票体験で離脱ゼロ。</b>
     </div>
     <div class="match-list" id="matchList"></div>
     <div class="info-tip">
-      投票後は <b>#ピカイチ投票 #ビスタジア</b> でSNS拡散！みんなの推し熱が未来を変える。
+      投票後は #ピカイチ投票 #ビスタジア でSNS拡散しよう！
     </div>
   </main>
-  <footer>
+  <!-- スマホ下部リーグナビゲーション -->
+  <nav class="bottom-nav">
+    <button class="nav-btn j1 active"   id="navJ1"   onclick="navLeague('J1')">
+      <span class="icon">⚽️</span>J1
+    </button>
+    <button class="nav-btn j2"   id="navJ2"   onclick="navLeague('J2')">
+      <span class="icon">🟢</span>J2
+    </button>
+    <button class="nav-btn j3"   id="navJ3"   onclick="navLeague('J3')">
+      <span class="icon">🟣</span>J3
+    </button>
+    <button class="nav-btn we"   id="navWE"   onclick="navLeague('WE')">
+      <span class="icon">💖</span>WE
+    </button>
+    <button class="nav-btn cup"  id="navCup"  onclick="navLeague('ルヴァンカップ')">
+      <span class="icon">🏆</span>杯
+    </button>
+    <button class="nav-btn other" id="navOther" onclick="navLeague('その他')">
+      <span class="icon">⋯</span>他
+    </button>
+  </nav>
+  <footer style="padding-bottom:70px;">
     非公式プロジェクトです（Jリーグ公式化を目指して運営中）<br>
     &copy; <script>document.write(new Date().getFullYear())</script> ビスタジア
   </footer>
   <script>
-    // matches: { J1: { 節: { matches:[{id,home,away}] } }, ... }
     const matchesData = <%- JSON.stringify(matches) %>;
-
+    // 下部ナビ→リーグ切替
+    function navLeague(league) {
+      document.querySelectorAll('.nav-btn').forEach(btn=>btn.classList.remove('active'));
+      if(league==='J1')      document.getElementById('navJ1').classList.add('active');
+      else if(league==='J2') document.getElementById('navJ2').classList.add('active');
+      else if(league==='J3') document.getElementById('navJ3').classList.add('active');
+      else if(league==='WE') document.getElementById('navWE').classList.add('active');
+      else if(league==='ルヴァンカップ') document.getElementById('navCup').classList.add('active');
+      else if(league==='その他') document.getElementById('navOther').classList.add('active');
+      showLeague(league);
+      setTimeout(scrollToList, 0);
+    }
     function showLeague(league) {
-      document.querySelectorAll('nav button').forEach(btn=>btn.classList.remove('active'));
-      if(document.getElementById(league))document.getElementById(league).classList.add('active');
       const list = document.getElementById('matchList');
       list.innerHTML = '';
       if (league === 'その他') {
@@ -348,7 +395,6 @@
           list.appendChild(card);
         });
       });
-      setTimeout(scrollToList, 0);
     }
     function scrollToList(){
       const list=document.getElementById('matchList');
@@ -378,27 +424,8 @@
       return u.searchParams.get("league") || "J1";
     }
     window.onload = () => {
-      showLeague(getSNSLeague());
-      // ピカイチスターを1.2秒で消す（UX阻害しない）
-      setTimeout(()=>{
-        const pika = document.querySelector('.pikapika');
-        if(pika) pika.style.display='none';
-      },1200);
+      navLeague(getSNSLeague());
     };
-    // 右下ロゴにタップアニメ追加
-    document.addEventListener('DOMContentLoaded',()=>{
-      const logo = document.getElementById('floatLogo');
-      if(logo){
-        logo.addEventListener('click',()=>{
-          logo.style.transition='transform 0.22s';
-          logo.style.transform='scale(1.19) rotate(16deg)';
-          setTimeout(()=>{
-            logo.style.transform='';
-            logo.style.transition='';
-          },180);
-        });
-      }
-    });
   </script>
 </body>
 </html>
