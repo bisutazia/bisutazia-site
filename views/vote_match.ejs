@@ -2,201 +2,260 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><%= match.home %> vs <%= match.away %> - ピカイチ投票</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+JP">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title><%= match.home %> vs <%= match.away %> - ピカイチ投票 | ビスタジア</title>
+  <meta name="description" content="Jリーグ・WEリーグ全試合対応！あなたが「一番輝いた」と思う選手をピカイチ投票しよう。今すぐ熱い一票を！">
+  <meta property="og:title" content="ピカイチ投票 | <%= match.home %> vs <%= match.away %> | ビスタジア" />
+  <meta property="og:description" content="一番輝いた選手に投票しよう！あなたの一票が選手の誇りに。今すぐ投票！" />
+  <meta property="og:image" content="https://bisutazia.com/ogp.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ピカイチ投票 | <%= match.home %> vs <%= match.away %> | ビスタジア" />
+  <meta name="twitter:description" content="あなたが選ぶ一番輝いた選手にピカイチ投票しよう！" />
+  <meta name="twitter:image" content="https://bisutazia.com/ogp.png" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,700">
   <style>
+    :root {
+      --primary: #004c99;
+      --accent: #ff5722;
+      --highlight: #ffe066;
+      --bg: #f8fafd;
+      --card-bg: #fff;
+      --danger: #d32f2f;
+      --text: #232b34;
+      --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    html, body { height:100%; }
     body {
-      font-family: 'Noto Sans JP', sans-serif;
-      background: linear-gradient(160deg, #e0f7fa, #ffffff);
-      margin: 0;
-      padding: 0;
-      color: #333;
+      font-family: 'Noto Sans JP',sans-serif;
+      background: var(--bg);
+      margin: 0; padding: 0; color: var(--text);
+      min-height: 100vh;
+      -webkit-tap-highlight-color:transparent;
     }
     .container {
-      padding: 1.5rem;
-      max-width: 600px;
-      margin: 1.5rem auto;
-      background: #ffffff;
+      max-width: 430px;
+      margin: 0 auto;
+      padding: 0 0.6em 1.5em;
+    }
+    .hero {
+      background: linear-gradient(120deg, #004c99 92%, #4ea7ff 100%);
+      color: #fff;
+      border-radius: 16px;
+      padding: 1.7em 1em 1.1em 1em;
+      margin-top: 1.3em;
+      margin-bottom: 0.9em;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .hero h1 {
+      font-size: 1.27em;
+      margin: 0 0 0.36em 0;
+      font-weight: bold;
+      line-height: 1.35;
+      text-shadow: 0 2px 7px rgba(0,0,0,0.12);
+    }
+    .hero .match-names {
+      font-size: 1.12em;
+      font-weight: bold;
+      margin-top: 0.9em;
+      color: #ffe066;
+      letter-spacing: 0.01em;
+    }
+    .hero .sub-msg {
+      font-size: 1.03em;
+      color: #fffbe7;
+      margin-top: 0.85em;
+      line-height: 1.5;
+    }
+    .vote-box {
+      background: var(--card-bg);
       border-radius: 14px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-    }
-        /* ★ ヒーロー見出し強化 ★ */
-    h1 {
-      font-size: 2rem;
-      text-align: center;
-      color: #fff;
-      margin: 0;
-      padding: 1.2rem 0;
-      background: linear-gradient(90deg, #006bb2, #004080);
-      border-radius: 12px 12px 0 0;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-    .match-header {
+      box-shadow: var(--shadow);
+      padding: 1.1em 0.7em 1.0em 0.7em;
+      margin-bottom: 1.0em;
+      margin-top: 1.0em;
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      gap: 0.4em;
+    }
+    .vote-label {
+      font-weight: 700;
+      font-size: 1.07em;
+      color: var(--primary);
+      margin-bottom: 0.4em;
+      text-align: left;
+    }
+    .vote-select-row {
+      display: flex;
+      gap: 0.4em;
       align-items: center;
-      margin: 1.5rem 0;
-      gap: 0.5rem;
+      margin-bottom: 0.9em;
     }
-    .team-name {
-      flex: 1;
-      padding: 0.6rem 0;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      text-align: center;
-      color: #fff;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    select {
+      flex: 1 1 60%;
+      padding: 0.72em;
+      font-size: 1.04em;
+      border-radius: 7px;
+      border: 1px solid #b9d1e8;
+      margin-right: 0.1em;
+      background: #fafdff url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='%23888'><polygon points='0,0 18,0 9,10'/></svg>") no-repeat right 12px center;
+      background-size: 14px 14px;
+      font-weight: 500;
+      outline:none;
+      transition:border 0.18s;
     }
-    .team-home {
-      background: #1976d2 url('/icons/home.svg') no-repeat 10px center;
-      background-size: 20px;
-    }
-    .team-away {
-      background: #d32f2f url('/icons/away.svg') no-repeat 10px center;
-      background-size: 20px;
-    }
-    .vs-text {
-      margin: 0 0.5rem;
-      font-size: 1rem;
-      color: #555;
-    }
-
-    /* チームごとの投票セクション */
-    .team-section {
-      background: #fafafa;
-      border-radius: 12px;
-      padding: 1.3rem;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .team-section:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-    }
-    .team-section label {
-      font-weight: bold;
+    select:focus { border-color: var(--primary);}
+    .vote-btn {
       display: block;
-      margin-bottom: 0.6rem;
-      color: #222;
-      font-size: 1.05rem;
-    }
-    .team-section select {
       width: 100%;
-      padding: 12px;
-      font-size: 1rem;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      margin-bottom: 1rem;
-      appearance: none;
-      background: #fff url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23888'><polygon points='0,0 16,0 8,8'/></svg>") no-repeat right 12px center;
-      background-size: 12px 12px;
-    }
-
-    .team-section button {
-      width: 100%;
-      padding: 14px;
-      font-size: 1rem;
-      font-weight: bold;
+      background: linear-gradient(90deg, var(--accent), #ffca28 96%);
       color: #fff;
-      /* ★ 投票ボタンを熱く ★ */
-      background: linear-gradient(90deg, #ff6f00, #ffca28);
+      font-size: 1.15em;
+      font-weight: bold;
+      padding: 0.98em 0;
       border: none;
-      border-radius: 8px;
+      border-radius: 9px;
+      margin-top: 0.1em;
+      margin-bottom: 0.15em;
+      box-shadow: 0 4px 16px rgba(255,87,34,0.10);
+      letter-spacing: 0.03em;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: background 0.16s;
     }
-    .team-section button:hover {
-      transform: scale(1.02);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-    }
-    .team-section button:disabled {
+    .vote-btn:active, .vote-btn:hover { background: #ff8352; color: #fff; }
+    .vote-btn:disabled {
       background-color: #bbb;
       cursor: not-allowed;
+      color: #fff;
       box-shadow: none;
     }
-
+    .already-voted-msg {
+      background: #ecf2fb;
+      color: var(--primary);
+      font-size: 1.03em;
+      padding: 0.9em 1em;
+      border-radius: 8px;
+      margin-bottom: 0.7em;
+      text-align:center;
+      font-weight:bold;
+      letter-spacing:0.01em;
+    }
     .footer {
       text-align: center;
-      margin-top: 2rem;
+      margin-top: 2.1em;
     }
     .footer a {
-      color: #004080;
+      color: var(--primary);
       text-decoration: none;
       font-weight: bold;
-      font-size: 0.95rem;
+      font-size: 1em;
+    }
+    .footer a:hover { text-decoration: underline;}
+    .vote-note {
+      color: #888; font-size: 0.99em; text-align: center; margin: 1.1em 0 0.3em 0;
+    }
+    .expired-msg {
+      color: var(--danger);
+      font-weight: bold;
+      margin: 2.2em 0 2em 0;
+      text-align: center;
+      font-size: 1.14em;
+      background: #fff7f7;
+      border-radius: 10px;
+      padding: 1.2em 0.7em;
+    }
+    @media (max-width:480px){
+      .container { padding:0 0.13em 1.3em;}
+      .hero {padding:1.1em 0.6em 0.7em;}
+      .vote-btn {font-size:1em;}
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- ★ 見出しとチーム名を目立たせる ★ -->
-    <h1>🏆 ピカイチ投票 🏆</h1>
-    <div class="match-header">
-      <div class="team-name team-home"><%= match.home %></div>
-      <div class="vs-text">VS</div>
-      <div class="team-name team-away"><%= match.away %></div>
+    <div class="hero">
+      <h1>ピカイチ投票</h1>
+      <div class="match-names">
+        <span><%= match.home %></span>
+        <span style="margin:0 0.5em; font-size:0.98em; color:#fff;">VS</span>
+        <span><%= match.away %></span>
+      </div>
+      <div class="sub-msg">
+        「この試合で一番輝いた！」と思う選手に、<br>
+        <b>あなたの“ピカイチ投票”をお願いします！</b>
+      </div>
     </div>
 
     <% if (!expired) { %>
-      <!-- ★ ホームチーム投票エリア ★ -->
-      <div class="team-section">
+      <div class="vote-note">
+        片方のチームだけの投票もOK！どちらか“心に残った選手”だけでも投票してみよう。
+      </div>
+
+      <!-- ホームチーム投票エリア -->
+      <div class="vote-box">
         <form
           action="/vote/<%= match.id %>"
           method="post"
-          onsubmit="return confirm('🔥 本当に「<%= match.home %>」の『' + this.player.value + '』選手に投票しますか？🔥');"
+          onsubmit="return confirm('🔥本当に「<%= match.home %>」の『' + this.player.value + '』選手にピカイチ投票しますか？');"
         >
-          <label>🏠 <strong><%= match.home %></strong> のピカイチ選手</label>
-          <select name="player" required>
-            <% (match.homePlayers || []).forEach(player => { %>
-              <option value="<%= player %>"><%= player %></option>
-            <% }) %>
-          </select>
-          <input type="hidden" name="team" value="home">
-          <% if (!voted.home) { %>
-            <button type="submit">⚽ 投票する</button>
-          <% } else { %>
-            <button type="button" disabled>✅ すでに投票済み</button>
-          <% } %>
+          <div class="vote-label">🏠 <strong><%= match.home %></strong> の中で一番輝いた選手</div>
+          <div class="vote-select-row">
+            <select name="player" required <%= voted.home ? "disabled" : "" %>>
+              <option value="" disabled selected>選手を選んでください</option>
+              <% (match.homePlayers || []).forEach(player => { %>
+                <option value="<%= player %>"><%= player %></option>
+              <% }) %>
+            </select>
+            <% if (!voted.home) { %>
+              <button type="submit" class="vote-btn">この選手にピカイチ投票！</button>
+            <% } else { %>
+              <button type="button" class="vote-btn" disabled>✅ 投票済み</button>
+            <% } %>
+          </div>
         </form>
+        <% if (voted.home) { %>
+          <div class="already-voted-msg">
+            ありがとうございます！あなたの投票は反映されています。
+          </div>
+        <% } %>
       </div>
 
-      <!-- ★ アウェイチーム投票エリア ★ -->
-      <div class="team-section">
+      <!-- アウェイチーム投票エリア -->
+      <div class="vote-box">
         <form
           action="/vote/<%= match.id %>"
           method="post"
-          onsubmit="return confirm('🔥 本当に「<%= match.away %>」の『' + this.player.value + '』選手に投票しますか？🔥');"
+          onsubmit="return confirm('🔥本当に「<%= match.away %>」の『' + this.player.value + '』選手にピカイチ投票しますか？');"
         >
-          <label>🚩 <strong><%= match.away %></strong> のピカイチ選手</label>
-          <select name="player" required>
-            <% (match.awayPlayers || []).forEach(player => { %>
-              <option value="<%= player %>"><%= player %></option>
-            <% }) %>
-          </select>
-          <input type="hidden" name="team" value="away">
-          <% if (!voted.away) { %>
-            <button type="submit">⚽ 投票する</button>
-          <% } else { %>
-            <button type="button" disabled>✅ すでに投票済み</button>
-          <% } %>
+          <div class="vote-label">🚩 <strong><%= match.away %></strong> の中で一番輝いた選手</div>
+          <div class="vote-select-row">
+            <select name="player" required <%= voted.away ? "disabled" : "" %>>
+              <option value="" disabled selected>選手を選んでください</option>
+              <% (match.awayPlayers || []).forEach(player => { %>
+                <option value="<%= player %>"><%= player %></option>
+              <% }) %>
+            </select>
+            <% if (!voted.away) { %>
+              <button type="submit" class="vote-btn">この選手にピカイチ投票！</button>
+            <% } else { %>
+              <button type="button" class="vote-btn" disabled>✅ 投票済み</button>
+            <% } %>
+          </div>
         </form>
+        <% if (voted.away) { %>
+          <div class="already-voted-msg">
+            ありがとうございます！あなたの投票は反映されています。
+          </div>
+        <% } %>
       </div>
-
     <% } else { %>
-      <p style="text-align:center; color:#d32f2f; font-weight:bold; margin-top:2rem;">
-        ⏰ この試合の投票受付は終了しました。
-      </p>
+      <div class="expired-msg">
+        ⏰ この試合のピカイチ投票受付は終了しました。
+      </div>
     <% } %>
 
-    <!-- ★ フッター（トップに戻る） ★ -->
     <div class="footer">
-      <a href="/" style="display:inline-block; margin-top:1.2rem; color:#006bb2; font-weight:bold; text-decoration:none;">
-        ← ホームに戻って他の試合も投票しよう！
-      </a>
+      <a href="/">← ホームに戻って他の試合もピカイチ投票しよう！</a>
     </div>
   </div>
 </body>
