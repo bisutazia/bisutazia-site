@@ -337,4 +337,102 @@
         <b>あなたの1タップ</b>で応援しよう！<br>
         SNSサポの一票がヒーローを生む。
       </p>
-      <div class="timer" id="voteTimer">本日の投票 締切まで残り --時間--
+      <div class="timer" id="voteTimer">本日の投票 締切まで残り --時間--分</div>
+      <button class="cta-btn" onclick="scrollToList()">
+        ピカイチ投票する <span class="star">✨</span>
+      </button>
+    </section>
+    <div class="catch-nudge">
+      サポーターの“今すぐ投票”が公式化の力に。<br>
+      投票体験はスマホで1タップ、離脱ゼロ！
+    </div>
+    <div class="match-list" id="matchList"></div>
+    <div class="info-tip">
+      投票後は #ピカイチ投票 #ビスタジア で推しをシェアしよう！
+    </div>
+  </main>
+  <footer>
+    非公式プロジェクトです（Jリーグ公式化を目指して運営中）<br>
+    &copy; <script>document.write(new Date().getFullYear())</script> ビスタジア
+  </footer>
+  <script>
+    // matches: { J1: { 節: { matches:[{id,home,away}] } }, ... }
+    const matchesData = <%- JSON.stringify(matches) %>;
+
+    function showLeague(league) {
+      document.querySelectorAll('nav button').forEach(btn=>btn.classList.remove('active'));
+      if(document.getElementById(league))document.getElementById(league).classList.add('active');
+      const list = document.getElementById('matchList');
+      list.innerHTML = '';
+      if (league === 'その他') {
+        window.location.href = '/match/other';
+        return;
+      }
+      const secData = matchesData[league] || {};
+      Object.entries(secData).forEach(([section, data]) => {
+        data.matches.forEach(m => {
+          const card = document.createElement('div');
+          card.className = 'match-card';
+          card.innerHTML = `
+            <h3>${m.home} vs ${m.away}</h3>
+            <button class="vote-btn" onclick="location.href='/match/${m.id}'">
+              ピカイチ投票 <span class="star">✨</span>
+            </button>
+          `;
+          list.appendChild(card);
+        });
+      });
+      setTimeout(scrollToList, 0);
+    }
+    function scrollToList(){
+      const list=document.getElementById('matchList');
+      if(list){
+        list.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    }
+    function updateTimer(){
+      const now = new Date();
+      const close = new Date();
+      close.setHours(23,59,59,999);
+      const diff = close-now;
+      if(diff>0){
+        const h = String(Math.floor(diff/3600000)).padStart(2,"0");
+        const m = String(Math.floor((diff%3600000)/60000)).padStart(2,"0");
+        document.getElementById('voteTimer').textContent =
+          `本日の投票 締切まで残り ${h}時間${m}分`;
+      }else{
+        document.getElementById('voteTimer').textContent = "本日の投票は締切ました";
+      }
+    }
+    setInterval(updateTimer,1000); updateTimer();
+
+    // 初期表示
+    function getSNSLeague(){
+      const u = new URL(window.location.href);
+      return u.searchParams.get("league") || "J1";
+    }
+    window.onload = () => {
+      showLeague(getSNSLeague());
+      // ピカイチスターを数秒表示後消す（邪魔しない）
+      setTimeout(()=>{
+        const pika = document.querySelector('.pikapika');
+        if(pika) pika.style.display='none';
+      },1600);
+    };
+    // 右下ロゴにタップアニメ追加
+    document.addEventListener('DOMContentLoaded',()=>{
+      const logo = document.getElementById('floatLogo');
+      if(logo){
+        logo.addEventListener('click',()=>{
+          logo.style.transition='transform 0.22s';
+          logo.style.transform='scale(1.24) rotate(13deg)';
+          setTimeout(()=>{
+            logo.style.transform='';
+            logo.style.transition='';
+          },240);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
