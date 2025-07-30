@@ -23,6 +23,8 @@
       --danger: #d32f2f;
       --text: #232b34;
       --shadow: 0 2px 12px rgba(0,0,0,0.08);
+      --shine: #fffbe7;
+      --star: #ffd700;
     }
     html, body { height:100%; }
     body {
@@ -41,46 +43,78 @@
       background: linear-gradient(120deg, #004c99 92%, #4ea7ff 100%);
       color: #fff;
       border-radius: 16px;
-      padding: 1.7em 1em 1.1em 1em;
+      padding: 1.8em 1em 1.2em 1em;
       margin-top: 1.3em;
-      margin-bottom: 0.9em;
+      margin-bottom: 0.95em;
       text-align: center;
       box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
     }
     .hero h1 {
-      font-size: 1.27em;
-      margin: 0 0 0.36em 0;
+      font-size: 1.29em;
+      margin: 0 0 0.35em 0;
       font-weight: bold;
       line-height: 1.35;
-      text-shadow: 0 2px 7px rgba(0,0,0,0.12);
+      text-shadow: 0 2px 8px rgba(0,0,0,0.13), 0 0 16px #ffe06633;
+      position: relative;
+      display:inline-block;
+      z-index:1;
+    }
+    /* キラキラ星アニメーション */
+    .sparkle {
+      position: absolute;
+      width: 28px; height: 28px;
+      pointer-events: none;
+      opacity: 0.72;
+      animation: sparkle 2.2s linear infinite;
+      z-index:0;
+    }
+    .sparkle svg {
+      width:100%; height:100%;
+      filter: drop-shadow(0 0 3px #fffda0) drop-shadow(0 0 5px #fff6b5);
+    }
+    .sparkle.s1 { left:12%; top:13%; animation-delay:0.1s;}
+    .sparkle.s2 { left:76%; top:17%; animation-delay:1.1s;}
+    .sparkle.s3 { left:50%; top:5%;  animation-delay:0.6s;}
+    .sparkle.s4 { left:26%; top:44%; animation-delay:0.7s;}
+    .sparkle.s5 { left:83%; top:33%; animation-delay:1.7s;}
+    @keyframes sparkle {
+      0% { opacity: 0.3; transform: scale(0.55) rotate(0deg);}
+      10% { opacity: 1; transform: scale(1.08) rotate(16deg);}
+      35% { opacity: 1; transform: scale(0.95) rotate(0deg);}
+      60% { opacity: 1; transform: scale(1.17) rotate(-13deg);}
+      100% { opacity: 0.2; transform: scale(0.6) rotate(0deg);}
     }
     .hero .match-names {
       font-size: 1.12em;
       font-weight: bold;
-      margin-top: 0.9em;
+      margin-top: 0.95em;
       color: #ffe066;
       letter-spacing: 0.01em;
     }
     .hero .sub-msg {
       font-size: 1.03em;
       color: #fffbe7;
-      margin-top: 0.85em;
-      line-height: 1.5;
+      margin-top: 0.88em;
+      line-height: 1.52;
+      font-weight:500;
     }
     .vote-box {
       background: var(--card-bg);
       border-radius: 14px;
       box-shadow: var(--shadow);
-      padding: 1.1em 0.7em 1.0em 0.7em;
-      margin-bottom: 1.0em;
-      margin-top: 1.0em;
+      padding: 1.11em 0.7em 1.0em 0.7em;
+      margin-bottom: 1.1em;
+      margin-top: 1.1em;
       display: flex;
       flex-direction: column;
       gap: 0.4em;
+      position:relative;
     }
     .vote-label {
       font-weight: 700;
-      font-size: 1.07em;
+      font-size: 1.08em;
       color: var(--primary);
       margin-bottom: 0.4em;
       text-align: left;
@@ -96,7 +130,7 @@
       padding: 0.72em;
       font-size: 1.04em;
       border-radius: 7px;
-      border: 1px solid #b9d1e8;
+      border: 1.2px solid #b9d1e8;
       margin-right: 0.1em;
       background: #fafdff url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='%23888'><polygon points='0,0 18,0 9,10'/></svg>") no-repeat right 12px center;
       background-size: 14px 14px;
@@ -110,30 +144,43 @@
       width: 100%;
       background: linear-gradient(90deg, var(--accent), #ffca28 96%);
       color: #fff;
-      font-size: 1.15em;
+      font-size: 1.13em;
       font-weight: bold;
-      padding: 0.98em 0;
+      padding: 1.05em 0;
       border: none;
-      border-radius: 9px;
+      border-radius: 11px;
       margin-top: 0.1em;
       margin-bottom: 0.15em;
-      box-shadow: 0 4px 16px rgba(255,87,34,0.10);
+      box-shadow: 0 4px 18px #ffd70040;
       letter-spacing: 0.03em;
       cursor: pointer;
-      transition: background 0.16s;
+      transition: background 0.16s, box-shadow 0.13s;
+      position: relative;
+      overflow:hidden;
+      z-index:0;
     }
-    .vote-btn:active, .vote-btn:hover { background: #ff8352; color: #fff; }
-    .vote-btn:disabled {
-      background-color: #bbb;
-      cursor: not-allowed;
-      color: #fff;
-      box-shadow: none;
+    .vote-btn:active, .vote-btn:hover {
+      background: #ffd700;
+      color: #ff5722;
+      box-shadow: 0 8px 24px #ffe06650;
+    }
+    /* ボタンキラキラ */
+    .vote-btn .btn-shine {
+      position:absolute; left:0; top:0; width:100%; height:100%; z-index:1; pointer-events:none;
+      animation: btnShine 2.2s infinite linear;
+      background: linear-gradient(120deg, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.9) 45%, rgba(255,255,255,0.1) 55%, rgba(255,255,255,0.11) 100%);
+      transform: translateX(-100%) skewX(-18deg);
+    }
+    @keyframes btnShine {
+      0% { transform: translateX(-100%) skewX(-18deg);}
+      60% { transform: translateX(100%) skewX(-18deg);}
+      100% { transform: translateX(100%) skewX(-18deg);}
     }
     .already-voted-msg {
       background: #ecf2fb;
       color: var(--primary);
       font-size: 1.03em;
-      padding: 0.9em 1em;
+      padding: 0.92em 1em;
       border-radius: 8px;
       margin-bottom: 0.7em;
       text-align:center;
@@ -174,7 +221,25 @@
 <body>
   <div class="container">
     <div class="hero">
-      <h1>ピカイチ投票</h1>
+      <h1>
+        <span style="position:relative;z-index:2;">ピカイチ投票</span>
+      </h1>
+      <!-- キラキラ星アニメーション -->
+      <span class="sparkle s1">
+        <svg viewBox="0 0 32 32"><polygon fill="var(--star)" points="16,0 20,11 32,12 23,20 26,32 16,25 6,32 9,20 0,12 12,11"/></svg>
+      </span>
+      <span class="sparkle s2">
+        <svg viewBox="0 0 22 22"><polygon fill="var(--star)" points="11,0 13,7 22,8 16,14 18,22 11,17 4,22 6,14 0,8 9,7"/></svg>
+      </span>
+      <span class="sparkle s3">
+        <svg viewBox="0 0 18 18"><polygon fill="var(--star)" points="9,0 11,5 18,6 13,11 15,18 9,14 3,18 5,11 0,6 7,5"/></svg>
+      </span>
+      <span class="sparkle s4">
+        <svg viewBox="0 0 11 11"><polygon fill="var(--star)" points="5.5,0 6.5,3.5 11,4 8,7 9,11 5.5,9 2,11 3,7 0,4 4.5,3.5"/></svg>
+      </span>
+      <span class="sparkle s5">
+        <svg viewBox="0 0 16 16"><polygon fill="var(--star)" points="8,0 9,4 16,5 12,9 13,16 8,12 3,16 4,9 0,5 7,4"/></svg>
+      </span>
       <div class="match-names">
         <span><%= match.home %></span>
         <span style="margin:0 0.5em; font-size:0.98em; color:#fff;">VS</span>
@@ -188,7 +253,7 @@
 
     <% if (!expired) { %>
       <div class="vote-note">
-        片方のチームだけの投票もOK！どちらか“心に残った選手”だけでも投票してみよう。
+        片方のチームだけの投票もOK！どちらか“心に残った選手”だけでも投票できます。
       </div>
 
       <!-- ホームチーム投票エリア -->
@@ -207,9 +272,14 @@
               <% }) %>
             </select>
             <% if (!voted.home) { %>
-              <button type="submit" class="vote-btn">この選手にピカイチ投票！</button>
+              <button type="submit" class="vote-btn">
+                <span>この選手にピカイチ投票！</span>
+                <span class="btn-shine"></span>
+              </button>
             <% } else { %>
-              <button type="button" class="vote-btn" disabled>✅ 投票済み</button>
+              <button type="button" class="vote-btn" disabled>
+                ✅ 投票済み
+              </button>
             <% } %>
           </div>
         </form>
@@ -236,9 +306,14 @@
               <% }) %>
             </select>
             <% if (!voted.away) { %>
-              <button type="submit" class="vote-btn">この選手にピカイチ投票！</button>
+              <button type="submit" class="vote-btn">
+                <span>この選手にピカイチ投票！</span>
+                <span class="btn-shine"></span>
+              </button>
             <% } else { %>
-              <button type="button" class="vote-btn" disabled>✅ 投票済み</button>
+              <button type="button" class="vote-btn" disabled>
+                ✅ 投票済み
+              </button>
             <% } %>
           </div>
         </form>
