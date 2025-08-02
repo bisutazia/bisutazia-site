@@ -263,6 +263,7 @@
           method="post"
           onsubmit="return confirm('🔥本当に「<%= match.home %>」の『' + this.player.value + '』選手にピカイチ投票しますか？');"
         >
+         <input type="hidden" name="team" value="home">
           <div class="vote-label">🏠 <strong><%= match.home %></strong> の中で一番輝いた選手</div>
           <div class="vote-select-row">
             <select name="player" required <%= voted.home ? "disabled" : "" %>>
@@ -297,6 +298,7 @@
           method="post"
           onsubmit="return confirm('🔥本当に「<%= match.away %>」の『' + this.player.value + '』選手にピカイチ投票しますか？');"
         >
+        <input type="hidden" name="team" value="away">
           <div class="vote-label">🚩 <strong><%= match.away %></strong> の中で一番輝いた選手</div>
           <div class="vote-select-row">
             <select name="player" required <%= voted.away ? "disabled" : "" %>>
