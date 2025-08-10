@@ -84,9 +84,7 @@
     .screenshot body{background:#fff}
     .screenshot .wrap{padding:0 1rem}
     .screenshot .voted-card{margin-top:.6rem;margin-bottom:1rem;border-width:3px}
-    .watermark{
-      display:none
-    }
+    .watermark{display:none}
     .screenshot .watermark{
       display:block;position:fixed;left:50%;bottom:10px;transform:translateX(-50%);
       color:#999;font-weight:900;letter-spacing:.08em;font-size:.9rem;opacity:.7
@@ -110,7 +108,8 @@
       <div class="voted-card" id="votedCard" aria-live="polite">
         <div class="sparkle" aria-hidden="true"></div>
         <div class="voted-title">あなたのピカイチ</div>
-        <div class="player-name" id="playerName"><%= votedPlayer %></div>
+        <!-- ここはすでに「選手」付き -->
+        <div class="player-name" id="playerName"><%= votedPlayer %> 選手</div>
         <div class="team-badge"><%= (votedTeam==='home'? match.home : match.away) %></div>
         <div style="margin-top:.3rem;color:#555;font-size:.95rem">スクショして #ピカイチ投票 #ビスタジア で投稿しよう！</div>
       </div>
@@ -144,12 +143,13 @@
 
   <script>
     // ---- 定数（EJSをJSに安全に埋め込む） ----
-    const MATCH_HOME = "<%- match.home %>";
-    const MATCH_AWAY = "<%- match.away %>";
-    const VOTED_TEAM = "<%- votedTeam %>";
-    const VOTED_PLAYER = "<%- votedPlayer %>";
-    const HOME_PCT = <%- totalVotes.homePercent %>;
-    const AWAY_PCT = <%- totalVotes.awayPercent %>;
+    const MATCH_HOME   = "<%- match.home %>";
+    const MATCH_AWAY   = "<%- match.away %>";
+    const VOTED_TEAM   = "<%- votedTeam %>";
+    // ★ここを“選手”付きにします（統一）：以降どこで使っても「◯◯ 選手」
+    const VOTED_PLAYER = "<%- votedPlayer %> 選手";
+    const HOME_PCT     = <%- totalVotes.homePercent %>;
+    const AWAY_PCT     = <%- totalVotes.awayPercent %>;
 
     // ---- 円グラフ ----
     (function drawChart(){
@@ -208,19 +208,18 @@
     const ssBtn = document.getElementById('ssBtn');
     ssBtn.addEventListener('click',()=>{
       document.documentElement.classList.toggle('screenshot');
-      // スクロールを上へ（カードが画面中央に収まる）
       const card = document.getElementById('votedCard');
       card?.scrollIntoView({behavior:'smooth',block:'center'});
       ssBtn.textContent = document.documentElement.classList.contains('screenshot') ? '✅ スクショ完了 → 通常表示へ' : '📸 スクショモード';
-      // 軽く光らせる
       card.style.transition='filter .18s'; card.style.filter='brightness(1.06)';
       setTimeout(()=>{ card.style.filter=''; },240);
     });
 
     // ---- シェア（Web Share API / クリップボード） ----
     document.getElementById('shareBtn').addEventListener('click', async ()=>{
-      const url = location.href;
-      const text = `【ピカイチ投票結果】${MATCH_HOME} ${HOME_PCT}% vs ${MATCH_AWAY} ${AWAY_PCT}%\n#ピカイチ投票 #ビスタジア\n${url}`;
+      const url  = location.href;
+      // ★ここも選手名を採用（VOTED_PLAYERは“選手”付き）
+      const text = `【ピカイチ投票結果】あなたのピカイチ：${VOTED_PLAYER}\n${MATCH_HOME} ${HOME_PCT}% vs ${MATCH_AWAY} ${AWAY_PCT}%\n#ピカイチ投票 #ビスタジア\n${url}`;
       try{
         if(navigator.share){
           await navigator.share({title:'ピカイチ投票結果', text, url});
