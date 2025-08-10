@@ -4,22 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>ピカイチ投票｜SNSサポの一票でヒーローを生む</title>
-  <meta name="description" content="SNSから今すぐ1タップ！Jリーグ・WEリーグ全試合“ピカイチ投票”で今日一番輝いた選手を決めよう。サポーターの熱で未来を変える！" />
+  <meta name="description" content="SNSから今すぐ1タップ！Jリーグ・WEリーグの試合ごとに“今日一番輝いた選手”へピカイチ投票。あなたの一票がヒーローを生む。締切前に投票しよう。" />
   <meta property="og:title" content="ピカイチ投票｜SNSから1タップで推しをヒーローに" />
-  <meta property="og:description" content="Jリーグサポの一票で“輝いた選手”をピカイチに！SNS時代の120点UX。" />
+  <meta property="og:description" content="今この試合で一番輝いた選手に1タップ投票！あなたの一票でヒーロー誕生。J/WE全対応。" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://bisutazia.com/" />
   <meta property="og:image" content="https://bisutazia.com/ogp.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="ピカイチ投票 | SNSサポの熱で一番輝いた選手に1タップ投票" />
-  <meta name="twitter:description" content="SNSサポーターの一票がヒーローを生む！離脱ゼロUXの“ピカイチ投票”" />
+  <meta name="twitter:description" content="あなたの“一票”が選手の誇りに。締切前に投票しよう！" />
   <meta name="twitter:image" content="https://bisutazia.com/ogp.png" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet" />
+
   <style>
     :root {
       --primary: #0366d6;
       --accent: #ffbe16;
-      --danger: #ff4949;
       --bg: #f9fafb;
       --card-bg: #fff;
       --text: #222;
@@ -27,7 +27,10 @@
       --gold: #ffbe16;
       --gold-dark: #b88d0f;
       --gold-light: #ffe28a;
-      --glass: rgba(255,255,255,0.8);
+      --glass: rgba(255,255,255,0.85);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
     }
     html,body { height:100%; }
     body {
@@ -43,273 +46,117 @@
     header {
       background: var(--primary);
       color: #fff;
-      padding: 0.4rem 0.5rem 0.2rem 0.5rem;
+      padding: 0.36rem 0.5rem 0.2rem;
       text-align: left;
       box-shadow: var(--shadow);
       position:sticky; top:0; z-index:11;
-      user-select:none;
-      display: flex; align-items: center;
-      min-height: 45px;
+      display:flex; align-items:center; gap:.4em;
+      min-height: 44px;
     }
-    .logo {
-      max-height:28px;
-      margin-right: 0.2em;
-      margin-top: 0.1em;
-      margin-bottom: 0.1em;
-      flex-shrink: 0;
-    }
-    .site-title {
-      font-size:1.05em;
-      font-weight: bold;
-      letter-spacing:0.03em;
-      flex:1 1 auto;
-      padding-left:0.2em;
-    }
-    main {
-      max-width: 500px;
-      margin: 0 auto;
-      padding: 0 0.1em 1.3em 0.1em;
-      position:relative;
-      z-index:1;
-    }
+    .logo { max-height:22px; flex-shrink:0; }
+    .site-title { font-size:1.02em; font-weight:700; letter-spacing:.02em; }
+
+    main { max-width: 500px; margin: 0 auto; padding: 0 0.1em 5.2em; position:relative; z-index:1; }
+
     .hero {
-      margin-top:4vw;
-      margin-bottom: 1.3em;
-      padding: 2.2em 0.5em 1.2em 0.5em;
-      border-radius: 1.8em;
-      text-align: center;
+      margin-top:4vw; margin-bottom: 1.1em;
+      padding: 1.9em .6em 1.1em;
+      border-radius: 1.6em; text-align: center;
       background: linear-gradient(120deg, var(--primary) 80%, var(--accent) 100%);
-      color: #fff;
-      box-shadow: var(--shadow);
-      position:relative;
-      overflow:hidden;
-      max-width:500px;
-      margin-left:auto; margin-right:auto;
-      isolation:isolate;
+      color: #fff; box-shadow: var(--shadow); position:relative; overflow:hidden;
     }
     .hero h1 {
-      font-size: 1.55em;
-      margin: 0 0 0.16em 0;
-      font-weight: 900;
-      letter-spacing:0.03em;
-      line-height:1.2;
+      font-size: 1.48em; margin: 0 0 .2em 0; font-weight: 900; line-height:1.22;
       text-shadow:0 2px 15px #0366d633, 0 0 16px #ffbe1640;
-      z-index:2; position:relative;
-      display:inline-block;
-      animation: fadeDown .7s cubic-bezier(.7,0,.38,1.22);
-    }
-    @keyframes fadeDown {
-      0% { opacity:0; transform:translateY(-28px) scale(0.96);}
-      100% { opacity:1; transform:translateY(0) scale(1);}
-    }
-    .hero .star-bounce {
-      display:inline-block;
-      font-size:1.25em;
-      margin-left:0.08em;
-      animation: pikapika 1.3s cubic-bezier(.77,0,.18,1.14) infinite;
-      vertical-align:middle;
-      filter:drop-shadow(0 0 10px #ffbe16aa);
-    }
-    @keyframes pikapika {
-      0%,100% { transform:translateY(0) scale(1);}
-      15% { transform:translateY(-8px) scale(1.11);}
-      30% { transform:translateY(-1px) scale(1.02);}
-      50% { transform:translateY(0) scale(1);}
-    }
-    /* ---- リーグ選択 ---- */
-    .leagues-bar {
-      display: flex;
-      gap: 0.7em;
-      justify-content: center;
-      align-items: center;
-      margin: 1.1em 0 0.5em 0;
-      padding: 0;
-      width: 100%;
-      flex-wrap: wrap;
-      z-index:3;
-      animation: fadeDown .7s .06s both cubic-bezier(.73,0,.2,1.18);
-    }
-    .leagues-bar button {
-      flex:1 1 80px;
-      min-width: 78px;
-      background: linear-gradient(90deg,var(--gold) 60%,var(--gold-light) 100%);
-      color: var(--primary);
-      border: none;
-      border-radius: 99px;
-      font-size: 1.02em;
-      font-weight: bold;
-      padding: 0.66em 1.1em;
-      margin: 0.13em 0;
-      cursor: pointer;
-      transition: background 0.15s, color 0.14s, box-shadow 0.15s;
-      box-shadow:0 2px 8px #ffe06633;
-      letter-spacing:0.02em;
-      outline:none;
-    }
-    .leagues-bar button.active, .leagues-bar button:active, .leagues-bar button:focus {
-      background:linear-gradient(90deg,#fffbe6 60%,var(--gold) 100%);
-      color: var(--gold-dark);
-      box-shadow:0 0 18px #ffe06688;
-      border:2.5px solid var(--gold-dark);
     }
     .hero p {
-      margin: 0.8em 0 1.15em 0;
-      font-size: 1.13em;
-      line-height:1.65;
-      font-weight:500;
-      z-index:2; position:relative;
-      animation: fadeDown .7s .09s both cubic-bezier(.73,0,.2,1.18);
-      letter-spacing:0.01em;
+      margin: .6em 0 1em; font-size:1.08em; line-height:1.62; font-weight:500;
     }
     .timer {
-      display: inline-block;
-      background: var(--accent);
-      color: var(--primary);
-      font-size:1em;
-      font-weight:bold;
-      border-radius:8px;
-      padding:0.34em 0.88em;
-      margin-bottom: 1em;
-      margin-top: 0.19em;
-      box-shadow:0 0 12px #ffe0661a;
-      letter-spacing:0.01em;
-      animation: fadeDown .7s .16s both cubic-bezier(.73,0,.2,1.18);
+      display:inline-block; background: var(--accent); color: var(--primary);
+      font-size:.98em; font-weight:700; border-radius:8px;
+      padding:.32em .86em; margin-bottom: .9em;
+      box-shadow:0 0 12px #ffe0661a; letter-spacing:.01em;
     }
-    /* ---- CTA ---- */
-    .cta-btn {
-      display: block;
-      width: 100%;
-      background: linear-gradient(90deg,var(--accent) 65%,#fff1c0 100%);
-      color: var(--primary);
-      font-size: 1.22em;
-      font-weight: 900;
-      padding: 1.1em 0;
-      border: none;
-      border-radius: 99px;
-      margin-top: 0.7em;
-      margin-bottom: 0.09em;
-      box-shadow: 0 5px 19px #ffe06630;
-      transition: background 0.13s, color 0.13s, box-shadow 0.14s, transform 0.11s;
-      letter-spacing: 0.02em;
-      cursor:pointer;
-      position:relative;
-      overflow:hidden;
-      animation: ctaPop .7s .23s both cubic-bezier(.77,0,.18,1.14);
-      will-change:transform,box-shadow;
+
+    /* リーグ選択（タイトル直下・金色統一） */
+    .leagues-bar {
+      display:flex; gap:.6em; justify-content:center; align-items:center;
+      margin: .95em 0 .5em; padding:0; width:100%; flex-wrap:wrap;
     }
-    .cta-btn .star {
-      display:inline-block;
-      vertical-align:middle;
-      margin-left:0.07em;
-      animation: pikapika 1.7s cubic-bezier(.77,0,.18,1.14) infinite;
-      filter:drop-shadow(0 0 10px #ffe066cc);
+    .leagues-bar button{
+      flex:1 1 80px; min-width:78px;
+      background: linear-gradient(90deg,var(--gold) 60%,var(--gold-light) 100%);
+      color: var(--primary); border:none; border-radius: 999px;
+      font-size: 1.02em; font-weight: 800; padding: .64em 1em; margin:.12em 0;
+      cursor:pointer; transition: background .15s, color .14s, box-shadow .15s;
+      box-shadow:0 2px 8px #ffe06633; letter-spacing:.02em; outline:none;
     }
-    .cta-btn:active,.cta-btn:hover {
-      background:linear-gradient(90deg,#ffe066 70%,#fffbe6 100%);
-      color: var(--primary);
-      transform: scale(1.04);
-      box-shadow:0 0 21px #ffe066bb;
+    .leagues-bar button.active, .leagues-bar button:focus {
+      background:linear-gradient(90deg,#fffbe6 60%,var(--gold) 100%);
+      color: var(--gold-dark); box-shadow:0 0 18px #ffe06688; border:2px solid var(--gold-dark);
     }
-    @keyframes ctaPop {
-      0% { opacity:0; transform:scale(.97);}
-      70% { opacity:.7; transform:scale(1.07);}
-      100% { opacity:1; transform:scale(1);}
-    }
+
     .catch-nudge {
-      margin: 1.18em auto 0.31em;
-      background: var(--glass);
-      color: var(--primary);
-      font-size: 1.08em;
-      border-left: 7px solid var(--accent);
-      padding: 0.8em 1.18em;
-      border-radius: 12px;
-      font-weight: bold;
-      box-shadow:0 2px 14px rgba(0,0,0,0.03);
-      line-height:1.5;
-      text-align:center;
-      max-width:470px;
-      animation: fadeDown .7s .33s both cubic-bezier(.73,0,.2,1.18);
-      isolation:isolate;
+      margin: 1.05em auto .3em; background: var(--glass); color: var(--primary);
+      font-size: 1.06em; border-left: 7px solid var(--accent);
+      padding: .78em 1.1em; border-radius: 12px; font-weight: 700; text-align:center;
+      box-shadow:0 2px 14px rgba(0,0,0,0.03); max-width:470px;
     }
-    .match-list {
-      margin: 1.2em 0 0 0;
-      display: flex;
-      flex-direction: column;
-      gap: 1.02em;
-      animation: fadeDown .7s .41s both cubic-bezier(.73,0,.2,1.18);
-    }
+
+    .match-list { margin: 1.05em 0 0; display:flex; flex-direction:column; gap: .98em; }
     .match-card {
-      background: var(--card-bg);
-      border-radius: 1.08em;
+      background: var(--card-bg); border-radius: 1.05em;
       box-shadow: 0 3px 20px rgba(0,0,0,0.09);
-      padding: 1.02em 0.5em 0.7em;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border-left: 6px solid var(--primary);
-      position:relative;
-      overflow:hidden;
-      animation: cardPop .7s cubic-bezier(.68,-0.55,.27,1.55) both;
-      will-change:transform,box-shadow;
-      transition:box-shadow 0.14s,transform 0.13s;
-    }
-    @keyframes cardPop {
-      0% {opacity:0;transform:scale(0.93);}
-      100% {opacity:1;transform:scale(1);}
+      padding: 1.02em .5em .7em; display:flex; flex-direction:column; align-items:center; justify-content:center;
+      border-left: 6px solid var(--primary); position:relative; overflow:hidden;
+      transition:box-shadow .14s,transform .13s;
     }
     .match-card h3 {
-      font-size: 1.11em;
-      color: var(--primary);
-      margin: 0.21em 0 0.35em;
-      font-weight: bold;
-      letter-spacing:0.01em;
-      text-shadow:0 1px 7px #ffbe1630;
+      font-size: 1.12em; color: var(--primary); margin: .2em 0 .38em; font-weight: 800; letter-spacing:.01em;
+      text-align:center;
     }
-    .match-card .vote-btn {
-      background: linear-gradient(90deg,var(--accent) 65%,#fffbe6 100%);
-      color: var(--primary);
-      border: none;
-      border-radius: 99px;
-      padding: 0.97em 0;
-      width: 97%;
-      font-size: 1.09em;
-      font-weight: 900;
-      margin: 0.56em 0 0.1em 0;
-      cursor: pointer;
-      transition: background 0.12s, color 0.12s, box-shadow 0.11s, transform 0.13s;
-      box-shadow:0 2px 8px #ffe06651;
-      position:relative;
-      overflow:hidden;
-      letter-spacing:0.015em;
-      animation: ctaPop .7s .51s both;
-      will-change:transform,box-shadow;
+    .vote-btn {
+      background: linear-gradient(90deg,var(--accent) 65%,#fffbe6 100%); color: var(--primary);
+      border:none; border-radius: 999px; padding: .97em 0; width: 97%;
+      font-size: 1.09em; font-weight: 900; margin: .56em 0 .1em; cursor:pointer;
+      transition: background .12s, color .12s, box-shadow .11s, transform .13s;
+      box-shadow:0 2px 8px #ffe06651; letter-spacing:.015em;
     }
-    .match-card .vote-btn .star {
-      display:inline-block; vertical-align:middle; margin-left:0.07em;
-      animation: pikapika 1.6s cubic-bezier(.77,0,.18,1.14) infinite;
+    .vote-btn:hover,.vote-btn:active{ background:linear-gradient(90deg,#ffe066 75%,#fffbe6 100%); transform:scale(1.03); box-shadow:0 0 17px #ffe06699; }
+
+    .info-tip { font-size: .96em; color:#555; margin: 1em 0 .28em; text-align:center; }
+
+    /* 下部固定ミニCTA（スクロール時） */
+    .sticky-cta {
+      position: fixed; left:0; right:0; bottom:0; z-index: 12;
+      display:none; /* 初期は非表示 */
+      padding: .5em .9em env(safe-area-inset-bottom);
+      background: linear-gradient(180deg, #ffffffd9 0%, #ffffff 100%);
+      box-shadow: 0 -6px 18px rgba(0,0,0,.08);
     }
-    .match-card .vote-btn:active,.match-card .vote-btn:hover {
-      background:linear-gradient(90deg,#ffe066 75%,#fffbe6 100%);
-      color: var(--primary);
-      transform:scale(1.04);
-      box-shadow:0 0 17px #ffe06699;
+    .sticky-cta .inner {
+      max-width: 520px; margin:0 auto; display:flex; gap:.6em; align-items:center;
     }
-    .info-tip {
-      font-size: 0.97em;
-      color: #555;
-      margin: 1.03em 0 0.28em 0;
-      text-align: center;
-      animation: fadeDown .7s .69s both cubic-bezier(.73,0,.2,1.18);
+    .sticky-cta .deadline {
+      flex:0 0 auto; font-weight:800; color:var(--primary); font-size:.95em;
+      background:#fff3c9; border-radius:8px; padding:.45em .6em;
     }
+    .sticky-cta .go {
+      flex:1 1 auto; text-align:center; font-weight:900; font-size:1.04em;
+      background: linear-gradient(90deg,var(--accent) 70%,#fff1c0 100%); color:var(--primary);
+      border:none; border-radius:999px; padding:.9em 1em; cursor:pointer;
+      box-shadow:0 6px 18px #ffe06655;
+    }
+
     /* レスポンシブ */
     @media (max-width:480px){
       body { font-size:15.7px;}
-      header { padding:0.22rem 0.18rem 0.11rem 0.16rem;}
-      .logo { max-height:23px;}
-      .hero{padding:1.26em 0.08em 0.68em;}
-      .leagues-bar button{min-width:61px; font-size:1em;}
-      .match-card{padding:0.49em 0.03em 0.65em;}
+      header { padding:.22rem .18rem .12rem; }
+      .logo { max-height:20px; }
+      .hero{ padding:1.2em .2em .7em; }
+      .leagues-bar button{ min-width:61px; font-size:1em; }
+      .match-card{ padding:.5em .06em .6em; }
     }
   </style>
 </head>
@@ -318,11 +165,12 @@
     <img src="/logo.png" alt="ビスタジア ロゴ" class="logo" />
     <span class="site-title">ビスタジア</span>
   </header>
+
   <main>
-    <section class="hero">
-      <h1>
-        ピカイチ投票 <span class="star-bounce">✨</span>
-      </h1>
+    <section class="hero" id="hero">
+      <h1>ピカイチ投票</h1>
+
+      <!-- 金色リーグタブ（タイトル直下） -->
       <div class="leagues-bar" id="leagues">
         <button id="J1" onclick="showLeague('J1')">J1</button>
         <button id="J2" onclick="showLeague('J2')">J2</button>
@@ -331,89 +179,167 @@
         <button id="ルヴァンカップ" onclick="showLeague('ルヴァンカップ')">ルヴァン杯</button>
         <button id="その他" onclick="showLeague('その他')">その他</button>
       </div>
+
       <p>
-        SNSで盛り上がった今、<b>一番輝いた選手</b>に投票しよう！<br>
-        <span style="color:#fff;">“あなたの1票”がヒーローを生む。</span><br>
-        投票は今だけ・1タップで完了。Jリーグ/WEリーグ全対応。
+        SNSで盛り上がった今、<b>この試合で一番輝いた選手</b>に投票しよう。<br>
+        <span style="color:#fff;">あなたの“一票”がヒーローを生む。</span><br>
+        締切までに<b>1タップで完了</b>。
       </p>
-      <div class="timer" id="voteTimer">本日の投票 締切まで残り --時間--分</div>
-      <button class="cta-btn" onclick="scrollToList()">
-        ピカイチ投票する <span class="star">✨</span>
+
+      <div class="timer" id="voteTimer">本日の投票 締切まで残り --:--</div>
+
+      <button class="vote-btn" onclick="scrollToList()" aria-label="投票リストへ移動">
+        ピカイチ投票をはじめる
       </button>
     </section>
+
     <div class="catch-nudge">
-      あなたの投票で“公式化”に近づく。<br>
-      サポーターの熱が、サッカー界を動かす！
+      サポーターの投票が“公式化”の追い風に。<br>いまの熱を1タップで残そう。
     </div>
-    <div class="match-list" id="matchList"></div>
+
+    <div class="match-list" id="matchList" aria-live="polite"></div>
+
     <div class="info-tip">
-      投票後は <b>#ピカイチ投票 #ビスタジア</b> で<br>
-      SNS拡散も大歓迎！
+      投票後は <b>#ピカイチ投票 #ビスタジア</b> で拡散！次のヒーローが生まれる。
     </div>
   </main>
-  <footer>
+
+  <!-- スクロール時の下部固定ミニCTA（FOMO + 迷わず戻れる） -->
+  <div class="sticky-cta" id="stickyCta" role="region" aria-label="投票ショートカット">
+    <div class="inner">
+      <div class="deadline" id="miniDeadline">本日締切</div>
+      <button class="go" onclick="scrollToList()">投票リストを開く</button>
+    </div>
+  </div>
+
+  <footer style="text-align:center; padding: 1.4em 0 .9em; color:#666;">
     非公式プロジェクトです（Jリーグ公式化を目指して運営中）<br>
     &copy; <script>document.write(new Date().getFullYear())</script> ビスタジア
   </footer>
+
   <script>
-    // matches: { J1: { 節: { matches:[{id,home,away}] } }, ... }
+    // ---- データ注入 ----
     const matchesData = <%- JSON.stringify(matches) %>;
-    // リーグ切り替え
+
+    // ---- ユーティリティ ----
+    const qs = new URLSearchParams(location.search);
+    const utm = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term']
+      .reduce((acc,k)=>{ if(qs.get(k)) acc[k]=qs.get(k); return acc; }, {});
+    const utmQuery = Object.keys(utm).length ? ('?' + new URLSearchParams(utm).toString()) : '';
+
+    function buildMatchUrl(id){
+      // league引継ぎ + UTMも継承
+      const league = currentLeague || qs.get('league');
+      const p = new URLSearchParams({ ...(league?{league}:{}), ...utm });
+      return `/match/${id}${p.toString()?('?'+p.toString()):''}`;
+    }
+
+    // ---- リーグ表示 ----
+    let currentLeague = null;
+
     function showLeague(league) {
+      currentLeague = league;
+      // 視覚状態
       document.querySelectorAll('.leagues-bar button').forEach(btn=>btn.classList.remove('active'));
-      if(document.getElementById(league))document.getElementById(league).classList.add('active');
+      const active = document.getElementById(league);
+      if(active) active.classList.add('active');
+
+      // 永続化（次回来訪の一貫性）
+      try { sessionStorage.setItem('lastLeague', league); } catch(e){}
+
+      // リスト描画
       const list = document.getElementById('matchList');
       list.innerHTML = '';
       if (league === 'その他') {
-        window.location.href = '/match/other';
+        location.href = '/match/other' + (utmQuery || '');
         return;
       }
       const secData = matchesData[league] || {};
+      const frag = document.createDocumentFragment();
+
       Object.entries(secData).forEach(([section, data]) => {
-        data.matches.forEach(m => {
+        (data.matches || []).forEach(m => {
           const card = document.createElement('div');
           card.className = 'match-card';
+
+          // 先読み（体感高速化）
+          const prefetch = document.createElement('link');
+          prefetch.rel = 'prefetch'; prefetch.href = buildMatchUrl(m.id);
+          document.head.appendChild(prefetch);
+
           card.innerHTML = `
             <h3>${m.home} vs ${m.away}</h3>
-            <button class="vote-btn" onclick="location.href='/match/${m.id}'">
-              ピカイチ投票 <span class="star">✨</span>
-            </button>
+            <button class="vote-btn" data-mid="${m.id}" aria-label="${m.home}対${m.away}に投票ページへ">ピカイチ投票</button>
           `;
-          list.appendChild(card);
+          frag.appendChild(card);
         });
       });
+      list.appendChild(frag);
+
+      // クリック委譲（計測・URL統一）
+      list.onclick = (e)=>{
+        const btn = e.target.closest('.vote-btn');
+        if(!btn) return;
+        const id = btn.getAttribute('data-mid');
+        location.href = buildMatchUrl(id);
+      };
+
+      // 表示位置へ
       setTimeout(scrollToList, 0);
     }
+
     function scrollToList(){
       const list=document.getElementById('matchList');
-      if(list){
-        list.scrollIntoView({behavior:'smooth', block:'start'});
-      }
+      if(list){ list.scrollIntoView({behavior:'smooth', block:'start'}); }
     }
+
+    // ---- カウントダウン（FOMO） ----
     function updateTimer(){
       const now = new Date();
-      const close = new Date();
-      close.setHours(23,59,59,999);
-      const diff = close-now;
+      const close = new Date(); close.setHours(23,59,59,999);
+      const diff = close - now;
+      const t = document.getElementById('voteTimer');
+      const mini = document.getElementById('miniDeadline');
       if(diff>0){
         const h = String(Math.floor(diff/3600000)).padStart(2,"0");
         const m = String(Math.floor((diff%3600000)/60000)).padStart(2,"0");
-        document.getElementById('voteTimer').textContent =
-          `本日の投票 締切まで残り ${h}時間${m}分`;
+        const text = `本日の投票 締切まで残り ${h}:${m}`;
+        if(t) t.textContent = text;
+        if(mini) mini.textContent = `締切 ${h}:${m}`;
       }else{
-        document.getElementById('voteTimer').textContent = "本日の投票は締切ました";
+        if(t) t.textContent = "本日の投票は締切ました";
+        if(mini) mini.textContent = "締切";
       }
     }
-    setInterval(updateTimer,1000); updateTimer();
+    setInterval(updateTimer, 1000); updateTimer();
 
-    // SNS流入時リーグ指定パラメータ
-    function getSNSLeague(){
-      const u = new URL(window.location.href);
-      return u.searchParams.get("league") || "J1";
+    // ---- 初期リーグ決定（SNSパラメータ > 前回選択 > 既定J1） ----
+    function getInitialLeague(){
+      const fromQS = qs.get("league");
+      if(fromQS) return fromQS;
+      try {
+        const last = sessionStorage.getItem('lastLeague');
+        if(last) return last;
+      } catch(e){}
+      return "J1";
     }
-    window.onload = () => {
-      showLeague(getSNSLeague());
-    };
+
+    // ---- スクロールで下部CTA表示（“今押す”を促す） ----
+    (function setupStickyCTA(){
+      const sticky = document.getElementById('stickyCta');
+      const hero = document.getElementById('hero');
+      if(!sticky || !hero) return;
+      const obs = new IntersectionObserver(entries=>{
+        entries.forEach(entry=>{
+          // ヒーローが見えていない＝ユーザーが下に居る → CTA表示
+          sticky.style.display = entry.isIntersecting ? 'none' : 'block';
+        });
+      }, {threshold: 0.01});
+      obs.observe(hero);
+    })();
+
+    // ---- 起動 ----
+    window.onload = () => { showLeague(getInitialLeague()); };
   </script>
 </body>
 </html>
