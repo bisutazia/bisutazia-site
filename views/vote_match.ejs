@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
   <title><%= match.home %> vs <%= match.away %> - ピカイチ投票 | ビスタジア</title>
-  <meta name="description" content="Jリーグ・WEリーグ全試合対応！あなたが「一番輝いた」と思う選手をピカイチ投票しよう。今すぐ熱い一票を！">
+  <meta name="description" content="Jリーグ・WEリーグ全試合対応！あなたが「1番輝いた」と思う選手をピカイチ投票しよう。今すぐ熱い1票を！">
 
   <!-- ↓ ここからX/Twitterカード用に重要（絶対URLで統一） -->
   <link rel="canonical" href="https://bisutazia-site.onrender.com/match/<%= match.id %>">
@@ -14,7 +14,7 @@
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://bisutazia-site.onrender.com/match/<%= match.id %>">
   <meta property="og:title" content="ピカイチ投票 | <%= match.home %> vs <%= match.away %>">
-  <meta property="og:description" content="この試合で一番輝いた選手に1タップ投票！あなたの一票がヒーローを生む。">
+  <meta property="og:description" content="この試合で一番輝いた選手に1タップ投票！あなたの1票がヒーローを生む。">
   <!-- まずは共通ロゴでOK。後で /ogp/<%= match.id %>.png に差し替えると“試合専用カード”に -->
   <meta property="og:image" content="https://bisutazia-site.onrender.com/ogp.png">
   <meta property="og:image:width" content="1200">
@@ -23,7 +23,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://bisutazia-site.onrender.com/match/<%= match.id %>">
   <meta name="twitter:title" content="ピカイチ投票 | <%= match.home %> vs <%= match.away %>">
-  <meta name="twitter:description" content="今この試合で一番輝いた選手に1タップ投票！">
+  <meta name="twitter:description" content="今この試合で1番輝いた選手に1タップ投票！">
   <meta name="twitter:image" content="https://bisutazia-site.onrender.com/ogp.png">
   <!-- ↑ 将来ここも https://bisutazia-site.onrender.com/ogp/<%= match.id %>.png にすると完璧 -->
 
@@ -146,7 +146,7 @@
         <span><%= match.away %></span>
       </div>
       <div class="sub-msg">
-        「この試合で一番輝いた！」と思う選手に、<br>
+        「この試合で1番輝いた！」と思う選手に、<br>
         <b>あなたの“ピカイチ投票”をお願いします！</b>
       </div>
     </div>
@@ -164,7 +164,7 @@
           onsubmit="return confirm('🔥本当に「<%= match.home %>」の『' + this.player.value + '』選手にピカイチ投票しますか？');"
         >
          <input type="hidden" name="team" value="home">
-          <div class="vote-label">🏠 <strong><%= match.home %></strong> の中で一番輝いた選手</div>
+          <div class="vote-label">🏠 <strong><%= match.home %></strong> の中で1番輝いた選手</div>
           <div class="vote-select-row">
             <select name="player" required <%= voted.home ? "disabled" : "" %>>
               <option value="" disabled selected>選手を選んでください</option>
@@ -199,7 +199,7 @@
           onsubmit="return confirm('🔥本当に「<%= match.away %>」の『' + this.player.value + '』選手にピカイチ投票しますか？');"
         >
         <input type="hidden" name="team" value="away">
-          <div class="vote-label">🚩 <strong><%= match.away %></strong> の中で一番輝いた選手</div>
+          <div class="vote-label">🚩 <strong><%= match.away %></strong> の中で1番輝いた選手</div>
           <div class="vote-select-row">
             <select name="player" required <%= voted.away ? "disabled" : "" %>>
               <option value="" disabled selected>選手を選んでください</option>
