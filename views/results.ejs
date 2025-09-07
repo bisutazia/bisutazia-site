@@ -4,6 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ピカイチ投票結果｜<%= match.home %> vs <%= match.away %></title>
+
+  <!-- ▼▼ 追加：X/Twitterカード（OGP）でURLだけでも“怪しく見えない” ▼▼ -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="私のピカイチ：<%= votedPlayer %>（<%= (votedTeam==='home'? match.home : match.away) %>）">
+  <meta property="og:description" content="<%= match.home %> vs <%= match.away %>｜あなたも投票しよう！ #ピカイチ投票 #ビスタジア">
+  <meta property="og:site_name" content="ビスタジア">
+  <!-- 画像は後述のCanvas生成ファイルをサーバーで保存できない場合はプレースホルダーでOK -->
+  <meta property="og:image" content="/img/pikaichi_og_default.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="私のピカイチ：<%= votedPlayer %>（<%= (votedTeam==='home'? match.home : match.away) %>）">
+  <meta name="twitter:description" content="<%= match.home %> vs <%= match.away %>｜あなたも投票しよう！ #ピカイチ投票 #ビスタジア">
+  <meta name="twitter:image" content="/img/pikaichi_og_default.png">
+  <!-- ▲▲ OGPここまで ▲▲ -->
+
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,700">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -27,7 +41,7 @@
       padding:1rem .9rem;margin:.6rem 0 1.2rem;position:relative;overflow:hidden
     }
     .match-name{font-weight:900;color:var(--primary);text-align:center;margin:.2rem 0 .8rem;font-size:1.05rem}
-    /* あなたのピカイチ：キラキラ&スクショ映え */
+
     .voted-card{
       background:linear-gradient(135deg,#ffffff 0%, #fff9e8 48%, #ffffff 100%);
       border:2px solid var(--gold);border-radius:18px;padding:1rem .9rem;margin:.2rem 0 1rem;
@@ -56,7 +70,7 @@
       100%{filter:brightness(1) drop-shadow(0 0 0 #ffd70080)}
     }
     .confetti{position:fixed;inset:0;pointer-events:none;z-index:9}
-    /* 円グラフカード */
+
     .chart-card{
       background:var(--card);border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,.08);
       padding:.9rem;margin:1rem 0 1.2rem;position:relative;
@@ -67,7 +81,6 @@
     .percent-text span{font-weight:900}
     .home{color:#1976d2}.away{color:#d32f2f}
 
-    /* アクション */
     .actions{display:flex;flex-direction:column;align-items:center;gap:.8rem;margin:1rem 0}
     .btn{
       appearance:none;border:none;cursor:pointer;border-radius:999px;
@@ -75,11 +88,12 @@
       padding:.9rem 1.4rem;font-size:1.05rem
     }
     .btn-share{background:linear-gradient(90deg,#ff6f00,#ffc400);color:#fff}
+    .btn-x{background:#000;color:#fff}
     .btn-ss{background:#fff;color:#222;border:1px solid #ddd}
     .home-link{display:block;margin:.2rem auto 0;text-align:center;color:#006bb2;text-decoration:none;font-weight:700}
     .note{text-align:center;color:#777;font-size:.9rem;margin:.9rem 0}
 
-    /* スクショモード：余計なUIを隠し、映える余白・背景へ */
+    /* スクショモード */
     .screenshot .header,.screenshot .actions .btn-share,.screenshot .home-link,.screenshot .note{display:none}
     .screenshot body{background:#fff}
     .screenshot .wrap{padding:0 1rem}
@@ -93,6 +107,19 @@
       .player-name{font-size:1.45rem}
       .btn{font-size:1rem}
     }
+
+    /* ▼ 追加：共有テキストプレビューと画像プレビュー枠 ▼ */
+    .share-preview{
+      background:var(--card);border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,.08);
+      padding:1rem;margin:1rem 0 .6rem
+    }
+    .share-preview h3{margin:.2rem 0 .6rem;font-size:1rem}
+    .share-textarea{
+      width:100%;min-height:120px;border:1px solid #e5e7eb;border-radius:12px;padding:.8rem;font-size:.95rem
+    }
+    .tiny{font-size:.85rem;color:#666;margin-top:.4rem}
+    .img-preview{display:flex;justify-content:center;margin-top:.6rem}
+    .img-preview canvas{max-width:100%;border:1px solid #eee;border-radius:12px}
   </style>
 </head>
 <body>
@@ -108,14 +135,13 @@
       <div class="voted-card" id="votedCard" aria-live="polite">
         <div class="sparkle" aria-hidden="true"></div>
         <div class="voted-title">あなたのピカイチ</div>
-        <!-- ここはすでに「選手」付き -->
         <div class="player-name" id="playerName"><%= votedPlayer %> 選手</div>
         <div class="team-badge"><%= (votedTeam==='home'? match.home : match.away) %></div>
         <div style="margin-top:.3rem;color:#555;font-size:.95rem">スクショして #ピカイチ投票 #ビスタジア で投稿しよう！</div>
       </div>
     </div>
 
-    <!-- 円グラフ（ホーム/アウェイ比率のみ） -->
+    <!-- 円グラフ（ホーム/アウェイ比率） -->
     <div class="chart-card">
       <div class="chart-box"><canvas id="voteChart"></canvas></div>
       <p class="percent-text">
@@ -125,9 +151,20 @@
       </p>
     </div>
 
+    <!-- ▼ 追加：共有テキストのプレビュー＆編集、画像プレビュー -->
+    <div class="share-preview">
+      <h3>📣 X（Twitter）に投稿する内容（編集できます）</h3>
+      <textarea id="shareText" class="share-textarea"></textarea>
+      <div class="tiny">※ 端末が対応していれば画像も一緒に共有されます。対応していない場合は本文コピーか「Xで開く」を使ってください。</div>
+      <div class="img-preview"><canvas id="shareCanvas" width="1080" height="1350" aria-label="共有用画像プレビュー"></canvas></div>
+    </div>
+
     <!-- アクション -->
     <div class="actions">
-      <button id="shareBtn" class="btn btn-share">📤 推しをシェアして盛り上げる</button>
+      <button id="shareBtn" class="btn btn-share">📤 そのまま共有（対応端末は画像付き）</button>
+      <button id="tweetBtn" class="btn btn-x">𝕏 で投稿画面を開く</button>
+      <button id="copyBtn" class="btn btn-ss">📋 文面をコピー</button>
+      <button id="dlBtn" class="btn btn-ss">🖼️ 画像を保存</button>
       <button id="ssBtn" class="btn btn-ss">📸 スクショモード</button>
       <a href="/" class="home-link">🏠 他の試合もピカイチ投票する</a>
     </div>
@@ -142,14 +179,14 @@
   </script>
 
   <script>
-    // ---- 定数（EJSをJSに安全に埋め込む） ----
+    // ---- 定数（EJS→JS） ----
     const MATCH_HOME   = "<%- match.home %>";
     const MATCH_AWAY   = "<%- match.away %>";
     const VOTED_TEAM   = "<%- votedTeam %>";
-    // ★ここを“選手”付きにします（統一）：以降どこで使っても「◯◯ 選手」
     const VOTED_PLAYER = "<%- votedPlayer %> 選手";
     const HOME_PCT     = <%- totalVotes.homePercent %>;
     const AWAY_PCT     = <%- totalVotes.awayPercent %>;
+    const PAGE_URL     = location.href;
 
     // ---- 円グラフ ----
     (function drawChart(){
@@ -164,17 +201,13 @@
           cutout:'68%', responsive:true,
           plugins:{
             legend:{ position:'bottom' },
-            tooltip:{
-              callbacks:{
-                label:(c)=>{ const d=c.dataset.data; const tot=(d[0]+d[1])||1; const p=Math.round((c.raw/tot)*100); return `${c.label}: ${p}%`; }
-              }
-            }
+            tooltip:{ callbacks:{ label:(c)=>{ const d=c.dataset.data; const tot=(d[0]+d[1])||1; const p=Math.round((c.raw/tot)*100); return `${c.label}: ${p}%`; } } }
           }
         }
       });
     })();
 
-    // ---- コンフェッティ（軽量） ----
+    // ---- コンフェッティ ----
     (function confetti(){
       const cv = document.getElementById('confetti');
       const ct = cv.getContext('2d');
@@ -195,45 +228,160 @@
       function anim(ts){
         if(!t0) t0=ts;
         const dt=ts-t0; ct.clearRect(0,0,cv.width,cv.height);
-        parts.forEach(p=>{
-          p.y += p.s; p.x += Math.sin((dt/300)+p.a)*0.6;
-          ct.fillStyle=p.c; ct.beginPath(); ct.arc(p.x,p.y,p.r,0,Math.PI*2); ct.fill();
-        });
+        parts.forEach(p=>{ p.y += p.s; p.x += Math.sin((dt/300)+p.a)*0.6; ct.fillStyle=p.c; ct.beginPath(); ct.arc(p.x,p.y,p.r,0,Math.PI*2); ct.fill(); });
         if(dt<ttl) requestAnimationFrame(anim); else cv.style.display='none';
       }
       requestAnimationFrame(anim);
     })();
 
-    // ---- スクショモード（UIを削ぎ落として映える） ----
+    // ---- 共有テキストの生成（“怪しく見えない”見出し＋数値＋ハッシュタグ） ----
+    function buildShareText(){
+      return [
+        `🏆 ピカイチ投票｜<${MATCH_HOME} vs ${MATCH_AWAY}>`,
+        `私は「${VOTED_PLAYER}」に投票しました！`,
+        `📊 投票状況：${MATCH_HOME} ${HOME_PCT}%｜${MATCH_AWAY} ${AWAY_PCT}%`,
+        `👉 あなたも参加：${PAGE_URL}`,
+        `#ピカイチ投票 #ビスタジア`
+      ].join('\n');
+    }
+
+    // 初期テキストセット
+    const shareTextEl = document.getElementById('shareText');
+    shareTextEl.value = buildShareText();
+
+    // ---- 共有用画像（Canva風カード）をCanvasで自動生成 ----
+    const can = document.getElementById('shareCanvas');
+    const c  = can.getContext('2d');
+
+    function drawShareCard(){
+      const W=can.width, H=can.height;
+      // 背景グラデ
+      const g = c.createLinearGradient(0,0,W,H);
+      g.addColorStop(0,'#0f6ab2'); g.addColorStop(1,'#102a44');
+      c.fillStyle=g; c.fillRect(0,0,W,H);
+
+      // トップ帯
+      c.fillStyle='#ffd700'; c.fillRect(0,0,W,28);
+
+      // タイトル
+      c.font='bold 54px Noto Sans JP'; c.fillStyle='#ffffff';
+      c.textAlign='center'; c.fillText('私のピカイチ', W/2, 140);
+
+      // 試合名
+      c.font='700 34px Noto Sans JP'; c.fillStyle='#e7f1ff';
+      c.fillText(`${MATCH_HOME}  vs  ${MATCH_AWAY}`, W/2, 200);
+
+      // 選手名プレート
+      const plateY = 320;
+      c.fillStyle='#fff9e8'; c.strokeStyle='#ffd700'; c.lineWidth=8;
+      roundRect(c, 80, plateY-70, W-160, 160, 26, true, true);
+
+      c.fillStyle='#222';
+      c.font='900 60px Noto Sans JP';
+      c.fillText(`${VOTED_PLAYER}`, W/2, plateY+10);
+
+      c.fillStyle='#0f6ab2';
+      c.font='800 32px Noto Sans JP';
+      const team = (VOTED_TEAM==='home'? MATCH_HOME : MATCH_AWAY);
+      c.fillText(team, W/2, plateY+60);
+
+      // 投票状況（円形ゲージ風）
+      drawDonut(W/2, 600, 180, HOME_PCT, `${MATCH_HOME} ${HOME_PCT}%`, '#8ec6ff');
+      drawDonut(W/2, 900, 180, AWAY_PCT, `${MATCH_AWAY} ${AWAY_PCT}%`, '#ff9e9e');
+
+      // フッター
+      c.font='bold 30px Noto Sans JP'; c.fillStyle='#cbd5e1';
+      c.fillText('#ピカイチ投票  #ビスタジア', W/2, H-70);
+
+      // 角ロゴっぽい透かし
+      c.save(); c.globalAlpha=0.15; c.fillStyle='#fff';
+      c.font='900 120px Noto Sans JP'; c.translate(W-60, H-40); c.rotate(-Math.PI/6);
+      c.textAlign='right'; c.fillText('PIKAICHI', 0, 0); c.restore();
+    }
+
+    function roundRect(ctx,x,y,w,h,r,fill,stroke){
+      ctx.beginPath();
+      ctx.moveTo(x+r,y);
+      ctx.arcTo(x+w,y,x+w,y+h,r);
+      ctx.arcTo(x+w,y+h,x,y+h,r);
+      ctx.arcTo(x,y+h,x,y,r);
+      ctx.arcTo(x,y,x+w,y,r);
+      if(fill) ctx.fill(); if(stroke) ctx.stroke();
+    }
+
+    function drawDonut(cx, cy, r, pct, label, color){
+      const bg = '#1f3b57';
+      c.beginPath(); c.strokeStyle=bg; c.lineWidth=26; c.arc(cx,cy,r,0,Math.PI*2); c.stroke();
+      const ang = (Math.max(0,Math.min(100,pct))/100)*Math.PI*2 - Math.PI/2;
+      c.beginPath(); c.strokeStyle=color; c.lineWidth=26; c.arc(cx,cy,r,-Math.PI/2,ang); c.stroke();
+      c.fillStyle='#ffffff'; c.font='900 48px Noto Sans JP'; c.textAlign='center';
+      c.fillText(`${pct}%`, cx, cy+14);
+      c.fillStyle='#e2e8f0'; c.font='700 30px Noto Sans JP';
+      c.fillText(label, cx, cy+70);
+    }
+
+    drawShareCard();
+
+    // 画像Blob取得
+    function canvasToBlob(){
+      return new Promise(res=> can.toBlob(b=>res(b),'image/png',0.95));
+    }
+
+    // ---- スクショモード ----
     const ssBtn = document.getElementById('ssBtn');
     ssBtn.addEventListener('click',()=>{
       document.documentElement.classList.toggle('screenshot');
       const card = document.getElementById('votedCard');
       card?.scrollIntoView({behavior:'smooth',block:'center'});
       ssBtn.textContent = document.documentElement.classList.contains('screenshot') ? '✅ スクショ完了 → 通常表示へ' : '📸 スクショモード';
-      card.style.transition='filter .18s'; card.style.filter='brightness(1.06)';
-      setTimeout(()=>{ card.style.filter=''; },240);
     });
 
-    // ---- シェア（Web Share API / クリップボード） ----
+    // ---- 共有（Web Share API: 画像＋テキスト / テキストのみ） ----
     document.getElementById('shareBtn').addEventListener('click', async ()=>{
-      const url  = location.href;
-      // ★ここも選手名を採用（VOTED_PLAYERは“選手”付き）
-      const text = `【ピカイチ投票結果】あなたのピカイチ：${VOTED_PLAYER}\n${MATCH_HOME} ${HOME_PCT}% vs ${MATCH_AWAY} ${AWAY_PCT}%\n#ピカイチ投票 #ビスタジア\n${url}`;
+      const text = shareTextEl.value.trim() || buildShareText();
       try{
-        if(navigator.share){
-          await navigator.share({title:'ピカイチ投票結果', text, url});
-        }else{
+        const supportsFiles = ('canShare' in navigator);
+        const blob = await canvasToBlob();
+        const file = new File([blob], 'pikaichi.png', {type:'image/png'});
+
+        if (navigator.share){
+          if (supportsFiles && navigator.canShare && navigator.canShare({files:[file]})){
+            await navigator.share({title:'ピカイチ投票', text, files:[file]});
+          } else {
+            await navigator.share({title:'ピカイチ投票', text, url: PAGE_URL});
+          }
+        } else {
+          // フォールバック：コピー
           await navigator.clipboard.writeText(text);
           alert('共有テキストをコピーしました！お好きなSNSに貼り付けてください。');
         }
       }catch(e){ console.warn(e); }
     });
 
-    // ---- 初期フォーカス＆アクセシビリティ微配慮 ----
-    window.addEventListener('load',()=>{
-      document.getElementById('playerName')?.focus?.();
+    // ---- Xで投稿画面を開く（intent/tweet） ----
+    document.getElementById('tweetBtn').addEventListener('click', ()=>{
+      const text = encodeURIComponent(shareTextEl.value.trim() || buildShareText());
+      const url  = 'https://twitter.com/intent/tweet?text=' + text;
+      window.open(url,'_blank','noopener');
     });
+
+    // ---- 文面コピー ----
+    document.getElementById('copyBtn').addEventListener('click', async ()=>{
+      const text = shareTextEl.value.trim() || buildShareText();
+      try{ await navigator.clipboard.writeText(text); alert('文面をコピーしました。Xに貼り付けてください！'); }
+      catch(e){ console.warn(e); }
+    });
+
+    // ---- 画像ダウンロード（手動添付用）----
+    document.getElementById('dlBtn').addEventListener('click', async ()=>{
+      const a = document.createElement('a');
+      a.href = can.toDataURL('image/png');
+      a.download = 'pikaichi.png';
+      a.click();
+    });
+
+    // ---- 初期フォーカス ----
+    window.addEventListener('load',()=>{ document.getElementById('playerName')?.focus?.(); });
   </script>
 </body>
 </html>
